@@ -1,0 +1,29 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.redip.factory;
+
+import com.redip.entity.QualityNonconformities;
+
+/**
+ *
+ * @author bcivel
+ */
+public interface IFactoryQualityNonconformities {
+     
+    QualityNonconformities create(int idqualitynonconformities, String problemCategory, 
+            String problemDescription, String problemTitle, String rootCauseCategory, String rootCauseDescription,
+            String responsabilities, String status, String comments, String severity, String application, 
+            String applicationFunctionnality, String problemType, String deadline, String detection, 
+            String linkToDoc, String showInReporting, String qualityFollower, String testToAvoid, String reproductibility, String behaviorExpected);
+
+
+
+    QualityNonconformities create(String problemTitle, String problemDescription,
+                String severity, String reproductibility, String linkToDoc, String behaviorExpected);
+    
+    QualityNonconformities create(int idqualitynonconformities, String problemTitle, String problemDescription);
+
+    
+    }
