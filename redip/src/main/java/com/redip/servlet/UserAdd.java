@@ -58,10 +58,10 @@ public class UserAdd extends HttpServlet {
         }
         String name = ParameterParserUtil.parseStringParam(request.getParameter("name"), "");
         String password = "";
-        String newPassword = ParameterParserUtil.parseStringParam(request.getParameter("newPassword"),"Y");
-        String team = ParameterParserUtil.parseStringParam(request.getParameter("team"),"");
-        String defaultSystem = ParameterParserUtil.parseStringParam(request.getParameter("defaultSystem"),"");
-        
+        String newPassword = ParameterParserUtil.parseStringParam(request.getParameter("newPassword"), "Y");
+        String team = ParameterParserUtil.parseStringParam(request.getParameter("team"), "");
+        String defaultSystem = ParameterParserUtil.parseStringParam(request.getParameter("defaultSystem"), "");
+
         IFactoryGroup factoryGroup = new FactoryGroup();
         List<Group> groups = new ArrayList<Group>();
         for (String group : request.getParameterValues("groups")) {
@@ -80,7 +80,7 @@ public class UserAdd extends HttpServlet {
         try {
             userService.insertUser(myUser);
             userGroupService.updateUserGroups(myUser, groups);
-            
+
             /**
              * Adding Log entry.
              */
@@ -91,7 +91,7 @@ public class UserAdd extends HttpServlet {
             } catch (Exception ex) {
                 Logger.getLogger(UserService.class.getName()).log(Level.ERROR, null, ex);
             }
-            
+
             response.getWriter().print(myUser.getLogin());
         } catch (QualityException myexception) {
             response.getWriter().print(myexception.getMessageError().getDescription());

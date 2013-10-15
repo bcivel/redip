@@ -25,15 +25,15 @@ public class NonConformityDeleteImpact extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String id = request.getParameter("id");
         String idnci = request.getParameter("idnci");
-        
+
         ApplicationContext appContext = WebApplicationContextUtils.getWebApplicationContext(this.getServletContext());
         IQualityNonconformitiesImpactService nonconformitiesImpactService = appContext.getBean(IQualityNonconformitiesImpactService.class);
 
-        Logger.log(NonConformityDeleteImpact.class.getName() , Level.INFO , "call delete service for idnci :"+idnci);
+        Logger.log(NonConformityDeleteImpact.class.getName(), Level.INFO, "call delete service for idnci :" + idnci);
         String str = nonconformitiesImpactService.deleteNonconformitiesImpact(Integer.valueOf(idnci));
-        
-        response.sendRedirect("qualitynonconformitydetails.jsp?ncid="+id);
 
-    
-}
+        response.sendRedirect("qualitynonconformitydetails.jsp?ncid=" + id);
+
+
+    }
 }

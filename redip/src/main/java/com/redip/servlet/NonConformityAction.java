@@ -79,7 +79,7 @@ public class NonConformityAction extends HttpServlet {
 
 //        QualityNonconformities numberOfNC = qualityNonconformitiesService.getNumberOfNonconformities();
 //        List<QualityNonconformities> nonconformitieslist = qualityNonconformitiesService.getAllNonconformities(start, amount, colName, dir);
-List<QualityNonconformitiesAction> nonconformitieslist = qualityNonconformitiesService.findQualityNonconformitiesByCriteria();
+        List<QualityNonconformitiesAction> nonconformitieslist = qualityNonconformitiesService.findQualityNonconformitiesByCriteria();
         try {
             JSONObject jsonResponse = new JSONObject();
 
@@ -89,11 +89,11 @@ List<QualityNonconformitiesAction> nonconformitieslist = qualityNonconformitiesS
                 row.put(listofnonconformities.getPriority())
                         .put(listofnonconformities.getQualityNonconformities().getProblemTitle())
                         .put(listofnonconformities.getQualityNonconformities().getProblemDescription())
-//                        .put(listofnonconformities.getRootCauseCategory())
-//                        .put(listofnonconformities.getRootCauseDescription())
-//                        .put(listofnonconformities.getResponsabilities())
+                        //                        .put(listofnonconformities.getRootCauseCategory())
+                        //                        .put(listofnonconformities.getRootCauseDescription())
+                        //                        .put(listofnonconformities.getResponsabilities())
                         .put(listofnonconformities.getStatus())
-//                        .put(listofnonconformities.getComments())
+                        //                        .put(listofnonconformities.getComments())
                         .put(listofnonconformities.getIdQualityNonconformities())
                         .put("<a href=\"qualitynonconformitydetails.jsp?ncid=" + listofnonconformities.getIdQualityNonconformities() + "\">edit</a>");
                 data.put(row);

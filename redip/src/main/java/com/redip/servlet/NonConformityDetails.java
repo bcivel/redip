@@ -46,21 +46,21 @@ public class NonConformityDetails extends HttpServlet {
         String toDate = null;
         String[] applicationFunctionnality = null;
         String[] statusList = null;
-        
-        if (request.getParameterValues("creator") != null){
-          creator = request.getParameterValues("creator");
+
+        if (request.getParameterValues("creator") != null) {
+            creator = request.getParameterValues("creator");
         }
-        if (request.getParameterValues("fromDate") != null){
-          fromDate = request.getParameter("fromDate");
+        if (request.getParameterValues("fromDate") != null) {
+            fromDate = request.getParameter("fromDate");
         }
-        if (request.getParameterValues("toDate") != null){
-          toDate = request.getParameter("toDate");
+        if (request.getParameterValues("toDate") != null) {
+            toDate = request.getParameter("toDate");
         }
-        if (request.getParameterValues("applicationFunctionnality") != null){
-          applicationFunctionnality = request.getParameterValues("applicationFunctionnality");
+        if (request.getParameterValues("applicationFunctionnality") != null) {
+            applicationFunctionnality = request.getParameterValues("applicationFunctionnality");
         }
-        if (request.getParameterValues("status") != null){
-          statusList = request.getParameterValues("status");
+        if (request.getParameterValues("status") != null) {
+            statusList = request.getParameterValues("status");
         }
 
         JSONObject result = new JSONObject();
@@ -68,48 +68,48 @@ public class NonConformityDetails extends HttpServlet {
         int amount = 10;
         int start = 0;
         int col = 0;
-        
+
         String idqualitynonconformities = "";
         String problemTitle = "";
         String problemDescription = "";
         String status = "";
         String severity = "";
-        
-        
+
+
         idqualitynonconformities = request.getParameter("sSearch_0");
         problemTitle = request.getParameter("sSearch_1");
         problemDescription = request.getParameter("sSearch_2");
         status = request.getParameter("sSearch_3");
         severity = request.getParameter("sSearch_4");
-        
+
         List<String> sArray = new ArrayList<String>();
         if (!idqualitynonconformities.equals("")) {
-        String sIdqualitynonconformities = " idqualitynonconformities like '%" + idqualitynonconformities + "%'";
-        sArray.add(sIdqualitynonconformities);
+            String sIdqualitynonconformities = " idqualitynonconformities like '%" + idqualitynonconformities + "%'";
+            sArray.add(sIdqualitynonconformities);
         }
         if (!problemTitle.equals("")) {
-        String sProblemTitle = " ProblemTitle like '%" + problemTitle + "%'";
-        sArray.add(sProblemTitle);
+            String sProblemTitle = " ProblemTitle like '%" + problemTitle + "%'";
+            sArray.add(sProblemTitle);
         }
         if (!problemDescription.equals("")) {
-        String sProblemDescription = " problemDescription like '%" + problemDescription + "%'";
-        sArray.add(sProblemDescription);
+            String sProblemDescription = " problemDescription like '%" + problemDescription + "%'";
+            sArray.add(sProblemDescription);
         }
         if (!status.equals("")) {
-        String sStatus = " status like '%" + status + "%'";
-        sArray.add(sStatus);
+            String sStatus = " status like '%" + status + "%'";
+            sArray.add(sStatus);
         }
         if (!severity.equals("")) {
-        String sSeverity = " severity like '%" + severity + "%'";
-        sArray.add(sSeverity);
+            String sSeverity = " severity like '%" + severity + "%'";
+            sArray.add(sSeverity);
         }
         if (creator != null) {
-        String sCreator = " (";
-        for (int a = 0 ; a < creator.length-1 ; a++ ){
-        sCreator += " Detection like '%" + creator[a] + "%' or";
-        }
-        sCreator += " Detection like '%" + creator[creator.length-1] + "%') ";
-        sArray.add(sCreator);
+            String sCreator = " (";
+            for (int a = 0; a < creator.length - 1; a++) {
+                sCreator += " Detection like '%" + creator[a] + "%' or";
+            }
+            sCreator += " Detection like '%" + creator[creator.length - 1] + "%') ";
+            sArray.add(sCreator);
         }
 //        if (fromDate != null) {
 //        String sFromDate = " fromDate > '" + fromDate + "'";
@@ -120,69 +120,74 @@ public class NonConformityDetails extends HttpServlet {
 //        sArray.add(sFromDate);
 //        }
         if (applicationFunctionnality != null) {
-        String sApplicationFunctionnality = " (";
-        for (int a = 0 ; a < applicationFunctionnality.length-1 ; a++ ){
-        sApplicationFunctionnality += " applicationFunctionnality like '%" + applicationFunctionnality[a] + "%' or";
-        }
-        sApplicationFunctionnality += " applicationFunctionnality like '%" + applicationFunctionnality[applicationFunctionnality.length-1] + "%') ";
-        sArray.add(sApplicationFunctionnality);
+            String sApplicationFunctionnality = " (";
+            for (int a = 0; a < applicationFunctionnality.length - 1; a++) {
+                sApplicationFunctionnality += " applicationFunctionnality like '%" + applicationFunctionnality[a] + "%' or";
+            }
+            sApplicationFunctionnality += " applicationFunctionnality like '%" + applicationFunctionnality[applicationFunctionnality.length - 1] + "%') ";
+            sArray.add(sApplicationFunctionnality);
         }
         if (statusList != null) {
-        String sStatusList = " (";
-        for (int a = 0 ; a < statusList.length-1 ; a++ ){
-        sStatusList += " status like '%" + statusList[a] + "%' or";
+            String sStatusList = " (";
+            for (int a = 0; a < statusList.length - 1; a++) {
+                sStatusList += " status like '%" + statusList[a] + "%' or";
+            }
+            sStatusList += " status like '%" + statusList[statusList.length - 1] + "%') ";
+            sArray.add(sStatusList);
         }
-        sStatusList += " status like '%" + statusList[statusList.length-1] + "%') ";
-        sArray.add(sStatusList);
-        }
-        
+
         StringBuilder individualSearch = new StringBuilder();
-        if(sArray.size()==1){
-        individualSearch.append(sArray.get(0));
-        }else if(sArray.size()>1){
-        for(int i=0;i<sArray.size()-1;i++){
-        individualSearch.append(sArray.get(i));
-        individualSearch.append(" and ");
+        if (sArray.size() == 1) {
+            individualSearch.append(sArray.get(0));
+        } else if (sArray.size() > 1) {
+            for (int i = 0; i < sArray.size() - 1; i++) {
+                individualSearch.append(sArray.get(i));
+                individualSearch.append(" and ");
+            }
+            individualSearch.append(sArray.get(sArray.size() - 1));
         }
-        individualSearch.append(sArray.get(sArray.size()-1));
-        }
-        
+
         if (sStart != null) {
-        start = Integer.parseInt(sStart);
-        if (start < 0)
-            start = 0;
+            start = Integer.parseInt(sStart);
+            if (start < 0) {
+                start = 0;
+            }
         }
         if (sAmount != null) {
-        amount = Integer.parseInt(sAmount);
-        if (amount < 10 || amount > 100)
-            amount = 10;
+            amount = Integer.parseInt(sAmount);
+            if (amount < 10 || amount > 100) {
+                amount = 10;
+            }
         }
 
         if (sCol != null) {
-        col = Integer.parseInt(sCol);
-        if (col < 0 || col > 5)
-            col = 0;
+            col = Integer.parseInt(sCol);
+            if (col < 0 || col > 5) {
+                col = 0;
+            }
         }
         if (sdir != null) {
-        if (!sdir.equals("asc"))
-            dir = "desc";
+            if (!sdir.equals("asc")) {
+                dir = "desc";
+            }
         }
         String colName = cols[col];
-        
+
         String searchTerm = "";
-        if (!request.getParameter("sSearch").equals(""))
-        {searchTerm = request.getParameter("sSearch");}
-            
-        
+        if (!request.getParameter("sSearch").equals("")) {
+            searchTerm = request.getParameter("sSearch");
+        }
+
+
         String inds = String.valueOf(individualSearch);
-       
+
         JSONArray data = new JSONArray(); //data that will be shown in the table
 
         ApplicationContext appContext = WebApplicationContextUtils.getWebApplicationContext(this.getServletContext());
         IQualityNonconformitiesService qualityNonconformitiesService = appContext.getBean(IQualityNonconformitiesService.class);
 
         QualityNonconformities numberOfNC = qualityNonconformitiesService.getNumberOfNonconformities();
-        List<QualityNonconformities> nonconformitieslist = qualityNonconformitiesService.getAllNonconformities(start, amount, colName, dir,  searchTerm, inds);
+        List<QualityNonconformities> nonconformitieslist = qualityNonconformitiesService.getAllNonconformities(start, amount, colName, dir, searchTerm, inds);
 
         try {
             JSONObject jsonResponse = new JSONObject();
@@ -193,11 +198,11 @@ public class NonConformityDetails extends HttpServlet {
                 row.put(listofnonconformities.getIdqualitynonconformities())
                         .put(listofnonconformities.getProblemTitle())
                         .put(listofnonconformities.getProblemDescription())
-//                        .put(listofnonconformities.getRootCauseCategory())
-//                        .put(listofnonconformities.getRootCauseDescription())
-//                        .put(listofnonconformities.getResponsabilities())
+                        //                        .put(listofnonconformities.getRootCauseCategory())
+                        //                        .put(listofnonconformities.getRootCauseDescription())
+                        //                        .put(listofnonconformities.getResponsabilities())
                         .put(listofnonconformities.getStatus())
-//                        .put(listofnonconformities.getComments())
+                        //                        .put(listofnonconformities.getComments())
                         .put(listofnonconformities.getSeverity())
                         .put("<a href=\"qualitynonconformitydetails.jsp?ncid=" + listofnonconformities.getIdqualitynonconformities() + "\">edit</a>");
                 data.put(row);

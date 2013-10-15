@@ -41,10 +41,11 @@ public class QualityNonconformitiesDAOImpl implements IQualityNonconformitiesDAO
         query.append(" Status, Comments, Severity, problemTitle,StartDate FROM qualitynonconformities");
 
         QualityNonconformities nonconformitiestoadd;
-
+        ResultSet rs = null;
+        
         try {
             databaseSpring.connect();
-            ResultSet rs = databaseSpring.query(query.toString());
+            rs = databaseSpring.query(query.toString());
 
             while (rs.next()) {
                 nonconformitiestoadd = new QualityNonconformities();
@@ -64,6 +65,8 @@ public class QualityNonconformitiesDAOImpl implements IQualityNonconformitiesDAO
                 nonconformities.add(nonconformitiestoadd);
             }
 
+            rs.close();
+            
         } catch (SQLException ex) {
             Logger.log(QualityNonconformitiesDAOImpl.class.getName(), Level.FATAL, "" + ex);
         } finally {

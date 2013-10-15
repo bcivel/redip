@@ -35,12 +35,12 @@ public class NonConformityAddAction extends HttpServlet {
         ApplicationContext appContext = WebApplicationContextUtils.getWebApplicationContext(this.getServletContext());
         IQualityNonconformitiesActionService nonconformitiesActionService = appContext.getBean(IQualityNonconformitiesActionService.class);
         IFactoryQualityNonconformitiesAction factoryNca = appContext.getBean(IFactoryQualityNonconformitiesAction.class);
-        
+
         String str = "";
         for (int a = 0; a < ids.length; a++) {
-            QualityNonconformitiesAction qnca = factoryNca.create(Integer.valueOf(ids[0]), 
-                    Integer.valueOf(ids[0]), action[a], deadline[a],follower[a],
-                    status[a],date[a], percentage[a],  "99");
+            QualityNonconformitiesAction qnca = factoryNca.create(Integer.valueOf(ids[0]),
+                    Integer.valueOf(ids[0]), action[a], deadline[a], follower[a],
+                    status[a], date[a], percentage[a], "99");
             str = nonconformitiesActionService.addNonconformityAction(qnca);
         }
         response.sendRedirect("qualitynonconformitydetails.jsp?ncid=" + ids[0]);

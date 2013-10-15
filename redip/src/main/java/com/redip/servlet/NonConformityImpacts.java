@@ -39,7 +39,7 @@ public class NonConformityImpacts extends HttpServlet {
         String sCol = request.getParameter("iSortCol_0");
         String sdir = request.getParameter("sSortDir_0");
         String dir = "asc";
-        String[] cols = {"Country", "Application", "StartDate", 
+        String[] cols = {"Country", "Application", "StartDate",
             "StartTime", "EndDate", "EndTime", "ImpactOrCost"};
 
         int start = 0;
@@ -74,11 +74,11 @@ public class NonConformityImpacts extends HttpServlet {
         JSONArray data = new JSONArray(); //data that will be shown in the table
 
         ApplicationContext appContext = WebApplicationContextUtils.getWebApplicationContext(this.getServletContext());
-        IQualityNonconformitiesImpactService qualityNonconformitiesImpactService = 
+        IQualityNonconformitiesImpactService qualityNonconformitiesImpactService =
                 appContext.getBean(IQualityNonconformitiesImpactService.class);
 
         //QualityNonconformities numberOfNC = qualityNonconformitiesImpactService.getNumberOfNonconformities();
-        List<QualityNonconformitiesImpact> nonconformitieslist = 
+        List<QualityNonconformitiesImpact> nonconformitieslist =
                 qualityNonconformitiesImpactService.getImpactForNonconformitiesId(1);
 
         try {

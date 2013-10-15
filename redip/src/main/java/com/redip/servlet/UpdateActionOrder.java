@@ -41,40 +41,37 @@ public class UpdateActionOrder extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         try {
-            
-        ApplicationContext appContext = WebApplicationContextUtils.getWebApplicationContext(this.getServletContext());
-        IQualityNonconformitiesActionService actionService = appContext.getBean(IQualityNonconformitiesActionService.class);
 
-          String id = request.getParameter("id");
-          String fromPosition = request.getParameter("fromPosition");
-          String toPosition = request.getParameter("toPosition");
-          String direction = request.getParameter("direction");
+            ApplicationContext appContext = WebApplicationContextUtils.getWebApplicationContext(this.getServletContext());
+            IQualityNonconformitiesActionService actionService = appContext.getBean(IQualityNonconformitiesActionService.class);
 
-          Logger.log(UpdateActionOrder.class.getName(), Level.INFO, "fromPosition :"+fromPosition+", toPosition :"+toPosition+", direction :"+direction);
-          
-    if (direction.equals("back"))
-    {
-        Integer from = Integer.valueOf(fromPosition);
-        List<QualityNonconformitiesAction> actionList = actionService.findQualityNonconformitiesUsingLimit(toPosition, fromPosition);
-        for (QualityNonconformitiesAction action : actionList){
-        String log = actionService.updateQualityNonConformitiesAction(action.getIdQualityNonconformitiesActions(), "priority", from.toString());
-        Logger.log(UpdateActionOrder.class.getName(), Level.INFO,log);
-        from -= 1;
-        }
-        
-    }
-    else
-    {
-        Integer to = Integer.valueOf(toPosition);
-        List<QualityNonconformitiesAction> actionList = actionService.findQualityNonconformitiesUsingLimit(fromPosition, toPosition);
-        for (QualityNonconformitiesAction action : actionList){
-        String log = actionService.updateQualityNonConformitiesAction(action.getIdQualityNonconformitiesActions(), "priority", to.toString());
-        Logger.log(UpdateActionOrder.class.getName(), Level.INFO,log);
-        to -= 1;
-        }
-    }
+            String id = request.getParameter("id");
+            String fromPosition = request.getParameter("fromPosition");
+            String toPosition = request.getParameter("toPosition");
+            String direction = request.getParameter("direction");
 
-        } finally {            
+            Logger.log(UpdateActionOrder.class.getName(), Level.INFO, "fromPosition :" + fromPosition + ", toPosition :" + toPosition + ", direction :" + direction);
+
+            if (direction.equals("back")) {
+                Integer from = Integer.valueOf(fromPosition);
+                List<QualityNonconformitiesAction> actionList = actionService.findQualityNonconformitiesUsingLimit(toPosition, fromPosition);
+                for (QualityNonconformitiesAction action : actionList) {
+                    String log = actionService.updateQualityNonConformitiesAction(action.getIdQualityNonconformitiesActions(), "priority", from.toString());
+                    Logger.log(UpdateActionOrder.class.getName(), Level.INFO, log);
+                    from -= 1;
+                }
+
+            } else {
+                Integer to = Integer.valueOf(toPosition);
+                List<QualityNonconformitiesAction> actionList = actionService.findQualityNonconformitiesUsingLimit(fromPosition, toPosition);
+                for (QualityNonconformitiesAction action : actionList) {
+                    String log = actionService.updateQualityNonConformitiesAction(action.getIdQualityNonconformitiesActions(), "priority", to.toString());
+                    Logger.log(UpdateActionOrder.class.getName(), Level.INFO, log);
+                    to -= 1;
+                }
+            }
+
+        } finally {
             out.close();
         }
     }

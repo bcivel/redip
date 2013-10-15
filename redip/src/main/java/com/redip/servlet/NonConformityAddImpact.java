@@ -34,12 +34,12 @@ public class NonConformityAddImpact extends HttpServlet {
         ApplicationContext appContext = WebApplicationContextUtils.getWebApplicationContext(this.getServletContext());
         IQualityNonconformitiesImpactService nonconformitiesImpactService = appContext.getBean(IQualityNonconformitiesImpactService.class);
 
-        
+
         Logger.log(NonConformityAddImpact.class.getName(), Level.INFO, application[0]);
         String str = "";
         for (int a = 0; a < ids.length; a++) {
-            Logger.log(NonConformityAddImpact.class.getName(), Level.INFO, Integer.valueOf(ids[a])+ application[a]+
-                    startDate[a]+ startTime[a]+ endDate[a]+ endTime[a]+ impactOrCost[a]);
+            Logger.log(NonConformityAddImpact.class.getName(), Level.INFO, Integer.valueOf(ids[a]) + application[a]
+                    + startDate[a] + startTime[a] + endDate[a] + endTime[a] + impactOrCost[a]);
             str = nonconformitiesImpactService.addNonconformityImpact(Integer.valueOf(ids[a]), application[a],
                     startDate[a], startTime[a], endDate[a], endTime[a], impactOrCost[a]);
         }

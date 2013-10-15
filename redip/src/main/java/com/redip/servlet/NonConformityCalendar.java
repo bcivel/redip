@@ -35,14 +35,14 @@ import sun.util.calendar.LocalGregorianCalendar;
  */
 public class NonConformityCalendar extends HttpServlet {
 
-   @Override
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doPost(request, response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        
+
         JSONArray data = new JSONArray(); //data that will be shown in the table
 
         ApplicationContext appContext = WebApplicationContextUtils.getWebApplicationContext(this.getServletContext());
@@ -52,26 +52,26 @@ public class NonConformityCalendar extends HttpServlet {
 
         try {
             JSONArray jsonResponse = new JSONArray();
-            
-            for (QualityNonconformities listofnonconformities : nonconformitieslist) {
-            JSONObject json = new JSONObject();
-            
-            SimpleDateFormat formater = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
-            json.put("title", listofnonconformities.getProblemTitle());
-            json.put("start", listofnonconformities.getStartDate());
-            //json.put("end", "2013-10-13 14:00");
-            json.put("url", "qualitynonconformitydetails.jsp?ncid="+listofnonconformities.getIdqualitynonconformities());
-            
-            jsonResponse.put(json);
+            for (QualityNonconformities listofnonconformities : nonconformitieslist) {
+                JSONObject json = new JSONObject();
+
+                SimpleDateFormat formater = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+
+                json.put("title", listofnonconformities.getProblemTitle());
+                json.put("start", listofnonconformities.getStartDate());
+                //json.put("end", "2013-10-13 14:00");
+                json.put("url", "qualitynonconformitydetails.jsp?ncid=" + listofnonconformities.getIdqualitynonconformities());
+
+                jsonResponse.put(json);
             }
-            
+
             response.setContentType("application/json");
             response.getWriter().print(jsonResponse.toString());
         } catch (JSONException e) {
             Logger.log(NonConformityDetails.class.getName(), Level.FATAL, "" + e);
             response.setContentType("text/html");
             response.getWriter().print(e.getMessage());
-        } 
+        }
     }
 }

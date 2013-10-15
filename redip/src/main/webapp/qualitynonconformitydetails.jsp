@@ -4,21 +4,21 @@
     Author     : bcivel
 --%>
 
-<%@page import="com.redoute.qualityfollowup.entity.QualityNonconformitiesFollower"%>
-<%@page import="com.redoute.qualityfollowup.entity.QualityNonconformitiesExchange"%>
-<%@page import="com.redoute.qualityfollowup.entity.QualityNonconformitiesAction"%>
-<%@page import="com.redoute.qualityfollowup.service.IQualityNonconformitiesFollowerService"%>
-<%@page import="com.redoute.qualityfollowup.service.IQualityNonconformitiesExchangeService"%>
-<%@page import="com.redoute.qualityfollowup.service.IQualityNonconformitiesActionService"%>
-<%@page import="com.redoute.qualityfollowup.entity.QualityNonconformitiesImpact"%>
-<%@page import="com.redoute.qualityfollowup.service.impl.QualityNonconformitiesImpactServiceImpl"%>
-<%@page import="com.redoute.qualityfollowup.entity.QualityNonconformities"%>
-<%@page import="com.redoute.qualityfollowup.service.impl.QualityNonconformitiesServiceImpl"%>
-<%@page import="com.redoute.qualityfollowup.dao.impl.QualityNonconformitiesDAOImpl"%>
-<%@page import="com.redoute.qualityfollowup.dao.IQualityNonconformitiesImpactDAO"%>
-<%@page import="com.redoute.qualityfollowup.service.IQualityNonconformitiesImpactService"%>
-<%@page import="com.redoute.qualityfollowup.dao.IQualityNonconformitiesDAO"%>
-<%@page import="com.redoute.qualityfollowup.service.IQualityNonconformitiesService"%>
+<%@page import="com.redip.entity.QualityNonconformitiesFollower"%>
+<%@page import="com.redip.entity.QualityNonconformitiesExchange"%>
+<%@page import="com.redip.entity.QualityNonconformitiesAction"%>
+<%@page import="com.redip.service.IQualityNonconformitiesFollowerService"%>
+<%@page import="com.redip.service.IQualityNonconformitiesExchangeService"%>
+<%@page import="com.redip.service.IQualityNonconformitiesActionService"%>
+<%@page import="com.redip.entity.QualityNonconformitiesImpact"%>
+<%@page import="com.redip.service.impl.QualityNonconformitiesImpactServiceImpl"%>
+<%@page import="com.redip.entity.QualityNonconformities"%>
+<%@page import="com.redip.service.impl.QualityNonconformitiesServiceImpl"%>
+<%@page import="com.redip.dao.impl.QualityNonconformitiesDAOImpl"%>
+<%@page import="com.redip.dao.IQualityNonconformitiesImpactDAO"%>
+<%@page import="com.redip.service.IQualityNonconformitiesImpactService"%>
+<%@page import="com.redip.dao.IQualityNonconformitiesDAO"%>
+<%@page import="com.redip.service.IQualityNonconformitiesService"%>
 <%@page import="org.springframework.stereotype.Service"%>
 <%@page import="java.net.URLEncoder"%>
 <%@page import="java.util.Date"%>

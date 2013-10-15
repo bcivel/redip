@@ -47,16 +47,16 @@ public class UpdateParameter extends HttpServlet {
         IParameterService parameterService = appContext.getBean(ParameterService.class);
 
         try {
-             parameterService.updateParameter(param, columnName, value);
+            parameterService.updateParameter(param, columnName, value);
 
-                /**
-                 * Adding Log entry.
-                 */
-                response.getWriter().print(value);
-            } catch (Exception ex) {
-                response.getWriter().print(ex);
-            }
-        
+            /**
+             * Adding Log entry.
+             */
+            response.getWriter().print(value);
+        } catch (Exception ex) {
+            response.getWriter().print(ex);
+        }
+
 
     }
 }

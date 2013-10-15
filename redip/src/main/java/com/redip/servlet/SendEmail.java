@@ -26,33 +26,32 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
  */
 public class SendEmail extends HttpServlet {
 
-    
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         Integer id = Integer.valueOf(request.getParameter("id"));
-        
+
         try {
             ApplicationContext appContext = WebApplicationContextUtils.getWebApplicationContext(this.getServletContext());
             IQualityNonconformitiesService qualityNonconformitiesService = appContext.getBean(IQualityNonconformitiesService.class);
             IEmailService emailService = appContext.getBean(IEmailService.class);
             IParameterService parameterService = appContext.getBean(IParameterService.class);
-            
+
             QualityNonconformities test = qualityNonconformitiesService.getOneNonconformities(id);
-            
+
             String host = parameterService.findParameterByKey("email_smtp_host").getValue();
             Integer port = Integer.valueOf(parameterService.findParameterByKey("email_smtp_port").getValue());
             String from = parameterService.findParameterByKey("email_from").getValue();
-            
-            String subject = "FR - " +test.getProblemTitle()+ " - ("+test.getSeverity()+")";
-                    
-            
+
+            String subject = "FR - " + test.getProblemTitle() + " - (" + test.getSeverity() + ")";
+
+
             String to = "CIVEL Benoit <bcivel@redoute.fr>";
             String cc = "";
-            
+
             StringBuilder body = new StringBuilder();
             body.append("Hello ServiceDesk,</br></br>");
             body.append("Find below description of an issue :</br></br>");
@@ -66,17 +65,16 @@ public class SendEmail extends HttpServlet {
             body.append(test.getBehaviorExpected());
             body.append("</br><b>Priority : </b>");
             body.append(test.getSeverity());
-            
-            
+
+
             emailService.sendHtmlMail(host, port, body.toString(), subject, from, to, cc);
-            
+
         } catch (QualityException ex) {
             Logger.log(SendEmail.class.getName(), Level.INFO, ex.toString());
         } catch (Exception ex) {
             Logger.log(SendEmail.class.getName(), Level.INFO, ex.toString());
-        } finally {            
+        } finally {
             out.close();
         }
     }
-
 }

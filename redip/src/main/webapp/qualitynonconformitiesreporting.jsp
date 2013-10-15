@@ -4,11 +4,11 @@
     Author     : bcivel
 --%>
 
-<%@page import="com.redoute.qualityfollowup.service.impl.QualityNonconformitiesReportingServiceImpl"%>
-<%@page import="com.redoute.qualityfollowup.dao.IQualityNonconformitiesReportingDAO"%>
+<%@page import="com.redip.service.impl.QualityNonconformitiesReportingServiceImpl"%>
+<%@page import="com.redip.dao.IQualityNonconformitiesReportingDAO"%>
 <%@page import="java.util.logging.Logger"%>
-<%@page import="com.redoute.qualityfollowup.dao.impl.QualityNonconformitiesReportingDAOImpl"%>
-<%@page import="com.redoute.qualityfollowup.service.IQualityNonconformitiesReportingService"%>
+<%@page import="com.redip.dao.impl.QualityNonconformitiesReportingDAOImpl"%>
+<%@page import="com.redip.service.IQualityNonconformitiesReportingService"%>
 <%@page import="java.awt.Component"%>
 <%@page import="java.awt.BorderLayout"%>
 <%@page import="javax.swing.JFrame"%>

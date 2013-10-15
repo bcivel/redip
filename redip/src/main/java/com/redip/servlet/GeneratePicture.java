@@ -38,8 +38,11 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 @WebServlet
 public class GeneratePicture extends HttpServlet {
 
-    /** 
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
+    /**
+     * Processes requests for both HTTP
+     * <code>GET</code> and
+     * <code>POST</code> methods.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -61,7 +64,7 @@ public class GeneratePicture extends HttpServlet {
             DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
             String graphName = request.getParameter("graph");
-            
+
             ApplicationContext appContext = WebApplicationContextUtils.getWebApplicationContext(this.getServletContext());
             IGraphService loadService = appContext.getBean(IGraphService.class);
             IGraphScriptService gsService = appContext.getBean(IGraphScriptService.class);
@@ -75,18 +78,18 @@ public class GeneratePicture extends HttpServlet {
             String type = graph.getType();
             String fromDate = "";
             String toDate = "";
-            
+
             Logger.log(GeneratePicture.class.getName(), Level.INFO, type);
-            
+
             List<GraphScript> gsList = gsService.findGraphScriptByGraphName(graphName);
-            
+
             List<List<String>> resultSetBar = new ArrayList();
-            
+
             for (GraphScript indGraph : gsList) {
                 List<List<String>> rs;
-                
+
                 String script = indGraph.getScript();
-                
+
 //                fromDate = yesterday.toString();
 //                if (request.getParameter("fromdate") != null) {
 //                    if (request.getParameter("fromdate").equals("TODAY")) {
@@ -116,21 +119,21 @@ public class GeneratePicture extends HttpServlet {
 //                }
 
 
-                
+
                 rs = dtb.getDataForGraph(script);
-                
+
 //                if (type.equals("bar")) {
-                    resultSetBar.addAll(rs);
+                resultSetBar.addAll(rs);
 //                }
 
-                
+
             }
 
 //            xLabel = fromDate + " / " + toDate;
 
             BufferedImage toto = null;
 
-            
+
             if (type.equals("bar")) {
                 toto = ggs.generateHorizontalBarGraph(
                         resultSetBar, title, xLabel);
@@ -148,8 +151,10 @@ public class GeneratePicture extends HttpServlet {
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /** 
-     * Handles the HTTP <code>GET</code> method.
+    /**
+     * Handles the HTTP
+     * <code>GET</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -165,8 +170,10 @@ public class GeneratePicture extends HttpServlet {
         }
     }
 
-    /** 
-     * Handles the HTTP <code>POST</code> method.
+    /**
+     * Handles the HTTP
+     * <code>POST</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -182,8 +189,9 @@ public class GeneratePicture extends HttpServlet {
         }
     }
 
-    /** 
+    /**
      * Returns a short description of the servlet.
+     *
      * @return a String containing servlet description
      */
     @Override

@@ -28,46 +28,43 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
  */
 public class NonConformityUpdatePriority extends HttpServlet {
 
-  protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         try {
-           
-            
-        ApplicationContext appContext = WebApplicationContextUtils.getWebApplicationContext(this.getServletContext());
-        IQualityNonconformitiesService ncService = appContext.getBean(IQualityNonconformitiesService.class);
 
-        String responsabilities = request.getParameter("Responsabilities");
-        String fromPosition = request.getParameter("fromPosition");
-        String toPosition = request.getParameter("toPosition");
-        String direction = request.getParameter("direction");
 
-          Logger.log(UpdateActionOrder.class.getName(), Level.INFO, "fromPosition :"+fromPosition+", toPosition :"+toPosition+", direction :"+direction);
-          
-    if (direction.equals("back"))
-    {
-        Integer from = Integer.valueOf(fromPosition);
-        List<QualityNonconformities> ncList = ncService.findNonconformitiesOpenedByResponsability(responsabilities, toPosition, fromPosition);
-        for (QualityNonconformities action : ncList){
-        String log = ncService.updateNonconformity(action.getIdqualitynonconformities(), "priority", from.toString());
-        Logger.log(UpdateActionOrder.class.getName(), Level.INFO,log);
-        from -= 1;
-        }
-        
-    }
-    else
-    {
-        Integer to = Integer.valueOf(toPosition);
-        List<QualityNonconformities> ncList = ncService.findNonconformitiesOpenedByResponsability(responsabilities, fromPosition, toPosition);
-        for (QualityNonconformities action : ncList){
-        String log = ncService.updateNonconformity(action.getIdqualitynonconformities(), "priority", to.toString());
-        Logger.log(UpdateActionOrder.class.getName(), Level.INFO,log);
-        to -= 1;
-        }
-    }
+            ApplicationContext appContext = WebApplicationContextUtils.getWebApplicationContext(this.getServletContext());
+            IQualityNonconformitiesService ncService = appContext.getBean(IQualityNonconformitiesService.class);
 
-        } finally {            
+            String responsabilities = request.getParameter("Responsabilities");
+            String fromPosition = request.getParameter("fromPosition");
+            String toPosition = request.getParameter("toPosition");
+            String direction = request.getParameter("direction");
+
+            Logger.log(UpdateActionOrder.class.getName(), Level.INFO, "fromPosition :" + fromPosition + ", toPosition :" + toPosition + ", direction :" + direction);
+
+            if (direction.equals("back")) {
+                Integer from = Integer.valueOf(fromPosition);
+                List<QualityNonconformities> ncList = ncService.findNonconformitiesOpenedByResponsability(responsabilities, toPosition, fromPosition);
+                for (QualityNonconformities action : ncList) {
+                    String log = ncService.updateNonconformity(action.getIdqualitynonconformities(), "priority", from.toString());
+                    Logger.log(UpdateActionOrder.class.getName(), Level.INFO, log);
+                    from -= 1;
+                }
+
+            } else {
+                Integer to = Integer.valueOf(toPosition);
+                List<QualityNonconformities> ncList = ncService.findNonconformitiesOpenedByResponsability(responsabilities, fromPosition, toPosition);
+                for (QualityNonconformities action : ncList) {
+                    String log = ncService.updateNonconformity(action.getIdqualitynonconformities(), "priority", to.toString());
+                    Logger.log(UpdateActionOrder.class.getName(), Level.INFO, log);
+                    to -= 1;
+                }
+            }
+
+        } finally {
             out.close();
         }
     }

@@ -41,15 +41,15 @@ public class NonConformityUpdate extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         //response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
-        Logger.log("NonConformityUpdate", Level.INFO, request.getParameter("id")+request.getParameter("value")+request.getParameter("columnName"));
+        Logger.log("NonConformityUpdate", Level.INFO, request.getParameter("id") + request.getParameter("value") + request.getParameter("columnName"));
         int login = Integer.parseInt(request.getParameter("id"));
         //int columnPosition = Integer.parseInt(request.getParameter("columnPosition"));
-        
-        
+
+
         String value = request.getParameter("value");
         String columnName = request.getParameter("columnName");
 
-        Logger.log("NonConformityUpdate", Level.INFO, "id:"+login+";value:"+value+";columnName:"+columnName);
+        Logger.log("NonConformityUpdate", Level.INFO, "id:" + login + ";value:" + value + ";columnName:" + columnName);
 
         ApplicationContext appContext = WebApplicationContextUtils.getWebApplicationContext(this.getServletContext());
         IQualityNonconformitiesService nonconformitiesService = appContext.getBean(IQualityNonconformitiesService.class);

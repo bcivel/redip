@@ -28,7 +28,6 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
  */
 public class NonConformityList extends HttpServlet {
 
- 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doPost(request, response);
@@ -44,89 +43,94 @@ public class NonConformityList extends HttpServlet {
         String sdir = request.getParameter("sSortDir_0");
         String dir = "asc";
         String[] cols = {"Idqualitynonconformities", "ProblemTitle",
-            "ProblemDescription", "Status", "Severity","Deadline", " "};
+            "ProblemDescription", "Status", "Severity", "Deadline", " "};
 
         JSONObject result = new JSONObject();
         JSONArray array = new JSONArray();
         int amount = 10;
         int start = 0;
         int col = 0;
-        
+
         String idqualitynonconformities = "";
         String problemTitle = "";
         String problemDescription = "";
         String status = "";
         String severity = "";
-        
-        
+
+
         idqualitynonconformities = request.getParameter("sSearch_0");
         problemTitle = request.getParameter("sSearch_1");
         problemDescription = request.getParameter("sSearch_2");
         status = request.getParameter("sSearch_3");
         severity = request.getParameter("sSearch_4");
-        
+
         List<String> sArray = new ArrayList<String>();
         if (!idqualitynonconformities.equals("")) {
-        String sIdqualitynonconformities = " idqualitynonconformities like '%" + idqualitynonconformities + "%'";
-        sArray.add(sIdqualitynonconformities);
+            String sIdqualitynonconformities = " idqualitynonconformities like '%" + idqualitynonconformities + "%'";
+            sArray.add(sIdqualitynonconformities);
         }
         if (!problemTitle.equals("")) {
-        String sProblemTitle = " ProblemTitle like '%" + problemTitle + "%'";
-        sArray.add(sProblemTitle);
+            String sProblemTitle = " ProblemTitle like '%" + problemTitle + "%'";
+            sArray.add(sProblemTitle);
         }
         if (!problemDescription.equals("")) {
-        String sProblemDescription = " problemDescription like '%" + problemDescription + "%'";
-        sArray.add(sProblemDescription);
+            String sProblemDescription = " problemDescription like '%" + problemDescription + "%'";
+            sArray.add(sProblemDescription);
         }
         if (!status.equals("")) {
-        String sStatus = " status like '%" + status + "%'";
-        sArray.add(sStatus);
+            String sStatus = " status like '%" + status + "%'";
+            sArray.add(sStatus);
         }
         if (!severity.equals("")) {
-        String sSeverity = " severity like '%" + severity + "%'";
-        sArray.add(sSeverity);
+            String sSeverity = " severity like '%" + severity + "%'";
+            sArray.add(sSeverity);
         }
-        
+
         StringBuilder individualSearch = new StringBuilder();
-        if(sArray.size()==1){
-        individualSearch.append(sArray.get(0));
-        }else if(sArray.size()>1){
-        for(int i=0;i<sArray.size()-1;i++){
-        individualSearch.append(sArray.get(i));
-        individualSearch.append(" and ");
+        if (sArray.size() == 1) {
+            individualSearch.append(sArray.get(0));
+        } else if (sArray.size() > 1) {
+            for (int i = 0; i < sArray.size() - 1; i++) {
+                individualSearch.append(sArray.get(i));
+                individualSearch.append(" and ");
+            }
+            individualSearch.append(sArray.get(sArray.size() - 1));
         }
-        individualSearch.append(sArray.get(sArray.size()-1));
-        }
-        
+
         if (sStart != null) {
-        start = Integer.parseInt(sStart);
-        if (start < 0)
-            start = 0;
+            start = Integer.parseInt(sStart);
+            if (start < 0) {
+                start = 0;
+            }
         }
         if (sAmount != null) {
-        amount = Integer.parseInt(sAmount);
-        if (amount < 10 || amount > 100)
-            amount = 10;
+            amount = Integer.parseInt(sAmount);
+            if (amount < 10 || amount > 100) {
+                amount = 10;
+            }
         }
 
         if (sCol != null) {
-        col = Integer.parseInt(sCol);
-        if (col < 0 || col > 5)
-            col = 0;
+            col = Integer.parseInt(sCol);
+            if (col < 0 || col > 5) {
+                col = 0;
+            }
         }
         if (sdir != null) {
-        if (!sdir.equals("asc"))
-            dir = "desc";
+            if (!sdir.equals("asc")) {
+                dir = "desc";
+            }
         }
         String colName = cols[col];
-        
+
         String searchTerm = "";
-        if (!request.getParameter("sSearch").equals(""))
-        {searchTerm = request.getParameter("sSearch");}
-            
-        
+        if (!request.getParameter("sSearch").equals("")) {
+            searchTerm = request.getParameter("sSearch");
+        }
+
+
         String inds = String.valueOf(individualSearch);
-       
+
         JSONArray data = new JSONArray(); //data that will be shown in the table
 
         ApplicationContext appContext = WebApplicationContextUtils.getWebApplicationContext(this.getServletContext());
@@ -144,17 +148,17 @@ public class NonConformityList extends HttpServlet {
                 row.put(listofnonconformities.getIdqualitynonconformities())
                         .put(listofnonconformities.getPriority())
                         .put(listofnonconformities.getProblemTitle())
-//                        .put(listofnonconformities.getRootCauseCategory())
-//                        .put(listofnonconformities.getRootCauseDescription())
-//                        .put(listofnonconformities.getResponsabilities())
+                        //                        .put(listofnonconformities.getRootCauseCategory())
+                        //                        .put(listofnonconformities.getRootCauseDescription())
+                        //                        .put(listofnonconformities.getResponsabilities())
                         .put(listofnonconformities.getStatus())
                         .put(listofnonconformities.getSeverity())
                         .put(listofnonconformities.getDeadline())
                         .put(listofnonconformities.getComments())
-                        .put("<a href=\"qualitynonconformitydetails.jsp?ncid=" + 
-                        listofnonconformities.getIdqualitynonconformities() +
-                        "\">"+listofnonconformities.getIdqualitynonconformities()+"</a>");
-                        
+                        .put("<a href=\"qualitynonconformitydetails.jsp?ncid="
+                        + listofnonconformities.getIdqualitynonconformities()
+                        + "\">" + listofnonconformities.getIdqualitynonconformities() + "</a>");
+
                 data.put(row);
             }
             jsonResponse.put("aaData", data);

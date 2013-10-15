@@ -48,82 +48,87 @@ public class NonConformityRootCause extends HttpServlet {
         int amount = 10;
         int start = 0;
         int col = 0;
-        
+
         String idqualitynonconformitiesrootcause = "";
         String rootCauseCategory = "";
         String rootCauseDescription = "";
         String status = "";
         String severity = "";
-        
-        
+
+
         idqualitynonconformitiesrootcause = request.getParameter("sSearch_0");
         rootCauseCategory = request.getParameter("sSearch_1");
         rootCauseDescription = request.getParameter("sSearch_2");
         status = request.getParameter("sSearch_3");
         severity = request.getParameter("sSearch_4");
-        
+
         List<String> sArray = new ArrayList<String>();
         if (!idqualitynonconformitiesrootcause.equals("")) {
-        String sidqualitynonconformitiesrootcause = " idqualitynonconformitiesrootcause like '%" + idqualitynonconformitiesrootcause + "%'";
-        sArray.add(sidqualitynonconformitiesrootcause);
+            String sidqualitynonconformitiesrootcause = " idqualitynonconformitiesrootcause like '%" + idqualitynonconformitiesrootcause + "%'";
+            sArray.add(sidqualitynonconformitiesrootcause);
         }
         if (!rootCauseCategory.equals("")) {
-        String srootCauseCategory = " rootCauseCategory like '%" + rootCauseCategory + "%'";
-        sArray.add(srootCauseCategory);
+            String srootCauseCategory = " rootCauseCategory like '%" + rootCauseCategory + "%'";
+            sArray.add(srootCauseCategory);
         }
         if (!rootCauseDescription.equals("")) {
-        String srootCauseDescription = " rootCauseDescription like '%" + rootCauseDescription + "%'";
-        sArray.add(srootCauseDescription);
+            String srootCauseDescription = " rootCauseDescription like '%" + rootCauseDescription + "%'";
+            sArray.add(srootCauseDescription);
         }
         if (!status.equals("")) {
-        String sStatus = " status like '%" + status + "%'";
-        sArray.add(sStatus);
+            String sStatus = " status like '%" + status + "%'";
+            sArray.add(sStatus);
         }
         if (!severity.equals("")) {
-        String sSeverity = " severity like '%" + severity + "%'";
-        sArray.add(sSeverity);
+            String sSeverity = " severity like '%" + severity + "%'";
+            sArray.add(sSeverity);
         }
-        
+
         StringBuilder individualSearch = new StringBuilder();
-        if(sArray.size()==1){
-        individualSearch.append(sArray.get(0));
-        }else if(sArray.size()>1){
-        for(int i=0;i<sArray.size()-1;i++){
-        individualSearch.append(sArray.get(i));
-        individualSearch.append(" and ");
+        if (sArray.size() == 1) {
+            individualSearch.append(sArray.get(0));
+        } else if (sArray.size() > 1) {
+            for (int i = 0; i < sArray.size() - 1; i++) {
+                individualSearch.append(sArray.get(i));
+                individualSearch.append(" and ");
+            }
+            individualSearch.append(sArray.get(sArray.size() - 1));
         }
-        individualSearch.append(sArray.get(sArray.size()-1));
-        }
-        
+
         if (sStart != null) {
-        start = Integer.parseInt(sStart);
-        if (start < 0)
-            start = 0;
+            start = Integer.parseInt(sStart);
+            if (start < 0) {
+                start = 0;
+            }
         }
         if (sAmount != null) {
-        amount = Integer.parseInt(sAmount);
-        if (amount < 10 || amount > 100)
-            amount = 10;
+            amount = Integer.parseInt(sAmount);
+            if (amount < 10 || amount > 100) {
+                amount = 10;
+            }
         }
 
         if (sCol != null) {
-        col = Integer.parseInt(sCol);
-        if (col < 0 || col > 5)
-            col = 0;
+            col = Integer.parseInt(sCol);
+            if (col < 0 || col > 5) {
+                col = 0;
+            }
         }
         if (sdir != null) {
-        if (!sdir.equals("asc"))
-            dir = "desc";
+            if (!sdir.equals("asc")) {
+                dir = "desc";
+            }
         }
         String colName = cols[col];
-        
+
         String searchTerm = "";
-        if (!request.getParameter("sSearch").equals(""))
-        {searchTerm = request.getParameter("sSearch");}
-            
-        
+        if (!request.getParameter("sSearch").equals("")) {
+            searchTerm = request.getParameter("sSearch");
+        }
+
+
         String inds = String.valueOf(individualSearch);
-       
+
         JSONArray data = new JSONArray(); //data that will be shown in the table
 
         ApplicationContext appContext = WebApplicationContextUtils.getWebApplicationContext(this.getServletContext());
@@ -131,7 +136,7 @@ public class NonConformityRootCause extends HttpServlet {
 
         List<QualityNonconformitiesRootCause> nonconformitieslist = qualityNonconformitiesService.findAllNonconformitiesRootCause(start, amount, colName, dir, searchTerm, inds);
         Integer size = nonconformitieslist.size();
-        
+
         try {
             JSONObject jsonResponse = new JSONObject();
 
@@ -141,11 +146,11 @@ public class NonConformityRootCause extends HttpServlet {
                 row.put(listofnonconformities.getIdqualitynonconformitiesrootcause())
                         .put(listofnonconformities.getRootCauseCategory())
                         .put(listofnonconformities.getRootCauseDescription())
-//                        .put(listofnonconformities.getRootCauseCategory())
-//                        .put(listofnonconformities.getRootCauseDescription())
-//                        .put(listofnonconformities.getResponsabilities())
+                        //                        .put(listofnonconformities.getRootCauseCategory())
+                        //                        .put(listofnonconformities.getRootCauseDescription())
+                        //                        .put(listofnonconformities.getResponsabilities())
                         .put(listofnonconformities.getStatus())
-//                        .put(listofnonconformities.getComments())
+                        //                        .put(listofnonconformities.getComments())
                         .put(listofnonconformities.getSeverity())
                         .put("<a href=\"qualitynonconformitydetails.jsp?ncid=" + listofnonconformities.getIdqualitynonconformitiesrootcause() + "\">edit</a>");
                 data.put(row);

@@ -30,18 +30,18 @@ public class ImportFile extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-     
-      String saveFile = "";
-      String contentType = request.getContentType();
-      if ((contentType != null) && (contentType.indexOf("multipart/form-data") >= 0)) {
+
+        String saveFile = "";
+        String contentType = request.getContentType();
+        if ((contentType != null) && (contentType.indexOf("multipart/form-data") >= 0)) {
             DataInputStream in = new DataInputStream(request.getInputStream());
             int formDataLength = request.getContentLength();
             byte dataBytes[] = new byte[formDataLength];
             int byteRead = 0;
             int totalBytesRead = 0;
             while (totalBytesRead < formDataLength) {
-                  byteRead = in.read(dataBytes, totalBytesRead, formDataLength);
-                  totalBytesRead += byteRead;
+                byteRead = in.read(dataBytes, totalBytesRead, formDataLength);
+                totalBytesRead += byteRead;
             }
             String file = new String(dataBytes);
             saveFile = file.substring(file.indexOf("filename=\"") + 10);
@@ -64,7 +64,6 @@ public class ImportFile extends HttpServlet {
             fileOut.flush();
             fileOut.close();
 
+        }
     }
-}
-
 }

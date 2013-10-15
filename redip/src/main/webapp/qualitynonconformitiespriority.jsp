@@ -3,20 +3,20 @@
     Created on : 23 août 2012, 13:14:26
     Author     : bcivel
 --%>
-<%@page import="com.redoute.qualityfollowup.entity.Invariant"%>
-<%@page import="com.redoute.qualityfollowup.service.IInvariantService"%>
+<%@page import="com.redip.entity.Invariant"%>
+<%@page import="com.redip.service.IInvariantService"%>
 <%@page import="java.util.logging.Logger"%>
 <%@page import="java.util.Date"%>
 <%@page import="org.springframework.web.context.support.WebApplicationContextUtils"%>
-<%@page import="com.redoute.qualityfollowup.entity.QualityNonconformities"%>
+<%@page import="com.redip.entity.QualityNonconformities"%>
 <%@page import="org.springframework.context.ApplicationContext"%>
 <%@page import="java.util.List"%>
 <%@page import="java.sql.Statement"%>
-<%@page import="com.redoute.qualityfollowup.service.impl.QualityNonconformitiesServiceImpl"%>
-<%@page import="com.redoute.qualityfollowup.dao.impl.QualityNonconformitiesDAOImpl"%>
+<%@page import="com.redip.service.impl.QualityNonconformitiesServiceImpl"%>
+<%@page import="com.redip.dao.impl.QualityNonconformitiesDAOImpl"%>
 <%@page import="java.sql.Connection"%>
-<%@page import="com.redoute.qualityfollowup.dao.IQualityNonconformitiesDAO"%>
-<%@page import="com.redoute.qualityfollowup.service.IQualityNonconformitiesService"%>
+<%@page import="com.redip.dao.IQualityNonconformitiesDAO"%>
+<%@page import="com.redip.service.IQualityNonconformitiesService"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
