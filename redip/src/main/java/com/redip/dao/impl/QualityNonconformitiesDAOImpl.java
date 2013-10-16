@@ -302,7 +302,8 @@ public class QualityNonconformitiesDAOImpl implements IQualityNonconformitiesDAO
     public String addNonconformity(QualityNonconformities qualitync) {
         String statusmessage = "";
         final String sql = "INSERT INTO qualitynonconformities ( ProblemTitle, "
-                + "ProblemDescription, Severity, reproductibility, linkToDoc, behaviorExpected, status  ) values (?,?,?,?,?,?,?)";
+                + "ProblemDescription, Severity, reproductibility, linkToDoc, behaviorExpected, status, detection"
+                + ",startdate, starttime  ) values (?,?,?,?,?,?,?,?,?,?)";
         ArrayList<String> al = new ArrayList<String>();
         al.add(qualitync.getProblemTitle() == null ? "" : qualitync.getProblemTitle());
         al.add(qualitync.getProblemDescription() == null ? "" : qualitync.getProblemDescription());
@@ -311,6 +312,9 @@ public class QualityNonconformitiesDAOImpl implements IQualityNonconformitiesDAO
         al.add(qualitync.getLinkToDoc() == null ? "" : qualitync.getLinkToDoc());
         al.add(qualitync.getBehaviorExpected()== null ? "" : qualitync.getBehaviorExpected());
         al.add("NEW");
+        al.add(qualitync.getDetection()== null ? "" : qualitync.getDetection());
+        al.add(qualitync.getStartDate()== null ? "" : qualitync.getStartDate());
+        al.add(qualitync.getStartTime()== null ? "" : qualitync.getStartTime());
         try {
             databaseSpring.connect();
             if (databaseSpring.update(sql, al) > 0) {
@@ -531,4 +535,35 @@ public class QualityNonconformitiesDAOImpl implements IQualityNonconformitiesDAO
 
         return nonconformities;    
     }
+
+    @Override
+    public List<String> findDistinctValuesfromParameter(String parameter) {
+        List<String> result = new ArrayList<String>();
+        
+        StringBuilder query = new StringBuilder();
+        query.append("SELECT distinct ");
+        query.append(parameter);
+        query.append(" FROM qualitynonconformities");
+        
+        try {
+            databaseSpring.connect();
+            ResultSet rs = databaseSpring.query(query.toString());
+
+            while (rs.next()) {
+                result.add(rs.getString(1)== null ? "" : rs.getString(1) );
+            }
+
+            rs.close();
+        } catch (SQLException ex) {
+            Logger.log(QualityNonconformitiesDAOImpl.class.getName(), Level.FATAL, "" + ex);
+        } finally {
+            try {
+                databaseSpring.disconnect();
+            } catch (Exception ex) {
+                Logger.log(QualityNonconformitiesDAOImpl.class.getName(), Level.FATAL, "" + ex);
+            }
+        }
+
+
+        return result;  }
 }

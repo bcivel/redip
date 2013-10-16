@@ -23,6 +23,7 @@
         <title>NonConformities</title>
         <link rel="stylesheet" type="text/css" href="style.css">
         <link type="text/css" rel="stylesheet" href="css/jquery-te-1.4.0.css">
+        <link type="text/css" rel="stylesheet" href="javascript/jqplot/jquery.multiselect.css">
         <style media="screen" type="text/css">
             @import "css/demo_page.css";
             @import "css/demo_table.css";
@@ -39,7 +40,7 @@
         <script type="text/javascript" src="javascript/jquery.validate.min.js"></script>
         <script type="text/javascript" src="javascript/jquery.datepicker.addons.js"></script>
         <script type="text/javascript" src="javascript/jquery-te-1.4.0.min.js" charset="utf-8"></script>
-    
+        <script type="text/javascript" src="javascript/jqplot/jquery.multiselect.js" charset="utf-8"></script>
         <script>
 	$(function() {
 		$( 'input' ).filter('.dateClass').datepicker({dateFormat: 'yy-mm-dd'});
@@ -74,6 +75,19 @@ function getValue()
                     "sPaginationType": "full_numbers",
                     "bSearchable": true,
                     "aTargets": [ 0 ],
+                    "iDisplayLength":25,
+                    "fnRowCallback": function( nRow, aData, iDisplayIndex ) {
+						/* Append the grade to the default row class name */
+						if ( aData[3] == "NEW" )
+						{
+							nRow.className = "gradeX odd";
+                                                        $('td:eq(0)', nRow).html( '<b>'+aData[0]+'</b>' );
+                                                        $('td:eq(1)', nRow).html( '<b>'+aData[1]+'</b>' );
+							$('td:eq(2)', nRow).html( '<b>'+aData[2]+'</b>' );
+                                                        $('td:eq(3)', nRow).html( '<b>'+aData[3]+'</b>' );
+                                                        $('td:eq(4)', nRow).html( '<b>'+aData[4]+'</b>' );
+						}
+					},
                     "aoColumns": [
                         {"sName": "Idqualitynonconformities", "sWidth": "5%"},
                         {"sName": "ProblemTitle", "sWidth": "30%"},
@@ -118,7 +132,7 @@ function getValue()
                         {loadtext: 'loading...',
                             type: 'select',
                             onblur: 'submit',
-                            data: "{'OPEN':'OPEN','ANALYSE':'ANALYSE','TO BE VALIDATED':'TO BE VALIDATED','PENDING':'PENDING','CLOSED':'CLOSED'}" ,
+                            data: "{'NEW':'NEW','OPEN':'OPEN','ANALYSE':'ANALYSE','TO BE VALIDATED':'TO BE VALIDATED','PENDING':'PENDING','CLOSED':'CLOSED'}" ,
                             placeholder:''},
                         {loadtext: 'loading...',
                             type: 'select',
@@ -164,28 +178,22 @@ function getValue()
         <input id="testtest" value="<%=uri%>" style="display:none">
         <div class="ncdescriptionfirstpart" style="vertical-align: central">
         <form action="qualitynonconformities.jsp" method="get" name="ExecFilters" id="ExecFilters">
-            <div style="width: 170px;float:left">
-            <p style="float:left">creator</p>
-            <select style="width: 70px;float:left" id="creator" name="creator" onChange="document.ExecFilters.submit()">
-                 <option value="All">-- ALL --</option>
-                 <option value="csm">csm</option>
-                 <option value="alicia">alicia</option>
-            </select>
+            <div style="width: 230px;float:left">
+            <!--<p style="float:left">creator</p>-->
+            <select style="width: 200px;float:left" multiple="multiple"  id="creator" name="creator">
+                 </select>
         </div>
-        <div style="width: 270px;float:left">
-            <p style="float:left">application functionnality</p>
-            <select style="width: 70px;float:left" id="applicationFunctionnality" name="applicationFunctionnality" onChange="document.ExecFilters.submit()">
-                 <option value="All">-- ALL --</option>
-                 <option value="checkout - payment">checkout</option>
-                 <option value="toto">toto</option>
-            </select>
+        <div style="width: 230px;float:left">
+            <!--<p style="float:left">application functionnality</p>-->
+            <select style="width: 200px;float:left" multiple="multiple"  id="applicationFunctionnality" name="applicationFunctionnality">
+                 </select>
         </div>
-            <div style="width: 270px;float:left">
-            <p style="float:left">status</p>
-            <select style="width: 70px;float:left" id="status" name="status" onChange="document.ExecFilters.submit()">
-                <option value ="All">-- ALL --</option>
-            </select>
+            <div style="width: 230px;float:left">
+            <!--<p style="float:left">status</p>-->
+            <select style="width: 200px;float:left" multiple="multiple" id="status" name="status">
+               </select>
         </div>
+            <div><input type="button" value="Filter" onClick="document.ExecFilters.submit()"></div>
         </form>
         </div>
         <br>
@@ -224,7 +232,11 @@ function getValue()
                 <label for="StartTime" style="font-weight:bold">StartTime</label>
                 <input type="text" name="StartTime" id="StartTime" class="timeClass" maxlength="100" style="width:100px"/>
                 
-                <br /><br /><br>
+                <br /><br>
+                <label for="Detection" style="font-weight:bold">Email</label>
+                <input type="text" name="Detection" id="Detection" class="ncdetailstext" maxlength="100" style="width:400px"/>
+                
+                <br /><br><br>
                 <div style="width: 900px; clear:both">
                 <label for="ProblemTitle" style="font-weight:bold">ProblemTitle</label>
                 <input type="text" name="ProblemTitle" class="ncdetailstext" id="ProblemTitle" style="width:700px;"/>
@@ -270,10 +282,47 @@ function getValue()
                         .attr("value", data[i])
                         .text(data[i]))
             }
-            $("#status").val("<%=status[0]%>");
+            $("#status").multiselect({
+   header: "Status",
+   noneSelectedText:"Select Status",
+   selectedText: "# of # status selected"
+});
+      
+    }
+        );
+    </script>
+    <script type="text/javascript">
+        $.get('GetInvariantList?idName=applicationfunctionnality', function(data) {
+            for (var i = 0; i < data.length; i++) {
+                $("#applicationFunctionnality").append($("<option></option>")
+                        .attr("value", data[i])
+                        .text(data[i]))
+            }
+            $("#applicationFunctionnality").multiselect({
+   header: "Functionnality",
+   noneSelectedText:"Select Functionnality",
+   selectedText: "# of # functionnality selected"
+}).blur(function(){
+    document.ExecFilters.submit();
+});
         });
     </script>
-            
+    <script type="text/javascript">
+        $.get('GetDistinctValueFromNonconformities?parameter=detection', function(data) {
+            for (var i = 0; i < data.length; i++) {
+                $("#creator").append($("<option></option>")
+                        .attr("value", data[i])
+                        .text(data[i]))
+            }
+            $("#creator").multiselect({
+   header: "Creator",
+   noneSelectedText:"Select Creator",
+   selectedText: "# of # creator selected"
+});
+      
+    }
+        );
+    </script>
         <%
             
         %>

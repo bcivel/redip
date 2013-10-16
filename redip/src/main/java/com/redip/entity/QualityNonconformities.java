@@ -34,6 +34,16 @@ public class QualityNonconformities {
     private String behaviorExpected;
     private String priority;
     private String startDate;
+    private String startTime;
+
+    public String getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
+    }
+    
 
     public String getStartDate() {
         return startDate;

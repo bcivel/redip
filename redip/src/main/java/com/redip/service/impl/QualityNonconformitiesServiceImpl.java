@@ -61,12 +61,14 @@ public class QualityNonconformitiesServiceImpl implements IQualityNonconformitie
 
     @Override
     public String addNonconformity(String problemTitle, String problemDescription,
-                String severity, String reproductibility, String linkToDoc, String behaviorExpected) {
+                String severity, String reproductibility, String linkToDoc, String behaviorExpected,
+                String detection, String startDate, String startTime) {
         String result = "";
         String date = DateUtil.getTodayFormat("yyyy/MM/dd HH:mm:ss");
                 
         QualityNonconformities nonconformitiestoadd = factoryQNC.create(problemTitle, 
-                problemDescription, severity, reproductibility, linkToDoc, behaviorExpected);
+                problemDescription, severity, reproductibility, linkToDoc, behaviorExpected, detection,
+                startDate, startTime);
         
         result = qualityNonconformitiesDao.addNonconformity(nonconformitiestoadd);
         Integer id = qualityNonconformitiesDao.getMaxId().getIdqualitynonconformities();
@@ -105,4 +107,9 @@ public class QualityNonconformitiesServiceImpl implements IQualityNonconformitie
     public List<QualityNonconformities> findNonconformitiesOpenedByResponsability(String responsability, String fromPosition, String toPosition) {
         return qualityNonconformitiesDao.findNonconformitiesOpenedByResponsability(responsability, fromPosition, toPosition);
     }
+
+    @Override
+    public List<String> findDistinctValueFromParameter(String parameter) {
+        return qualityNonconformitiesDao.findDistinctValuesfromParameter(parameter);
+                }
 }

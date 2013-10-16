@@ -34,6 +34,7 @@ public class NonConformityAdd extends HttpServlet {
         String reproductibility = request.getParameter("Reproductibility");
         String linkToDoc = request.getParameter("LinkToDoc");
         String behaviorExpected = request.getParameter("BehaviorExpected");
+        String detection = request.getParameter("Detection");
         String impactOrCost = "";
 
         ApplicationContext appContext = WebApplicationContextUtils.getWebApplicationContext(this.getServletContext());
@@ -42,7 +43,7 @@ public class NonConformityAdd extends HttpServlet {
         IQualityNonconformitiesImpactService nonconformitiesImpactService = appContext.getBean(IQualityNonconformitiesImpactService.class);
 
         String str = nonconformitiesService.addNonconformity(problemTitle, problemDescription,
-                severity, reproductibility, linkToDoc, behaviorExpected);
+                severity, reproductibility, linkToDoc, behaviorExpected, detection, startDate, startTime);
 
         QualityNonconformities qncCount = nonconformitiesService.getMaxId();
         int id = qncCount.getIdqualitynonconformities();

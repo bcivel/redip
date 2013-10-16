@@ -21,7 +21,8 @@ public interface IFactoryQualityNonconformities {
 
 
     QualityNonconformities create(String problemTitle, String problemDescription,
-                String severity, String reproductibility, String linkToDoc, String behaviorExpected);
+                String severity, String reproductibility, String linkToDoc, String behaviorExpected, 
+                String detection, String startDate, String startTime);
     
     QualityNonconformities create(int idqualitynonconformities, String problemTitle, String problemDescription);
 

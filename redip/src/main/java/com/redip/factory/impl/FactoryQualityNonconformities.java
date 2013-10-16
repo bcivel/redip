@@ -45,7 +45,8 @@ public class FactoryQualityNonconformities implements IFactoryQualityNonconformi
 
     @Override
     public QualityNonconformities create(String problemTitle, String problemDescription, String severity, 
-    String reproductibility, String linkToDoc, String behaviorExpected) {
+    String reproductibility, String linkToDoc, String behaviorExpected, String detection
+            , String startDate, String startTime) {
         QualityNonconformities qnc = new QualityNonconformities();
         qnc.setProblemTitle(problemTitle);
         qnc.setProblemDescription(problemDescription);
@@ -53,6 +54,9 @@ public class FactoryQualityNonconformities implements IFactoryQualityNonconformi
         qnc.setReproductibility(reproductibility);
         qnc.setLinkToDoc(linkToDoc);
         qnc.setBehaviorExpected(behaviorExpected);
+        qnc.setDetection(detection);
+        qnc.setStartDate(startDate);
+        qnc.setStartTime(startTime);
         return qnc;
     }
 

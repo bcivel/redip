@@ -31,4 +31,6 @@ public interface IQualityNonconformitiesDAO {
     
     String updateQualityNonConformities(Integer id, String field, String content);
     
+    List<String> findDistinctValuesfromParameter (String parameter);
+    
    }

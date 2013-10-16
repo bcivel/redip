@@ -28,8 +28,11 @@ public interface IQualityNonconformitiesService {
     QualityNonconformities getOneNonconformities(int id);
     
     String addNonconformity(String problemTitle, String problemDescription,
-                String severity, String reproductibility, String linkToDoc, String behaviorExpected);
+                String severity, String reproductibility, String linkToDoc, 
+                String behaviorExpected, String detection, String startDate, String startTime);
     
     String updateNonconformity(int id, String column, String value);
+    
+    List<String> findDistinctValueFromParameter (String parameter);
     
 }

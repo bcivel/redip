@@ -79,7 +79,7 @@ public class QualityNonconformitiesImpactServiceImpl implements IQualityNonconfo
         String result = qualityNonconformitiesImpactDao.updateNonconformitiesImpact(id, column, value);
         String date = DateUtil.getTodayFormat("yyyy-MM-dd HH:mm:ss");
                 
-        Log creationLog = factoryLog.create(0, null, date, "UPDATE", "qualitynonconformities", String.valueOf(id),
+        Log creationLog = factoryLog.create(0, null, date, "UPDATE", "qualitynonconformitiesimpact", String.valueOf(id),
                 column, value);
         
         logService.insertLog(creationLog);

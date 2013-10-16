@@ -101,6 +101,10 @@
         <servlet-name>NonConformityCalendar</servlet-name>
         <servlet-class>com.redip.servlet.NonConformityCalendar</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>GetDistinctValueFromNonconformities</servlet-name>
+        <servlet-class>com.redip.servlet.GetDistinctValueFromNonconformities</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>UpdateParameter</servlet-name>
         <url-pattern>/UpdateParameter</url-pattern>
@@ -200,6 +204,10 @@
     <servlet-mapping>
         <servlet-name>NonConformityCalendar</servlet-name>
         <url-pattern>/NonConformityCalendar</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetDistinctValueFromNonconformities</servlet-name>
+        <url-pattern>/GetDistinctValueFromNonconformities</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

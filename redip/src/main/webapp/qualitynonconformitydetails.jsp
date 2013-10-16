@@ -203,7 +203,9 @@
                 <select id="QualityFollower" name="QualityFollower" style="width:170px; font-size: medium" 
                        class="ncdetailstext" 
                        onChange="javascript:updateNonconformity(this, 'QualityFollower', '<%=ncid%>')"
-                       value="<%=qnc.getQualityFollower()%>"></select>
+                       value="<%=qnc.getQualityFollower()%>">
+                    <option value="NotDefined">-- To Be Defined --</option>
+                </select>
             </div>
             <div class="field" style="width: 130px; float:left">
                 <form for="ShowInReporting" style="width: 120px" class="ncheader">ShowInReporting</form>
@@ -247,8 +249,8 @@
                             <select id="Application<%=numInc%>" name="Application<%=numInc%>" style="width:250px;" 
                                     class="ncdetailstext" onChange="javascript:updateNonconformityImpact(this, 'Application', '<%=numInc%>')"
                                     ></select></td>
-                        <td class="simpleline" style="width:127px;"><input name="StartDate<%=numInc%>" style="width:127px;" id="StartDate<%=numInc%>" class="dateClass" value="<%=qnciInd.getStartDate()%>" onChange="javascript:updateNonconformityImpact(this, 'StartDate', '<%=numInc%>');"></td>
-                        <td class="simpleline" style="width:127px;"><input name="StartTime<%=numInc%>" style="width:127px;" id="StartTime<%=numInc%>" class="timeClass" class="wob" value="<%=qnciInd.getStartTime()%>" onChange="javascript:updateNonconformityImpact(this, 'StartTime', '<%=numInc%>');"></td>
+                        <td class="simpleline" style="width:127px;"><input name="StartDate<%=numInc%>" style="width:127px;" id="StartDate<%=numInc%>" class="dateClass" value="<%=qnciInd.getStartDate()%>" onChange="javascript:updateNonconformityImpact(this, 'StartDate', '<%=numInc%>'); javascript:updateNonconformity(this, 'StartDate', '<%=ncid%>')"></td>
+                        <td class="simpleline" style="width:127px;"><input name="StartTime<%=numInc%>" style="width:127px;" id="StartTime<%=numInc%>" class="timeClass" class="wob" value="<%=qnciInd.getStartTime()%>" onChange="javascript:updateNonconformityImpact(this, 'StartTime', '<%=numInc%>');" onChange="javascript:updateNonconformity(this, 'StartTime', '<%=ncid%>')"></td>
                         <td class="simpleline" style="width:127px;"><input name="EndDate<%=numInc%>" style="width:127px;" id="EndDate<%=numInc%>" class="dateClass" class="wob" value="<%=qnciInd.getEndDate()%>" onChange="javascript:updateNonconformityImpact(this, 'EndDate', '<%=numInc%>');"></td>
                         <td class="simpleline" style="width:127px;"><input name="EndTime<%=numInc%>" style="width:127px;" id="EndTime<%=numInc%>" class="timeClass" class="wob" value="<%=qnciInd.getEndTime()%>" onChange="javascript:updateNonconformityImpact(this, 'EndTime', '<%=numInc%>');"></td>
                         <td class="simpleline" style="width:127px;"><input name="OrderImpacted<%=numInc%>" style="width:127px" id="OrderImpacted<%=numInc%>" class="wob" value="<%=qnciInd.getOrderImpacted()%>" onChange="javascript:updateNonconformityImpact(this, 'OrderImpacted', '<%=numInc%>');"></td>
