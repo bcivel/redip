@@ -76,6 +76,24 @@ public interface IGraphGenerationService {
      * @return HorizontalBarGraph in a BufferedImage format
      */
     BufferedImage generateHorizontalBarGraph(List<List<String>> data, String title, String xLabel);
+    
+    /**
+     * 
+     * @param data List of data
+     * @param title Title of the Graphic
+     * @param xLabel Label of the abcisse axis
+     * @return HorizontalBarGraph in a BufferedImage format
+     */
+    BufferedImage generateVerticalBarGraph(List<List<String>> data, String title, String xLabel);
+
+    /**
+     * 
+     * @param data List of data
+     * @param title Title of the Graphic
+     * @param xLabel Label of the abcisse axis
+     * @return HorizontalBarGraph in a BufferedImage format
+     */
+    BufferedImage generateStackedVerticalBarGraph(List<List<String>> data, String title, String xLabel);
 
     /**
      * 

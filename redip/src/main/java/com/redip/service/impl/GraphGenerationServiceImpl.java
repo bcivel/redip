@@ -298,6 +298,54 @@ public class GraphGenerationServiceImpl implements IGraphGenerationService {
         }
         return bi;
     }
+    
+    @Override
+    public BufferedImage generateVerticalBarGraph(List<List<String>> data, String title, String xLabel) {
+        BufferedImage bi = null;
+
+        try {
+            DefaultCategoryDataset defaultcategorydataset = new DefaultCategoryDataset();
+
+            for (List<String> listOfData : data) {
+
+                String value = listOfData.get(0) + "D";
+                String serie = listOfData.get(1);
+                String name = listOfData.get(2);
+                defaultcategorydataset.addValue(new Double(value), serie, name);
+                Logger.log(GraphGenerationServiceImpl.class.getName(), Level.FATAL, value + "/" + serie + "/" + name);
+            }
+
+            bi = graphGenerationService.generateVerticalBarChart(defaultcategorydataset, title, data.size());
+
+        } catch (Exception ex) {
+            Logger.log(GraphGenerationServiceImpl.class.getName(), Level.FATAL, ex.toString());
+        }
+        return bi;
+    }
+    
+    @Override
+    public BufferedImage generateStackedVerticalBarGraph(List<List<String>> data, String title, String xLabel) {
+        BufferedImage bi = null;
+
+        try {
+            DefaultCategoryDataset defaultcategorydataset = new DefaultCategoryDataset();
+
+            for (List<String> listOfData : data) {
+
+                String value = listOfData.get(0) + "D";
+                String serie = listOfData.get(1);
+                String name = listOfData.get(2);
+                defaultcategorydataset.addValue(new Double(value), serie, name);
+                Logger.log(GraphGenerationServiceImpl.class.getName(), Level.FATAL, value + "/" + serie + "/" + name);
+            }
+
+            bi = graphGenerationService.generateStackedVerticalBarChart(defaultcategorydataset, title, data.size());
+
+        } catch (Exception ex) {
+            Logger.log(GraphGenerationServiceImpl.class.getName(), Level.FATAL, ex.toString());
+        }
+        return bi;
+    }
 
     @Override
     public BufferedImage generatePieGraph(List<List<String>> data, String title) {

@@ -84,6 +84,7 @@ public class GeneratePicture extends HttpServlet {
             List<GraphScript> gsList = gsService.findGraphScriptByGraphName(graphName);
 
             List<List<String>> resultSetBar = new ArrayList();
+            List<List<String>> resultSetLine = new ArrayList();
 
             for (GraphScript indGraph : gsList) {
                 List<List<String>> rs;
@@ -122,9 +123,12 @@ public class GeneratePicture extends HttpServlet {
 
                 rs = dtb.getDataForGraph(script);
 
-//                if (type.equals("bar")) {
+                if (indGraph.getType().equals("bar")) {
                 resultSetBar.addAll(rs);
-//                }
+                }
+                if (indGraph.getType().equals("line")) {
+                resultSetLine.addAll(rs);
+                }
 
 
             }
@@ -138,8 +142,18 @@ public class GeneratePicture extends HttpServlet {
                 toto = ggs.generateHorizontalBarGraph(
                         resultSetBar, title, xLabel);
             }
+            if (type.equals("verticalbar")) {
+                toto = ggs.generateVerticalBarGraph(
+                        resultSetBar, title, xLabel);
+            }
+            if (type.equals("stackedVerticalbar")) {
+                toto = ggs.generateStackedVerticalBarGraph(resultSetBar, title, xLabel);
+            }
             if (type.equals("gantt")) {
                 toto = ggs.generateGanttGraph(resultSetBar, title, xLabel);
+            }
+            if (type.equals("dual")) {
+                toto = ggs.generateDualAxisGraph(resultSetLine, resultSetBar, null, title, xLabel);
             }
 
             ImageIO.write(toto, "png", os);

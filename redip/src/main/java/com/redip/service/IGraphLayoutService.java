@@ -66,6 +66,24 @@ public interface IGraphLayoutService {
      * @return 
      */
     public BufferedImage generateHorizontalBarChart(CategoryDataset categorydataset, String name, int i);
+    
+    /**
+     * 
+     * @param categorydataset
+     * @param name
+     * @param i
+     * @return 
+     */
+    public BufferedImage generateVerticalBarChart(CategoryDataset categorydataset, String name, int i);
+
+     /**
+     * 
+     * @param categorydataset
+     * @param name
+     * @param i
+     * @return 
+     */
+    public BufferedImage generateStackedVerticalBarChart(CategoryDataset categorydataset, String name, int i);
 
     /**
      * 

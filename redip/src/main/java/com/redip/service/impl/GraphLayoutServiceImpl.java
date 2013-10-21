@@ -303,7 +303,7 @@ public class GraphLayoutServiceImpl implements IGraphLayoutService {
         BufferedImage bi = null;
 
 
-        JFreeChart jfreechart = ChartFactory.createBarChart(name, "Category", "Value", categorydataset, PlotOrientation.HORIZONTAL, false, true, false);
+        JFreeChart jfreechart = ChartFactory.createBarChart(name, "Category", "Value", categorydataset, PlotOrientation.HORIZONTAL, true, true, false);
         CategoryPlot categoryplot = (CategoryPlot) jfreechart.getPlot();
         NumberAxis numberaxis = (NumberAxis) categoryplot.getRangeAxis();
         numberaxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
@@ -311,7 +311,68 @@ public class GraphLayoutServiceImpl implements IGraphLayoutService {
         CategoryItemRenderer categoryitemrenderer = categoryplot.getRenderer();
         categoryitemrenderer.setBaseItemLabelGenerator(new StandardCategoryItemLabelGenerator());
         categoryitemrenderer.setSeriesItemLabelsVisible(0, Boolean.TRUE);
+        
+        categoryitemrenderer.setSeriesItemLabelsVisible(1, Boolean.TRUE);
+        categoryitemrenderer.setSeriesItemLabelsVisible(2, Boolean.TRUE);
         categoryitemrenderer.setSeriesPaint(0, Color.BLUE);
+        CategoryAxis categoryaxis = categoryplot.getDomainAxis();
+        categoryaxis.setCategoryLabelPositions(CategoryLabelPositions.UP_45);
+
+
+        bi = jfreechart.createBufferedImage(500, 270);
+
+        return bi;
+    }
+    
+    @Override
+    public BufferedImage generateVerticalBarChart(CategoryDataset categorydataset, String name, int i) {
+        BufferedImage bi = null;
+
+
+        JFreeChart jfreechart = ChartFactory.createBarChart(name, "Category", "Value", categorydataset, PlotOrientation.VERTICAL, true, true, false);
+        CategoryPlot categoryplot = (CategoryPlot) jfreechart.getPlot();
+        NumberAxis numberaxis = (NumberAxis) categoryplot.getRangeAxis();
+        numberaxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
+        numberaxis.setUpperMargin(0.14999999999999999D);
+        CategoryItemRenderer categoryitemrenderer = categoryplot.getRenderer();
+        categoryitemrenderer.setBaseItemLabelGenerator(new StandardCategoryItemLabelGenerator());
+        categoryitemrenderer.setSeriesItemLabelsVisible(0, Boolean.TRUE);
+        categoryitemrenderer.setSeriesItemLabelsVisible(1, Boolean.TRUE);
+        categoryitemrenderer.setSeriesItemLabelsVisible(2, Boolean.TRUE);
+        categoryitemrenderer.setSeriesItemLabelsVisible(3, Boolean.TRUE);
+        categoryitemrenderer.setSeriesPaint(0, Color.BLUE);
+        categoryitemrenderer.setSeriesPaint(1, Color.RED);
+        categoryitemrenderer.setSeriesPaint(2, Color.GREEN);
+        categoryitemrenderer.setSeriesPaint(3, Color.ORANGE);
+        CategoryAxis categoryaxis = categoryplot.getDomainAxis();
+        categoryaxis.setCategoryLabelPositions(CategoryLabelPositions.UP_45);
+
+
+        bi = jfreechart.createBufferedImage(500, 270);
+
+        return bi;
+    }
+    
+     @Override
+    public BufferedImage generateStackedVerticalBarChart(CategoryDataset categorydataset, String name, int i) {
+        BufferedImage bi = null;
+
+
+        JFreeChart jfreechart = ChartFactory.createStackedBarChart(name, "Category", "Value", categorydataset, PlotOrientation.VERTICAL, true, true, false);
+        CategoryPlot categoryplot = (CategoryPlot) jfreechart.getPlot();
+        NumberAxis numberaxis = (NumberAxis) categoryplot.getRangeAxis();
+        numberaxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
+        numberaxis.setUpperMargin(0.14999999999999999D);
+        CategoryItemRenderer categoryitemrenderer = categoryplot.getRenderer();
+        categoryitemrenderer.setBaseItemLabelGenerator(new StandardCategoryItemLabelGenerator());
+        categoryitemrenderer.setSeriesItemLabelsVisible(0, Boolean.TRUE);
+        categoryitemrenderer.setSeriesItemLabelsVisible(1, Boolean.TRUE);
+        categoryitemrenderer.setSeriesItemLabelsVisible(2, Boolean.TRUE);
+        categoryitemrenderer.setSeriesItemLabelsVisible(3, Boolean.TRUE);
+        categoryitemrenderer.setSeriesPaint(0, Color.BLUE);
+        categoryitemrenderer.setSeriesPaint(1, Color.RED);
+        categoryitemrenderer.setSeriesPaint(2, Color.GREEN);
+        categoryitemrenderer.setSeriesPaint(3, Color.ORANGE);
         CategoryAxis categoryaxis = categoryplot.getDomainAxis();
         categoryaxis.setCategoryLabelPositions(CategoryLabelPositions.UP_45);
 

@@ -102,8 +102,14 @@
 
         
         <table><tr><td>
-                    <table id="arrond"> <tr><td>NC</td></tr>
+                    <table id="arrond">
                         <tr><td><img src="GeneratePicture?graph=nc_opened"></br>
+                            </td>
+                        <td><img src="GeneratePicture?graph=nc_week_opened"></br>
+                            </td></tr>
+                        <tr><td><img src="GeneratePicture?graph=nc_week_closed"></br>
+                            </td>
+                        <td><img src="GeneratePicture?graph=nc_week_team"></br>
                             </td></tr>
                     </table>
 
