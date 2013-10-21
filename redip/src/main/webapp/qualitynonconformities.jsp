@@ -102,7 +102,8 @@ function getValue()
                     sAddHttpMethod: "POST",
                     callback: function(){window.open("qualitynonconformities", "_self");},
                     oAddNewRowButtonOptions: {
-                        label: "Add NonConformity...",
+                        label: "<b>Declare NonConformity...</b>",
+                        background:"#AAAAAA",
                         icons: {primary:'ui-icon-plus'}
                     },
                     sDeleteHttpMethod: "POST",
@@ -123,11 +124,10 @@ function getValue()
                                 width: "1000px"
                             },
                     "aoColumns": [
-                        {   onchange: 'submit',
-                            placeholder:''  },
-                        {onchange: 'submit',
+                        { },
+                        {onblur: 'submit',
                             placeholder:''},
-                        {onchange: 'submit',
+                        {onblur: 'submit',
                             placeholder:''},
                         {loadtext: 'loading...',
                             type: 'select',
@@ -173,6 +173,17 @@ function getValue()
                     uri += "&applicationFunctionnality="+applicationFunctionnality[a];}
                     };
                     
+                    if (request.getParameterValues("deadline") != null && !request.getParameter("deadline").equals("All")){
+                        String[] deadline = request.getParameterValues("deadline");
+                        for (int a = 0; a < deadline.length ; a++){
+                    uri += "&deadline="+deadline[a];}
+                    };
+                    
+                    if (request.getParameterValues("startDate") != null && !request.getParameter("startDate").equals("All")){
+                        String[] startDate = request.getParameterValues("startDate");
+                        for (int a = 0; a < startDate.length ; a++){
+                    uri += "&startDate="+startDate[a];}
+                    };
                     %>
         <br>
         <input id="testtest" value="<%=uri%>" style="display:none">
@@ -188,12 +199,22 @@ function getValue()
             <select style="width: 200px;float:left" multiple="multiple"  id="applicationFunctionnality" name="applicationFunctionnality">
                  </select>
         </div>
-            <div style="width: 230px;float:left">
+        <div style="width: 230px;float:left">
             <!--<p style="float:left">status</p>-->
             <select style="width: 200px;float:left" multiple="multiple" id="status" name="status">
                </select>
         </div>
-            <div><input type="button" value="Filter" onClick="document.ExecFilters.submit()"></div>
+        <div style="width: 230px;float:left">
+            <!--<p style="float:left">status</p>-->
+            <select style="width: 200px;float:left" multiple="multiple" id="deadline" name="deadline">
+               </select>
+        </div>
+        <div style="width: 230px;float:left">
+            <!--<p style="float:left">status</p>-->
+            <select style="width: 200px;float:left" multiple="multiple" id="startDate" name="startDate">
+               </select>
+        </div>
+            <div><input style="float:left" type="button" value="Filter" onClick="document.ExecFilters.submit()"></div>
         </form>
         </div>
         <br>
@@ -242,14 +263,21 @@ function getValue()
                 <input type="text" name="ProblemTitle" class="ncdetailstext" id="ProblemTitle" style="width:700px;"/>
                 </div>
                 <br><br>
-                <div style="width: 900px; clear:both">
+                <div style="width: 520px; float:left">
                 <label for="ProblemDescription" style="font-weight:bold">ProblemDescription</label><br>
-                <textarea name="ProblemDescription" class="ncdetailstext" id="ProblemDescription" style="width:900px;" rows="8">
+                <textarea name="ProblemDescription" class="ncdetailstext" id="ProblemDescription" style="width:500px;" rows="10">
 
                 </textarea>
                 </div>
-                <br /><br />
+                <div style="width: 400px; float:left">
+                <label for="Screenshot" style="font-weight:bold">Screenshot</label><br>
+                <textarea name="Screenshot" class="ncdetailstext" id="Screenshot" style="width:400px;" rows="8">
+
+                </textarea>
+                </div>
+                <br><br><br><br><br>
                 <div style="width: 900px; clear:both">
+                    <br>
                 <label for="Reproductibility" style="font-weight:bold">How to Reproduce (Describe bellow how to reproduce the problem)</label><br>
                 <textarea name="Reproductibility" id="Reproductibility" class="ncdetailstext" style="width:900px;" rows="5"></textarea>
                 </div>
@@ -259,24 +287,24 @@ function getValue()
             </form>
         </div>
         <script type="text/javascript">
-                        $.get('GetInvariantList?idName=application', function(data) {
+                        (document).ready($.get('GetInvariantList?idName=application', function(data) {
                             for (var i = 0; i < data.length; i++) {
                                 $("#Application").append($("<option></option>")
                                         .attr("value", data[i])
                                         .text(data[i]))
-                            }});
+                            }}));
                     </script>
                      <script type="text/javascript">
-                        $.get('GetInvariantList?idName=severity', function(data) {
+                        (document).ready($.get('GetInvariantList?idName=severity', function(data) {
                             for (var i = 0; i < data.length; i++) {
                                 $("#Severity").append($("<option></option>")
                                         .attr("value", data[i])
                                         .text(data[i]))
                             }
-                        });
+                        }));
     </script>
     <script type="text/javascript">
-        $.get('GetInvariantList?idName=status', function(data) {
+        (document).ready($.get('GetInvariantList?idName=status', function(data) {
             for (var i = 0; i < data.length; i++) {
                 $("#status").append($("<option></option>")
                         .attr("value", data[i])
@@ -289,10 +317,10 @@ function getValue()
 });
       
     }
-        );
+        ));
     </script>
     <script type="text/javascript">
-        $.get('GetInvariantList?idName=applicationfunctionnality', function(data) {
+        (document).ready($.get('GetInvariantList?idName=applicationfunctionnality', function(data) {
             for (var i = 0; i < data.length; i++) {
                 $("#applicationFunctionnality").append($("<option></option>")
                         .attr("value", data[i])
@@ -305,10 +333,10 @@ function getValue()
 }).blur(function(){
     document.ExecFilters.submit();
 });
-        });
+        }));
     </script>
     <script type="text/javascript">
-        $.get('GetDistinctValueFromNonconformities?parameter=detection', function(data) {
+        (document).ready($.get('GetDistinctValueFromNonconformities?parameter=detection', function(data) {
             for (var i = 0; i < data.length; i++) {
                 $("#creator").append($("<option></option>")
                         .attr("value", data[i])
@@ -321,7 +349,42 @@ function getValue()
 });
       
     }
-        );
+        ));
+    </script>
+    <script>
+        $("#Screenshot").jqte();
+</script>
+    <script type="text/javascript">
+        (document).ready($.get('GetDistinctValueFromNonconformities?parameter=deadline', function(data) {
+            for (var i = 0; i < data.length; i++) {
+                $("#deadline").append($("<option></option>")
+                        .attr("value", data[i])
+                        .text(data[i]))
+            }
+            $("#deadline").multiselect({
+   header: "Deadline",
+   noneSelectedText:"Select Deadline",
+   selectedText: "# of # deadline selected"
+});
+      
+    }
+        ));
+    </script>
+    <script type="text/javascript">
+        (document).ready($.get('GetDistinctValueFromNonconformities?parameter=startdate', function(data) {
+            for (var i = 0; i < data.length; i++) {
+                $("#startDate").append($("<option></option>")
+                        .attr("value", data[i])
+                        .text(data[i]))
+            }
+            $("#startDate").multiselect({
+   header: "StartDate",
+   noneSelectedText:"Select StartDate",
+   selectedText: "# of # StartDate selected"
+});
+      
+    }
+        ));
     </script>
         <%
             

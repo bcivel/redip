@@ -35,7 +35,16 @@ public class QualityNonconformities {
     private String priority;
     private String startDate;
     private String startTime;
+    private String screenshot;
 
+    public String getScreenshot() {
+        return screenshot;
+    }
+
+    public void setScreenshot(String screenshot) {
+        this.screenshot = screenshot;
+    }
+    
     public String getStartTime() {
         return startTime;
     }

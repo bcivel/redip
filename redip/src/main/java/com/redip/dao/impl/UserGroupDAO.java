@@ -6,6 +6,7 @@ import com.redip.entity.Group;
 import com.redip.entity.User;
 import com.redip.factory.IFactoryGroup;
 import com.redip.log.Logger;
+import java.sql.Connection;
 import org.apache.log4j.Level;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -33,11 +34,14 @@ public class UserGroupDAO implements IUserGroupDAO {
     public boolean addGroupToUser(Group group, User user) {
         boolean bool = false;
         final String query = "INSERT INTO usergroup (Login, GroupName) VALUES (?, ?)";
+
+        Connection connection = this.databaseSpring.connect();
         try {
-            PreparedStatement preStat = this.databaseSpring.connect().prepareStatement(query);
-            preStat.setString(1, user.getLogin());
-            preStat.setString(2, group.getGroup());
+            PreparedStatement preStat = connection.prepareStatement(query);
             try {
+                preStat.setString(1, user.getLogin());
+                preStat.setString(2, group.getGroup());
+
                 int res = preStat.executeUpdate();
                 bool = res > 0;
             } catch (SQLException exception) {
@@ -48,7 +52,13 @@ public class UserGroupDAO implements IUserGroupDAO {
         } catch (SQLException exception) {
             Logger.log(UserDAO.class.getName(), Level.ERROR, exception.toString());
         } finally {
-            this.databaseSpring.disconnect();
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                Logger.log(UserGroupDAO.class.getName(), Level.WARN, e.toString());
+            }
         }
         return bool;
     }
@@ -57,11 +67,14 @@ public class UserGroupDAO implements IUserGroupDAO {
     public boolean removeGroupFromUser(Group group, User user) {
         boolean bool = false;
         final String query = "DELETE FROM usergroup WHERE login = ? AND groupname = ?";
+
+        Connection connection = this.databaseSpring.connect();
         try {
-            PreparedStatement preStat = this.databaseSpring.connect().prepareStatement(query);
-            preStat.setString(1, user.getLogin());
-            preStat.setString(2, group.getGroup());
+            PreparedStatement preStat = connection.prepareStatement(query);
             try {
+                preStat.setString(1, user.getLogin());
+                preStat.setString(2, group.getGroup());
+
                 int res = preStat.executeUpdate();
                 bool = res > 0;
             } catch (SQLException exception) {
@@ -72,7 +85,13 @@ public class UserGroupDAO implements IUserGroupDAO {
         } catch (SQLException exception) {
             Logger.log(UserDAO.class.getName(), Level.ERROR, exception.toString());
         } finally {
-            this.databaseSpring.disconnect();
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                Logger.log(UserGroupDAO.class.getName(), Level.WARN, e.toString());
+            }
         }
         return bool;
     }
@@ -81,10 +100,13 @@ public class UserGroupDAO implements IUserGroupDAO {
     public List<Group> findGroupByKey(String login) {
         List<Group> list = null;
         final String query = "SELECT groupname FROM usergroup WHERE login = ? ORDER BY groupname";
+
+        Connection connection = this.databaseSpring.connect();
         try {
-            PreparedStatement preStat = this.databaseSpring.connect().prepareStatement(query);
-            preStat.setString(1, login);
+            PreparedStatement preStat = connection.prepareStatement(query);
             try {
+                preStat.setString(1, login);
+
                 ResultSet resultSet = preStat.executeQuery();
                 try {
                     list = new ArrayList<Group>();
@@ -105,7 +127,13 @@ public class UserGroupDAO implements IUserGroupDAO {
         } catch (SQLException exception) {
             Logger.log(UserDAO.class.getName(), Level.ERROR, exception.toString());
         } finally {
-            this.databaseSpring.disconnect();
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                Logger.log(UserGroupDAO.class.getName(), Level.WARN, e.toString());
+            }
         }
         return list;
     }

@@ -8,6 +8,8 @@ import com.redip.dao.IQualityNonconformitiesReportingDAO;
 import com.redip.database.DatabaseSpring;
 import com.redip.entity.calculated.NonconformitiesReporting;
 import com.redip.log.Logger;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -48,27 +50,44 @@ public class QualityNonconformitiesReportingDAOImpl implements IQualityNonconfor
                
                NonconformitiesReporting ncPerRespToAdd;
                 
+        Connection connection = this.databaseSpring.connect();
         try {
-            databaseSpring.connect();
-            ResultSet rs = databaseSpring.query(query.toString());
-            
-            while (rs.next()) {
-                ncPerRespToAdd = new NonconformitiesReporting();
-                ncPerRespToAdd.setNumberOfLostOrders( rs.getInt(1) == 0 ? 0 : rs.getInt(1) );
-                ncPerRespToAdd.setResponsabilities( rs.getString(2) == null ? "" : rs.getString(2) );
-                ncPerResp.add(ncPerRespToAdd);
+            PreparedStatement preStat = connection.prepareStatement(query.toString());
+            try {
+                ResultSet resultSet = preStat.executeQuery();
+                try {
+             
+                    while (resultSet.next()) {
+                    ncPerRespToAdd = new NonconformitiesReporting();
+                    ncPerRespToAdd.setNumberOfLostOrders( resultSet.getInt(1) == 0 ? 0 : resultSet.getInt(1) );
+                    ncPerRespToAdd.setResponsabilities( resultSet.getString(2) == null ? "" : resultSet.getString(2) );
+                    ncPerResp.add(ncPerRespToAdd);
             }
                         
-        } catch (SQLException ex) {
-            Logger.log(QualityNonconformitiesReportingDAOImpl.class.getName(),Level.FATAL, ""+ ex);
-        }finally {
-                try {
-                    databaseSpring.disconnect();
-                } catch (Exception ex) {
-            Logger.log(QualityNonconformitiesReportingDAOImpl.class.getName(),Level.FATAL, ""+ ex);
-            }
+        } catch (SQLException exception) {
+                    Logger.log(QualityNonconformitiesDAOImpl.class.getName(), Level.ERROR, exception.toString());
+                } finally {
+                    resultSet.close();
+                }
+         
+            } catch (SQLException exception) {
+                Logger.log(QualityNonconformitiesDAOImpl.class.getName(), Level.ERROR, exception.toString());
+            } finally {
+                preStat.close();
             }
         
+        } catch (SQLException exception) {
+            Logger.log(QualityNonconformitiesDAOImpl.class.getName(), Level.ERROR, exception.toString());
+        } finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                Logger.log(QualityNonconformitiesDAOImpl.class.getName(), Level.WARN, e.toString());
+            }
+        }
+
         
         return ncPerResp;
     }
@@ -92,23 +111,39 @@ public class QualityNonconformitiesReportingDAOImpl implements IQualityNonconfor
                
                query.append("group by idqualitynonconformities");
   
+        Connection connection = this.databaseSpring.connect();
         try {
-            databaseSpring.connect();
-            ResultSet rs = databaseSpring.query(query.toString());
-            
-            rs.first();
-            numberOfNC=rs.getInt(1);
-             } catch (SQLException ex) {
-            Logger.log(QualityNonconformitiesReportingDAOImpl.class.getName(),Level.FATAL, ""+ ex);
-        }finally {
+            PreparedStatement preStat = connection.prepareStatement(query.toString());
+            try {
+                ResultSet resultSet = preStat.executeQuery();
                 try {
-                    databaseSpring.disconnect();
-                } catch (Exception ex) {
-            Logger.log(QualityNonconformitiesReportingDAOImpl.class.getName(),Level.FATAL, ""+ ex);
-            }
+            
+            resultSet.first();
+            numberOfNC=resultSet.getInt(1);
+             } catch (SQLException exception) {
+                    Logger.log(QualityNonconformitiesDAOImpl.class.getName(), Level.ERROR, exception.toString());
+                } finally {
+                    resultSet.close();
+                }
+         
+            } catch (SQLException exception) {
+                Logger.log(QualityNonconformitiesDAOImpl.class.getName(), Level.ERROR, exception.toString());
+            } finally {
+                preStat.close();
             }
         
-        
+        } catch (SQLException exception) {
+            Logger.log(QualityNonconformitiesDAOImpl.class.getName(), Level.ERROR, exception.toString());
+        } finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                Logger.log(QualityNonconformitiesDAOImpl.class.getName(), Level.WARN, e.toString());
+            }
+        }
+
         return numberOfNC;
     }
 
@@ -134,27 +169,44 @@ public class QualityNonconformitiesReportingDAOImpl implements IQualityNonconfor
 
         NonconformitiesReporting ncPerRespToAdd;
                 
+        Connection connection = this.databaseSpring.connect();
         try {
-            databaseSpring.connect();
-            ResultSet rs = databaseSpring.query(query.toString());
+            PreparedStatement preStat = connection.prepareStatement(query.toString());
+            try {
+                ResultSet resultSet = preStat.executeQuery();
+                try {
             
-            while (rs.next()) {
+            while (resultSet.next()) {
                 ncPerRespToAdd = new NonconformitiesReporting();
-                ncPerRespToAdd.setNumberOfNonconformities( rs.getInt(1) == 0 ? 0 : rs.getInt(1) );
-                ncPerRespToAdd.setProblemCategory( rs.getString(2) == null ? "" : rs.getString(2) );
+                ncPerRespToAdd.setNumberOfNonconformities( resultSet.getInt(1) == 0 ? 0 : resultSet.getInt(1) );
+                ncPerRespToAdd.setProblemCategory( resultSet.getString(2) == null ? "" : resultSet.getString(2) );
                 ncPerResp.add(ncPerRespToAdd);
             }
                         
-        } catch (SQLException ex) {
-            Logger.log(QualityNonconformitiesReportingDAOImpl.class.getName(),Level.FATAL, ""+ ex);
-        }finally {
-                try {
-                    databaseSpring.disconnect();
-                } catch (Exception ex) {
-            Logger.log(QualityNonconformitiesReportingDAOImpl.class.getName(),Level.FATAL, ""+ ex);
-            }
+        } catch (SQLException exception) {
+                    Logger.log(QualityNonconformitiesDAOImpl.class.getName(), Level.ERROR, exception.toString());
+                } finally {
+                    resultSet.close();
+                }
+         
+            } catch (SQLException exception) {
+                Logger.log(QualityNonconformitiesDAOImpl.class.getName(), Level.ERROR, exception.toString());
+            } finally {
+                preStat.close();
             }
         
+        } catch (SQLException exception) {
+            Logger.log(QualityNonconformitiesDAOImpl.class.getName(), Level.ERROR, exception.toString());
+        } finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                Logger.log(QualityNonconformitiesDAOImpl.class.getName(), Level.WARN, e.toString());
+            }
+        }
+
         
         return ncPerResp;
     }
@@ -181,28 +233,44 @@ public class QualityNonconformitiesReportingDAOImpl implements IQualityNonconfor
   
         NonconformitiesReporting ncPerRespToAdd;
                 
+        Connection connection = this.databaseSpring.connect();
         try {
-            databaseSpring.connect();
-            ResultSet rs = databaseSpring.query(query.toString());
+            PreparedStatement preStat = connection.prepareStatement(query.toString());
+            try {
+                ResultSet resultSet = preStat.executeQuery();
+                try {
             
-            while (rs.next()) {
+            while (resultSet.next()) {
                 ncPerRespToAdd = new NonconformitiesReporting();
-                ncPerRespToAdd.setNumberOfLostOrders( rs.getInt(1) == 0 ? 0 : rs.getInt(1) );
-                ncPerRespToAdd.setRootCauseCategory( rs.getString(2) == null ? "" : rs.getString(2) );
+                ncPerRespToAdd.setNumberOfLostOrders( resultSet.getInt(1) == 0 ? 0 : resultSet.getInt(1) );
+                ncPerRespToAdd.setRootCauseCategory( resultSet.getString(2) == null ? "" : resultSet.getString(2) );
                 ncPerResp.add(ncPerRespToAdd);
             }
                         
-        } catch (SQLException ex) {
-            Logger.log(QualityNonconformitiesReportingDAOImpl.class.getName(),Level.FATAL, ""+ ex);
-        }finally {
-                try {
-                    databaseSpring.disconnect();
-                } catch (Exception ex) {
-            Logger.log(QualityNonconformitiesReportingDAOImpl.class.getName(),Level.FATAL, ""+ ex);
-            }
+        } catch (SQLException exception) {
+                    Logger.log(QualityNonconformitiesDAOImpl.class.getName(), Level.ERROR, exception.toString());
+                } finally {
+                    resultSet.close();
+                }
+         
+            } catch (SQLException exception) {
+                Logger.log(QualityNonconformitiesDAOImpl.class.getName(), Level.ERROR, exception.toString());
+            } finally {
+                preStat.close();
             }
         
-        
+        } catch (SQLException exception) {
+            Logger.log(QualityNonconformitiesDAOImpl.class.getName(), Level.ERROR, exception.toString());
+        } finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                Logger.log(QualityNonconformitiesDAOImpl.class.getName(), Level.WARN, e.toString());
+            }
+        }
+
         return ncPerResp;
     }
 
@@ -224,25 +292,41 @@ public class QualityNonconformitiesReportingDAOImpl implements IQualityNonconfor
                query.append("' ");
                }
   
+        Connection connection = this.databaseSpring.connect();
         try {
-            databaseSpring.connect();
-            ResultSet rs = databaseSpring.query(query.toString());
+            PreparedStatement preStat = connection.prepareStatement(query.toString());
+            try {
+                ResultSet resultSet = preStat.executeQuery();
+                try {
             
-            if (rs.next()) {
-                orderLost = rs.getInt(1);
+            if (resultSet.next()) {
+                orderLost = resultSet.getInt(1);
                 }
                         
-        } catch (SQLException ex) {
-            Logger.log(QualityNonconformitiesReportingDAOImpl.class.getName(),Level.FATAL, ""+ ex);
-        }finally {
-                try {
-                    databaseSpring.disconnect();
-                } catch (Exception ex) {
-            Logger.log(QualityNonconformitiesReportingDAOImpl.class.getName(),Level.FATAL, ""+ ex);
-            }
+        } catch (SQLException exception) {
+                    Logger.log(QualityNonconformitiesDAOImpl.class.getName(), Level.ERROR, exception.toString());
+                } finally {
+                    resultSet.close();
+                }
+         
+            } catch (SQLException exception) {
+                Logger.log(QualityNonconformitiesDAOImpl.class.getName(), Level.ERROR, exception.toString());
+            } finally {
+                preStat.close();
             }
         
-        
+        } catch (SQLException exception) {
+            Logger.log(QualityNonconformitiesDAOImpl.class.getName(), Level.ERROR, exception.toString());
+        } finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                Logger.log(QualityNonconformitiesDAOImpl.class.getName(), Level.WARN, e.toString());
+            }
+        }
+
         return orderLost;
     }
 
@@ -267,24 +351,40 @@ public class QualityNonconformitiesReportingDAOImpl implements IQualityNonconfor
                }
 
 
+        Connection connection = this.databaseSpring.connect();
         try {
-            databaseSpring.connect();
-            ResultSet rs = databaseSpring.query(query.toString());
-            
-            rs.first();
-            unavail=rs.getString(1);
-                        
-        } catch (SQLException ex) {
-            Logger.log(QualityNonconformitiesReportingDAOImpl.class.getName(),Level.FATAL, ""+ ex);
-        }finally {
+            PreparedStatement preStat = connection.prepareStatement(query.toString());
+            try {
+                ResultSet resultSet = preStat.executeQuery();
                 try {
-                    databaseSpring.disconnect();
-                } catch (Exception ex) {
-            Logger.log(QualityNonconformitiesReportingDAOImpl.class.getName(),Level.FATAL, ""+ ex);
-            }
+            
+            resultSet.first();
+            unavail=resultSet.getString(1);
+                        
+        } catch (SQLException exception) {
+                    Logger.log(QualityNonconformitiesDAOImpl.class.getName(), Level.ERROR, exception.toString());
+                } finally {
+                    resultSet.close();
+                }
+         
+            } catch (SQLException exception) {
+                Logger.log(QualityNonconformitiesDAOImpl.class.getName(), Level.ERROR, exception.toString());
+            } finally {
+                preStat.close();
             }
         
-        
+        } catch (SQLException exception) {
+            Logger.log(QualityNonconformitiesDAOImpl.class.getName(), Level.ERROR, exception.toString());
+        } finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                Logger.log(QualityNonconformitiesDAOImpl.class.getName(), Level.WARN, e.toString());
+            }
+        }
+
         return unavail;
     }
         
@@ -313,33 +413,49 @@ public class QualityNonconformitiesReportingDAOImpl implements IQualityNonconfor
   
         NonconformitiesReporting rcDescListToAdd;
                 
+        Connection connection = this.databaseSpring.connect();
         try {
-            databaseSpring.connect();
-            ResultSet rs = databaseSpring.query(query.toString());
+            PreparedStatement preStat = connection.prepareStatement(query.toString());
+            try {
+                ResultSet resultSet = preStat.executeQuery();
+                try {
             
-            while (rs.next()) {
+            while (resultSet.next()) {
                 rcDescListToAdd = new NonconformitiesReporting();
-                rcDescListToAdd.setStartDate( rs.getString(1) == null ? "" : rs.getString(1) );
-                rcDescListToAdd.setUnavailabilityDuration( rs.getString(2) == null ? "" : rs.getString(2) );
-                rcDescListToAdd.setSeverity( rs.getString(3) == null ? "" : rs.getString(3) );
-                rcDescListToAdd.setRootCauseCategory( rs.getString(4) == null ? "" : rs.getString(4) );
-                rcDescListToAdd.setRootCauseDescritpion( rs.getString(5) == null ? "" : rs.getString(5) );
-                rcDescListToAdd.setNumberOfLostOrders( rs.getInt(6) == 0 ? 0 : rs.getInt(6) );
-                rcDescListToAdd.setId( rs.getInt(7) == 0 ? 0 : rs.getInt(7) );
+                rcDescListToAdd.setStartDate( resultSet.getString(1) == null ? "" : resultSet.getString(1) );
+                rcDescListToAdd.setUnavailabilityDuration( resultSet.getString(2) == null ? "" : resultSet.getString(2) );
+                rcDescListToAdd.setSeverity( resultSet.getString(3) == null ? "" : resultSet.getString(3) );
+                rcDescListToAdd.setRootCauseCategory( resultSet.getString(4) == null ? "" : resultSet.getString(4) );
+                rcDescListToAdd.setRootCauseDescritpion( resultSet.getString(5) == null ? "" : resultSet.getString(5) );
+                rcDescListToAdd.setNumberOfLostOrders( resultSet.getInt(6) == 0 ? 0 : resultSet.getInt(6) );
+                rcDescListToAdd.setId( resultSet.getInt(7) == 0 ? 0 : resultSet.getInt(7) );
                 rcDescList.add(rcDescListToAdd);
             }
                         
-        } catch (SQLException ex) {
-            Logger.log(QualityNonconformitiesReportingDAOImpl.class.getName(),Level.FATAL, ""+ ex);
-        }finally {
-                try {
-                    databaseSpring.disconnect();
-                } catch (Exception ex) {
-            Logger.log(QualityNonconformitiesReportingDAOImpl.class.getName(),Level.FATAL, ""+ ex);
-            }
+        } catch (SQLException exception) {
+                    Logger.log(QualityNonconformitiesDAOImpl.class.getName(), Level.ERROR, exception.toString());
+                } finally {
+                    resultSet.close();
+                }
+         
+            } catch (SQLException exception) {
+                Logger.log(QualityNonconformitiesDAOImpl.class.getName(), Level.ERROR, exception.toString());
+            } finally {
+                preStat.close();
             }
         
-        
+        } catch (SQLException exception) {
+            Logger.log(QualityNonconformitiesDAOImpl.class.getName(), Level.ERROR, exception.toString());
+        } finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                Logger.log(QualityNonconformitiesDAOImpl.class.getName(), Level.WARN, e.toString());
+            }
+        }
+
         return rcDescList;
     }  
  
@@ -366,28 +482,44 @@ public class QualityNonconformitiesReportingDAOImpl implements IQualityNonconfor
  
         NonconformitiesReporting ncPerRespToAdd;
                 
+        Connection connection = this.databaseSpring.connect();
         try {
-            databaseSpring.connect();
-            ResultSet rs = databaseSpring.query(query.toString());
+            PreparedStatement preStat = connection.prepareStatement(query.toString());
+            try {
+                ResultSet resultSet = preStat.executeQuery();
+                try {
             
-            while (rs.next()) {
+            while (resultSet.next()) {
                 ncPerRespToAdd = new NonconformitiesReporting();
-                ncPerRespToAdd.setNumberOfNonconformities( rs.getString(1) == null ? 0 : rs.getInt(1) );
-                ncPerRespToAdd.setStartDate( rs.getString(2) == null ? "" : rs.getString(2) );
+                ncPerRespToAdd.setNumberOfNonconformities( resultSet.getString(1) == null ? 0 : resultSet.getInt(1) );
+                ncPerRespToAdd.setStartDate( resultSet.getString(2) == null ? "" : resultSet.getString(2) );
                 ncPerResp.add(ncPerRespToAdd);
             }
                         
-        } catch (SQLException ex) {
-            Logger.log(QualityNonconformitiesReportingDAOImpl.class.getName(),Level.FATAL, ""+ ex);
-        }finally {
-                try {
-                    databaseSpring.disconnect();
-                } catch (Exception ex) {
-            Logger.log(QualityNonconformitiesReportingDAOImpl.class.getName(),Level.FATAL, ""+ ex);
-            }
+        } catch (SQLException exception) {
+                    Logger.log(QualityNonconformitiesDAOImpl.class.getName(), Level.ERROR, exception.toString());
+                } finally {
+                    resultSet.close();
+                }
+         
+            } catch (SQLException exception) {
+                Logger.log(QualityNonconformitiesDAOImpl.class.getName(), Level.ERROR, exception.toString());
+            } finally {
+                preStat.close();
             }
         
-        
+        } catch (SQLException exception) {
+            Logger.log(QualityNonconformitiesDAOImpl.class.getName(), Level.ERROR, exception.toString());
+        } finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                Logger.log(QualityNonconformitiesDAOImpl.class.getName(), Level.WARN, e.toString());
+            }
+        }
+
         return ncPerResp;
     }
  
@@ -414,28 +546,44 @@ public class QualityNonconformitiesReportingDAOImpl implements IQualityNonconfor
  
         NonconformitiesReporting ncPerRespToAdd;
                 
+        Connection connection = this.databaseSpring.connect();
         try {
-            databaseSpring.connect();
-            ResultSet rs = databaseSpring.query(query.toString());
+            PreparedStatement preStat = connection.prepareStatement(query.toString());
+            try {
+                ResultSet resultSet = preStat.executeQuery();
+                try {
             
-            while (rs.next()) {
+            while (resultSet.next()) {
                 ncPerRespToAdd = new NonconformitiesReporting();
-                ncPerRespToAdd.setNumberOfNonconformities( rs.getString(1) == null ? 0 : rs.getInt(1) );
-                ncPerRespToAdd.setStartDate( rs.getString(2) == null ? "" : rs.getString(2) );
+                ncPerRespToAdd.setNumberOfNonconformities( resultSet.getString(1) == null ? 0 : resultSet.getInt(1) );
+                ncPerRespToAdd.setStartDate( resultSet.getString(2) == null ? "" : resultSet.getString(2) );
                 ncPerResp.add(ncPerRespToAdd);
             }
                         
-        } catch (SQLException ex) {
-            Logger.log(QualityNonconformitiesReportingDAOImpl.class.getName(),Level.FATAL, ""+ ex);
-        }finally {
-                try {
-                    databaseSpring.disconnect();
-                } catch (Exception ex) {
-            Logger.log(QualityNonconformitiesReportingDAOImpl.class.getName(),Level.FATAL, ""+ ex);
-            }
+        } catch (SQLException exception) {
+                    Logger.log(QualityNonconformitiesDAOImpl.class.getName(), Level.ERROR, exception.toString());
+                } finally {
+                    resultSet.close();
+                }
+         
+            } catch (SQLException exception) {
+                Logger.log(QualityNonconformitiesDAOImpl.class.getName(), Level.ERROR, exception.toString());
+            } finally {
+                preStat.close();
             }
         
-        
+        } catch (SQLException exception) {
+            Logger.log(QualityNonconformitiesDAOImpl.class.getName(), Level.ERROR, exception.toString());
+        } finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                Logger.log(QualityNonconformitiesDAOImpl.class.getName(), Level.WARN, e.toString());
+            }
+        }
+
         return ncPerResp;
     }
  
@@ -464,29 +612,45 @@ public class QualityNonconformitiesReportingDAOImpl implements IQualityNonconfor
  
         NonconformitiesReporting ncPerRespToAdd;
                 
+        Connection connection = this.databaseSpring.connect();
         try {
-            databaseSpring.connect();
-            ResultSet rs = databaseSpring.query(query.toString());
+            PreparedStatement preStat = connection.prepareStatement(query.toString());
+            try {
+                ResultSet resultSet = preStat.executeQuery();
+                try {
             
-            while (rs.next()) {
+            while (resultSet.next()) {
                 ncPerRespToAdd = new NonconformitiesReporting();
-                ncPerRespToAdd.setProblemCategory( rs.getString(1) == null ? "" : rs.getString(1) );
-                ncPerRespToAdd.setWeekNumber( rs.getString(2) == null ? 0 : rs.getInt(2) );
-                ncPerRespToAdd.setNumberOfNonconformities( rs.getString(3) == null ? 0 : rs.getInt(3) );
+                ncPerRespToAdd.setProblemCategory( resultSet.getString(1) == null ? "" : resultSet.getString(1) );
+                ncPerRespToAdd.setWeekNumber( resultSet.getString(2) == null ? 0 : resultSet.getInt(2) );
+                ncPerRespToAdd.setNumberOfNonconformities( resultSet.getString(3) == null ? 0 : resultSet.getInt(3) );
                 ncPerResp.add(ncPerRespToAdd);
             }
                         
-        } catch (SQLException ex) {
-            Logger.log(QualityNonconformitiesReportingDAOImpl.class.getName(),Level.FATAL, ""+ ex);
-        }finally {
-                try {
-                    databaseSpring.disconnect();
-                } catch (Exception ex) {
-            Logger.log(QualityNonconformitiesReportingDAOImpl.class.getName(),Level.FATAL, ""+ ex);
-            }
+        } catch (SQLException exception) {
+                    Logger.log(QualityNonconformitiesDAOImpl.class.getName(), Level.ERROR, exception.toString());
+                } finally {
+                    resultSet.close();
+                }
+         
+            } catch (SQLException exception) {
+                Logger.log(QualityNonconformitiesDAOImpl.class.getName(), Level.ERROR, exception.toString());
+            } finally {
+                preStat.close();
             }
         
-        
+        } catch (SQLException exception) {
+            Logger.log(QualityNonconformitiesDAOImpl.class.getName(), Level.ERROR, exception.toString());
+        } finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                Logger.log(QualityNonconformitiesDAOImpl.class.getName(), Level.WARN, e.toString());
+            }
+        }
+
         return ncPerResp;
     }
  
@@ -512,28 +676,44 @@ public class QualityNonconformitiesReportingDAOImpl implements IQualityNonconfor
   
         NonconformitiesReporting ncPerRespToAdd;
                 
+        Connection connection = this.databaseSpring.connect();
         try {
-            databaseSpring.connect();
-            ResultSet rs = databaseSpring.query(query.toString());
+            PreparedStatement preStat = connection.prepareStatement(query.toString());
+            try {
+                ResultSet resultSet = preStat.executeQuery();
+                try {
             
-            while (rs.next()) {
+            while (resultSet.next()) {
                 ncPerRespToAdd = new NonconformitiesReporting();
-                ncPerRespToAdd.setNumberOfNonconformities( rs.getInt(1) == 0 ? 0 : rs.getInt(1) );
-                ncPerRespToAdd.setSeverity( rs.getString(2) == null ? "" : rs.getString(2) );
+                ncPerRespToAdd.setNumberOfNonconformities( resultSet.getInt(1) == 0 ? 0 : resultSet.getInt(1) );
+                ncPerRespToAdd.setSeverity( resultSet.getString(2) == null ? "" : resultSet.getString(2) );
                 ncPerResp.add(ncPerRespToAdd);
             }
                         
-        } catch (SQLException ex) {
-            Logger.log(QualityNonconformitiesReportingDAOImpl.class.getName(),Level.FATAL, ""+ ex);
-        }finally {
-                try {
-                    databaseSpring.disconnect();
-                } catch (Exception ex) {
-            Logger.log(QualityNonconformitiesReportingDAOImpl.class.getName(),Level.FATAL, ""+ ex);
-            }
+        } catch (SQLException exception) {
+                    Logger.log(QualityNonconformitiesDAOImpl.class.getName(), Level.ERROR, exception.toString());
+                } finally {
+                    resultSet.close();
+                }
+         
+            } catch (SQLException exception) {
+                Logger.log(QualityNonconformitiesDAOImpl.class.getName(), Level.ERROR, exception.toString());
+            } finally {
+                preStat.close();
             }
         
-        
+        } catch (SQLException exception) {
+            Logger.log(QualityNonconformitiesDAOImpl.class.getName(), Level.ERROR, exception.toString());
+        } finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                Logger.log(QualityNonconformitiesDAOImpl.class.getName(), Level.WARN, e.toString());
+            }
+        }
+
         return ncPerResp;
     }
 }

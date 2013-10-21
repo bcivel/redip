@@ -132,15 +132,15 @@
 
         </script>
         <script>
-            $(function() {
+            (document).ready($(function() {
                 $('input').filter('.dateClass').datepicker({dateFormat: 'yy-mm-dd'});
 
-            });
+            }));
         </script>
         <script>
-            $(function() {
+            (document).ready($(function() {
                 $('input').filter('.timeClass').timepicker();
-            });
+            }));
         </script>
 
 
@@ -258,24 +258,24 @@
                         <td class="simpleline" style="width:127px;"><input name="TimeConsumed<%=numInc%>" style="width:127px" id="TimeConsumed<%=numInc%>" class="wob" class="ncdetailstext" value="<%=qnciInd.getTimeConsumed()%>" onChange="javascript:updateNonconformityImpact(this, 'TimeConsumed', '<%=numInc%>');"></td>
                     </tr>
                     <script type="text/javascript">
-            $.get('GetInvariantList?idName=country', function(data) {
+            (document).ready($.get('GetInvariantList?idName=country', function(data) {
                 for (var i = 0; i < data.length; i++) {
                     $("#Country<%=numInc%>").append($("<option></option>")
                             .attr("value", data[i])
                             .text(data[i]))
                 }
                 $("#Country<%=numInc%>").val("<%=qnciInd.getCountry()%>");
-            });
+            }));
                     </script>
                     <script type="text/javascript">
-                        $.get('GetInvariantList?idName=application', function(data) {
+                        (document).ready($.get('GetInvariantList?idName=application', function(data) {
                             for (var i = 0; i < data.length; i++) {
                                 $("#Application<%=numInc%>").append($("<option></option>")
                                         .attr("value", data[i])
                                         .text(data[i]))
                             }
                             $("#Application<%=numInc%>").val("<%=qnciInd.getApplication()%>");
-                        });
+                        }));
                     </script>
                     <%}%>
                 </table><table><tr><td class="wob"></td>
@@ -356,8 +356,16 @@
                        onChange="javascript:updateNonconformity(this, 'BehaviorExpected', '<%=ncid%>')"
                        value="<%=qnc.getBehaviorExpected()%>"><%=qnc.getBehaviorExpected()%></textarea>
             </div>
+            
             </div>
-            <div class="field" style="width: 550px; clear:both">
+            <div style="width: 1180px;float:left">
+                <form for="Screenshot" class="ncheader" style="width: 1180px;height:20px">Screenshot :</form>
+                <textarea id="Screenshot" name="Screenshot" style="width:1180px;height:150px; font-size: medium" 
+                       class="ncdetailstext" rows="9"
+                       value="<%=qnc.getScreenshot()%>"><%=qnc.getScreenshot()%></textarea>
+            </div>
+            
+            <div class="field" style="width: 250px; clear:both">
                 <br>
                 <form for="TestToAvoid" class="ncheader" style="width: 550px">Test To Implement</form>
                 <input id="TestToAvoid" name="TestToAvoid" style="width:550px; font-size: medium" 
@@ -564,65 +572,65 @@
     <input id="ncid" name="ncid" value="<%=ncid%>" style="display:none">
 
     <script type="text/javascript">
-                        $.get('GetInvariantList?idName=severity', function(data) {
+                        (document).ready($.get('GetInvariantList?idName=severity', function(data) {
                             for (var i = 0; i < data.length; i++) {
                                 $("#Severity").append($("<option></option>")
                                         .attr("value", data[i])
                                         .text(data[i]))
                             }
                             $("#Severity").val("<%=qnc.getSeverity()%>");
-                        });
+                        }));
     </script>
     <script type="text/javascript">
-        $.get('GetInvariantList?idName=qualityfollower', function(data) {
+        (document).ready($.get('GetInvariantList?idName=qualityfollower', function(data) {
             for (var i = 0; i < data.length; i++) {
                 $("#QualityFollower").append($("<option></option>")
                         .attr("value", data[i])
                         .text(data[i]))
             }
             $("#QualityFollower").val("<%=qnc.getQualityFollower()%>");
-        });
+        }));
     </script>
     <script type="text/javascript">
-        $.get('GetInvariantList?idName=problemcategory', function(data) {
+        (document).ready($.get('GetInvariantList?idName=problemcategory', function(data) {
             for (var i = 0; i < data.length; i++) {
                 $("#ProblemCategory").append($("<option></option>")
                         .attr("value", data[i])
                         .text(data[i]))
             }
             $("#ProblemCategory").val("<%=qnc.getProblemCategory()%>");
-        });
+        }));
     </script>
     <script type="text/javascript">
-        $.get('GetInvariantList?idName=status', function(data) {
+        (document).ready($.get('GetInvariantList?idName=status', function(data) {
             for (var i = 0; i < data.length; i++) {
                 $("#Status").append($("<option></option>")
                         .attr("value", data[i])
                         .text(data[i]))
             }
             $("#Status").val("<%=qnc.getStatus()%>");
-        });
+        }));
     </script>
 
     <script type="text/javascript">
-        $.get('GetInvariantList?idName==rootcausecategory', function(data) {
+        (document).ready($.get('GetInvariantList?idName==rootcausecategory', function(data) {
             for (var i = 0; i < data.length; i++) {
                 $("#RootCauseCategory").append($("<option></option>")
                         .attr("value", data[i])
                         .text(data[i]))
             }
             $("#RootCauseCategory").val("<%=qnc.getRootCauseCategory()%>");
-        });
+        }));
     </script>
     <script type="text/javascript">
-        $.get('GetInvariantList?idName==responsablities', function(data) {
+        (document).ready($.get('GetInvariantList?idName==responsablities', function(data) {
             for (var i = 0; i < data.length; i++) {
                 $("#Responsabilities").append($("<option></option>")
                         .attr("value", data[i])
                         .text(data[i]))
             }
             $("#Responsabilities").val("<%=qnc.getResponsabilities()%>");
-        });
+        }));
     </script>
    
     <br> 
@@ -649,7 +657,7 @@
 
     </script>-->
     <script>
-        $('#Pagination').paginate({
+        (document).ready($('#Pagination').paginate({
             count: <%=maxid%>,
             start: <%=ncid%>,
             display: 6,
@@ -660,7 +668,7 @@
             onChange: function(data) {
                 window.open("qualitynonconformitydetails.jsp?ncid=" + data, "_self");
             }
-        });
+        }));
 
     </script>
     <script>
@@ -682,7 +690,7 @@
         function sendMail(id){
     ;
 //    if (confirm('You are deleting an impact. Do you want to continue ??')) {
-        window.open("SendEmail?id=" + id);
+        window.open("nonconformitiesemail.jsp?id=" + id);
 //    var xhttp = new XMLHttpRequest();
 //    xhttp.open("GET", "NonConformityDeleteImpact?id=" + id+"&idnci=" + idnci , true);
 //    xhttp.send();
@@ -693,6 +701,9 @@
     
 }
     </script>
+    <script>
+        $("#Screenshot").jqte();
+</script>
     
 
     <%

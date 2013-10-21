@@ -609,3 +609,11 @@ border-radius: 4px 4px 4px 4px;
 .classDatatableRed{
     background-color: red;
 }
+
+.vertical{
+    
+    -webkit-transform:rotate(90deg);
+    -moz-transform:rotate(90deg);
+    -o-transform: rotate(90deg);
+
+}

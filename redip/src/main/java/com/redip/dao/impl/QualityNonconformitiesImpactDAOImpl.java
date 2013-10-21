@@ -9,6 +9,8 @@ import com.redip.dao.IQualityNonconformitiesImpactDAO;
 import com.redip.database.DatabaseSpring;
 import com.redip.entity.QualityNonconformitiesImpact;
 import com.redip.log.Logger;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -39,39 +41,57 @@ public class QualityNonconformitiesImpactDAOImpl implements IQualityNonconformit
   
         QualityNonconformitiesImpact nonconformitiesImpacttoadd;
                 
+        Logger.log(QualityNonconformitiesImpactDAOImpl.class.getName(), Level.INFO, "Connecting to jdbc/qualityfollowup from getAllNonconformitiesImpact");
+        Connection connection = this.databaseSpring.connect();
         try {
-            databaseSpring.connect();
-            ResultSet rs = databaseSpring.query(query.toString());
+            PreparedStatement preStat = connection.prepareStatement(query.toString());
+            try {
+                ResultSet resultSet = preStat.executeQuery();
+                try {
             
-            while (rs.next()) {
-                nonconformitiesImpacttoadd = new QualityNonconformitiesImpact();
-                nonconformitiesImpacttoadd.setIdqualitynonconformitiesimpact(rs.getInt(1));
-                nonconformitiesImpacttoadd.setIdqualitynonconformities( rs.getInt(2) );
-                nonconformitiesImpacttoadd.setCountry( rs.getString(3) == null ? "" : rs.getString(3) );
-                nonconformitiesImpacttoadd.setApplication( rs.getString(4)== null ? "" : rs.getString(4) );
-                nonconformitiesImpacttoadd.setStartDate(rs.getString(5)== null ? "" : rs.getString(5) );
-                nonconformitiesImpacttoadd.setStartTime(rs.getString(6)== null ? "" : rs.getString(6)  );
-                nonconformitiesImpacttoadd.setEndDate( rs.getString(7)== null ? "" : rs.getString(7));
-                nonconformitiesImpacttoadd.setEndTime( rs.getString(8)== null ? "" : rs.getString(8) );
-                nonconformitiesImpacttoadd.setImpactOrCost( rs.getString(9) == null ? "" : rs.getString(9));
-                nonconformitiesImpacttoadd.setOrderImpacted(rs.getString(10) == null ? "" : rs.getString(10));
-                nonconformitiesImpacttoadd.setErrorPages(rs.getString(11) == null ? "" : rs.getString(11));
-                nonconformitiesImpacttoadd.setTimeConsumed(rs.getString(12) == null ? "" : rs.getString(12));
-                
-                nonconformitiesImpact.add(nonconformitiesImpacttoadd);
+                    while (resultSet.next()) {
+                    nonconformitiesImpacttoadd = new QualityNonconformitiesImpact();
+                    nonconformitiesImpacttoadd.setIdqualitynonconformitiesimpact(resultSet.getInt(1));
+                    nonconformitiesImpacttoadd.setIdqualitynonconformities( resultSet.getInt(2) );
+                    nonconformitiesImpacttoadd.setCountry( resultSet.getString(3) == null ? "" : resultSet.getString(3) );
+                    nonconformitiesImpacttoadd.setApplication( resultSet.getString(4)== null ? "" : resultSet.getString(4) );
+                    nonconformitiesImpacttoadd.setStartDate(resultSet.getString(5)== null ? "" : resultSet.getString(5) );
+                    nonconformitiesImpacttoadd.setStartTime(resultSet.getString(6)== null ? "" : resultSet.getString(6)  );
+                    nonconformitiesImpacttoadd.setEndDate( resultSet.getString(7)== null ? "" : resultSet.getString(7));
+                    nonconformitiesImpacttoadd.setEndTime( resultSet.getString(8)== null ? "" : resultSet.getString(8) );
+                    nonconformitiesImpacttoadd.setImpactOrCost( resultSet.getString(9) == null ? "" : resultSet.getString(9));
+                    nonconformitiesImpacttoadd.setOrderImpacted(resultSet.getString(10) == null ? "" : resultSet.getString(10));
+                    nonconformitiesImpacttoadd.setErrorPages(resultSet.getString(11) == null ? "" : resultSet.getString(11));
+                    nonconformitiesImpacttoadd.setTimeConsumed(resultSet.getString(12) == null ? "" : resultSet.getString(12));
+
+                    nonconformitiesImpact.add(nonconformitiesImpacttoadd);
             }
                         
-        } catch (SQLException ex) {
-            Logger.log(QualityNonconformitiesImpactDAOImpl.class.getName(),Level.FATAL, ""+ ex);
-        }finally {
-                try {
-                    databaseSpring.disconnect();
-                } catch (Exception ex) {
-            Logger.log(QualityNonconformitiesImpactDAOImpl.class.getName(),Level.FATAL, ""+ ex);
-            }
+        } catch (SQLException exception) {
+                    Logger.log(QualityNonconformitiesDAOImpl.class.getName(), Level.ERROR, exception.toString());
+                } finally {
+                    resultSet.close();
+                }
+         
+            } catch (SQLException exception) {
+                Logger.log(QualityNonconformitiesDAOImpl.class.getName(), Level.ERROR, exception.toString());
+            } finally {
+                preStat.close();
             }
         
-        
+        } catch (SQLException exception) {
+            Logger.log(QualityNonconformitiesDAOImpl.class.getName(), Level.ERROR, exception.toString());
+        } finally {
+            try {
+                if (connection != null) {
+                    Logger.log(QualityNonconformitiesImpactDAOImpl.class.getName(), Level.INFO, "Disconnecting to jdbc/qualityfollowup from getAllNonconformitiesImpact");
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                Logger.log(QualityNonconformitiesDAOImpl.class.getName(), Level.WARN, e.toString());
+            }
+        }
+
         return nonconformitiesImpact;
     }
 
@@ -83,25 +103,43 @@ public class QualityNonconformitiesImpactDAOImpl implements IQualityNonconformit
         StringBuilder query = new StringBuilder();
                query.append("SELECT count(*) FROM qualitynonconformitiesimpact");
                
+        Logger.log(QualityNonconformitiesImpactDAOImpl.class.getName(), Level.INFO, "Connecting to jdbc/qualityfollowup from getNumberOfNonconformitiesImpact");
+        Connection connection = this.databaseSpring.connect();
         try {
-            databaseSpring.connect();
-            ResultSet rs = databaseSpring.query(query.toString());
-            
-            if (rs.first()) {
-                nonconformitiesImpacttoadd.setCount(rs.getInt(1));
-            }
-            
-        } catch (SQLException ex) {
-            Logger.log(QualityNonconformitiesImpactDAOImpl.class.getName(),Level.FATAL, ""+ ex);
-        }finally {
+            PreparedStatement preStat = connection.prepareStatement(query.toString());
+            try {
+                ResultSet resultSet = preStat.executeQuery();
                 try {
-                    databaseSpring.disconnect();
-                } catch (Exception ex) {
-                    Logger.log(QualityNonconformitiesDAOImpl.class.getName(),Level.FATAL, ""+ ex);
+            
+            if (resultSet.first()) {
+                nonconformitiesImpacttoadd.setCount(resultSet.getInt(1));
+            }
+            
+        } catch (SQLException exception) {
+                    Logger.log(QualityNonconformitiesDAOImpl.class.getName(), Level.ERROR, exception.toString());
+                } finally {
+                    resultSet.close();
                 }
+         
+            } catch (SQLException exception) {
+                Logger.log(QualityNonconformitiesDAOImpl.class.getName(), Level.ERROR, exception.toString());
+            } finally {
+                preStat.close();
             }
         
-        
+        } catch (SQLException exception) {
+            Logger.log(QualityNonconformitiesDAOImpl.class.getName(), Level.ERROR, exception.toString());
+        } finally {
+            try {
+                if (connection != null) {
+                    Logger.log(QualityNonconformitiesImpactDAOImpl.class.getName(), Level.INFO, "Disconnecting to jdbc/qualityfollowup from getNumberOfNonconformitiesImpact");
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                Logger.log(QualityNonconformitiesDAOImpl.class.getName(), Level.WARN, e.toString());
+            }
+        }
+
         return nonconformitiesImpacttoadd;
 
 }
@@ -118,36 +156,54 @@ public class QualityNonconformitiesImpactDAOImpl implements IQualityNonconformit
                query.append(id);
                query.append("'");
         
+        Logger.log(QualityNonconformitiesImpactDAOImpl.class.getName(), Level.INFO, "Connecting to jdbc/qualityfollowup from getImpactForNonconformitiesId");
+        Connection connection = this.databaseSpring.connect();
         try {
-            databaseSpring.connect();
-            ResultSet rs = databaseSpring.query(query.toString());
-            while (rs.next()) {
+            PreparedStatement preStat = connection.prepareStatement(query.toString());
+            try {
+                ResultSet resultSet = preStat.executeQuery();
+                try {
+            while (resultSet.next()) {
                 nonconformitiesImpacttoadd = new QualityNonconformitiesImpact();
-                nonconformitiesImpacttoadd.setIdqualitynonconformitiesimpact( rs.getInt(1) );
-                nonconformitiesImpacttoadd.setIdqualitynonconformities( rs.getInt(2) );
-                nonconformitiesImpacttoadd.setCountry( rs.getString(3) == null ? "" : rs.getString(3));
-                nonconformitiesImpacttoadd.setApplication( rs.getString(4) == null ? "" : rs.getString(4));
-                nonconformitiesImpacttoadd.setStartDate( rs.getString(5) == null ? "" : rs.getString(5));
-                nonconformitiesImpacttoadd.setStartTime( rs.getString(6) == null ? "" : rs.getString(6));
-                nonconformitiesImpacttoadd.setEndDate( rs.getString(7) == null ? "" : rs.getString(7));
-                nonconformitiesImpacttoadd.setEndTime( rs.getString(8) == null ? "" : rs.getString(8));
-                nonconformitiesImpacttoadd.setImpactOrCost( rs.getString(9) == null ? "" : rs.getString(9));
-                nonconformitiesImpacttoadd.setOrderImpacted(rs.getString(10) == null ? "" : rs.getString(10));
-                nonconformitiesImpacttoadd.setErrorPages(rs.getString(11) == null ? "" : rs.getString(11));
-                nonconformitiesImpacttoadd.setTimeConsumed(rs.getString(12) == null ? "" : rs.getString(12));
+                nonconformitiesImpacttoadd.setIdqualitynonconformitiesimpact( resultSet.getInt(1) );
+                nonconformitiesImpacttoadd.setIdqualitynonconformities( resultSet.getInt(2) );
+                nonconformitiesImpacttoadd.setCountry( resultSet.getString(3) == null ? "" : resultSet.getString(3));
+                nonconformitiesImpacttoadd.setApplication( resultSet.getString(4) == null ? "" : resultSet.getString(4));
+                nonconformitiesImpacttoadd.setStartDate( resultSet.getString(5) == null ? "" : resultSet.getString(5));
+                nonconformitiesImpacttoadd.setStartTime( resultSet.getString(6) == null ? "" : resultSet.getString(6));
+                nonconformitiesImpacttoadd.setEndDate( resultSet.getString(7) == null ? "" : resultSet.getString(7));
+                nonconformitiesImpacttoadd.setEndTime( resultSet.getString(8) == null ? "" : resultSet.getString(8));
+                nonconformitiesImpacttoadd.setImpactOrCost( resultSet.getString(9) == null ? "" : resultSet.getString(9));
+                nonconformitiesImpacttoadd.setOrderImpacted(resultSet.getString(10) == null ? "" : resultSet.getString(10));
+                nonconformitiesImpacttoadd.setErrorPages(resultSet.getString(11) == null ? "" : resultSet.getString(11));
+                nonconformitiesImpacttoadd.setTimeConsumed(resultSet.getString(12) == null ? "" : resultSet.getString(12));
                 nonconformitiesImpact.add(nonconformitiesImpacttoadd);
             }
-        } catch (SQLException ex) {
-            Logger.log(QualityNonconformitiesImpactDAOImpl.class.getName(),Level.FATAL, ""+ ex);
-        }finally {
-                try {
-                    databaseSpring.disconnect();
-                } catch (Exception ex) {
-                    Logger.log(QualityNonconformitiesImpactDAOImpl.class.getName(),Level.FATAL, ""+ ex);
+        } catch (SQLException exception) {
+                    Logger.log(QualityNonconformitiesDAOImpl.class.getName(), Level.ERROR, exception.toString());
+                } finally {
+                    resultSet.close();
                 }
+         
+            } catch (SQLException exception) {
+                Logger.log(QualityNonconformitiesDAOImpl.class.getName(), Level.ERROR, exception.toString());
+            } finally {
+                preStat.close();
             }
         
-        
+        } catch (SQLException exception) {
+            Logger.log(QualityNonconformitiesDAOImpl.class.getName(), Level.ERROR, exception.toString());
+        } finally {
+            try {
+                if (connection != null) {
+                    Logger.log(QualityNonconformitiesImpactDAOImpl.class.getName(), Level.INFO, "Disconnecting to jdbc/qualityfollowup from getImpactForNonconformitiesId");
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                Logger.log(QualityNonconformitiesDAOImpl.class.getName(), Level.WARN, e.toString());
+            }
+        }
+
         return nonconformitiesImpact;
     }
 
@@ -157,34 +213,52 @@ public class QualityNonconformitiesImpactDAOImpl implements IQualityNonconformit
         final String sql = "INSERT INTO qualitynonconformitiesimpact (  idqualitynonconformities, Application "
                 + ",StartDate,StartTime, EndDate, EndTime, ImpactOrCost, orderImpacted, errorPages, timeConsumed  "
                 + " ) values (?,?,?,?,?,?,?,?,?,?)";
-        ArrayList<String> al = new ArrayList<String>();
-        al.add(String.valueOf(qualitynci.getIdqualitynonconformities()));
-        al.add(qualitynci.getApplication()== null ? "" : qualitynci.getApplication());
-        al.add(qualitynci.getStartDate()== null ? "" : qualitynci.getStartDate());
-        al.add(qualitynci.getStartTime()== null ? "" : qualitynci.getStartTime());
-        al.add(qualitynci.getEndDate()== null ? "" : qualitynci.getEndDate());
-        al.add(qualitynci.getEndTime()== null ? "" : qualitynci.getEndTime());
-        al.add(qualitynci.getImpactOrCost()== null ? "" : qualitynci.getImpactOrCost());
-        al.add(qualitynci.getOrderImpacted()== null ? "" : qualitynci.getOrderImpacted());
-        al.add(qualitynci.getErrorPages()== null ? "" : qualitynci.getErrorPages());
-        al.add(qualitynci.getTimeConsumed()== null ? "" : qualitynci.getTimeConsumed());
-        
-        try{
-        databaseSpring.connect("QualityNonconformitiesImpactDAOImpl", "addNonconformityImpact");
-        if (databaseSpring.update(sql, al) > 0){
-        statusmessage = StatusMessage.SUCCESS_NONCONFORMITYIMPACTCREATED;        }
-        else {
-        statusmessage = StatusMessage.ERROR_NONCONFORMITYIMPACTCREATEDCREATED;
-        }
-        } catch (Exception ex) {
-            Logger.log(QualityNonconformitiesImpactDAOImpl.class.getName(),Level.FATAL, ""+ ex);
-        }finally {
+                
+        Logger.log(QualityNonconformitiesImpactDAOImpl.class.getName(), Level.INFO, "Connecting to jdbc/qualityfollowup from addNonconformityImpact");
+        Connection connection = this.databaseSpring.connect();
+        try {
+            PreparedStatement preStat = connection.prepareStatement(sql.toString());
+            try {
+                preStat.setString(1, String.valueOf(qualitynci.getIdqualitynonconformities()));
+                preStat.setString(2, qualitynci.getApplication()== null ? "" : qualitynci.getApplication());
+                preStat.setString(3, qualitynci.getStartDate()== null ? "" : qualitynci.getStartDate());
+                preStat.setString(4, qualitynci.getStartTime()== null ? "" : qualitynci.getStartTime());
+                preStat.setString(5, qualitynci.getEndDate()== null ? "" : qualitynci.getEndDate());
+                preStat.setString(6, qualitynci.getEndTime()== null ? "" : qualitynci.getEndTime());
+                preStat.setString(7, qualitynci.getImpactOrCost()== null ? "" : qualitynci.getImpactOrCost());
+                preStat.setString(8, qualitynci.getOrderImpacted()== null ? "" : qualitynci.getOrderImpacted());
+                preStat.setString(9, qualitynci.getErrorPages()== null ? "" : qualitynci.getErrorPages());
+                preStat.setString(10, qualitynci.getTimeConsumed()== null ? "" : qualitynci.getTimeConsumed());
+                int resultSet = preStat.executeUpdate();
                 try {
-                    databaseSpring.disconnect("QualityNonconformitiesImpactDAOImpl", "addNonconformityImpact");
-                } catch (Exception ex) {
-                    Logger.log(QualityNonconformitiesImpactDAOImpl.class.getName(),Level.FATAL, ""+ ex);
-                }
+                    if (resultSet > 0){
+                    statusmessage = StatusMessage.SUCCESS_NONCONFORMITYIMPACTCREATED;        }
+                    else {
+                    statusmessage = StatusMessage.ERROR_NONCONFORMITYIMPACTCREATEDCREATED;
+                    }
+                } catch (Exception exception) {
+                    Logger.log(QualityNonconformitiesDAOImpl.class.getName(), Level.ERROR, exception.toString());
+                } 
+         
+            } catch (SQLException exception) {
+                Logger.log(QualityNonconformitiesDAOImpl.class.getName(), Level.ERROR, exception.toString());
+            } finally {
+                preStat.close();
             }
+        
+        } catch (SQLException exception) {
+            Logger.log(QualityNonconformitiesDAOImpl.class.getName(), Level.ERROR, exception.toString());
+        } finally {
+            try {
+                if (connection != null) {
+                    Logger.log(QualityNonconformitiesImpactDAOImpl.class.getName(), Level.INFO, "Disconnecting to jdbc/qualityfollowup from addNonconformityImpact");
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                Logger.log(QualityNonconformitiesDAOImpl.class.getName(), Level.WARN, e.toString());
+            }
+        }
+
         
         return statusmessage;
     }
@@ -195,27 +269,45 @@ public String updateNonconformitiesImpact(Integer idnci, String column, String v
         final String sql = "UPDATE qualitynonconformitiesimpact SET `"
                 + column
                 + "` = ? WHERE Idqualitynonconformitiesimpact LIKE ?";
-        ArrayList<String> al = new ArrayList<String>();
-        al.add(value);
-        al.add(String.valueOf(idnci));
-        
-try{
-        databaseSpring.connect();
-        if (databaseSpring.update(sql, al) > 0){
-        statusmessage = "[Success] IDNCI:"+idnci+" -- Field "+column+" has successfully been updated with value "+value;
-        }
-        else {
-        statusmessage = "[Error] IDNCI:"+idnci+" -- Field "+column+" has not been updated with value "+value;
-        }
-        } catch (Exception ex) {
-            Logger.log(QualityNonconformitiesImpactDAOImpl.class.getName(),Level.FATAL, ""+ ex);
-        }finally {
+                
+        Logger.log(QualityNonconformitiesImpactDAOImpl.class.getName(), Level.INFO, "Connecting to jdbc/qualityfollowup from updateNonconformitiesImpact");
+        Connection connection = this.databaseSpring.connect();
+        try {
+            PreparedStatement preStat = connection.prepareStatement(sql.toString());
+            try {
+                preStat.setString(1, value);
+                preStat.setString(2, String.valueOf(idnci));
+                int resultSet = preStat.executeUpdate();
                 try {
-                    databaseSpring.disconnect();
-                } catch (Exception ex) {
-                    Logger.log(QualityNonconformitiesImpactDAOImpl.class.getName(),Level.FATAL, ""+ ex);
-                }
+                    if (resultSet > 0){
+                    statusmessage = "[Success] IDNCI:"+idnci+" -- Field "+column+" has successfully been updated with value "+value;
+                    }
+                    else {
+                    statusmessage = "[Error] IDNCI:"+idnci+" -- Field "+column+" has not been updated with value "+value;
+                    }
+                } catch (Exception exception) {
+                    Logger.log(QualityNonconformitiesDAOImpl.class.getName(), Level.ERROR, exception.toString());
+                } 
+         
+            } catch (SQLException exception) {
+                Logger.log(QualityNonconformitiesDAOImpl.class.getName(), Level.ERROR, exception.toString());
+            } finally {
+                preStat.close();
             }
+        
+        } catch (SQLException exception) {
+            Logger.log(QualityNonconformitiesDAOImpl.class.getName(), Level.ERROR, exception.toString());
+        } finally {
+            try {
+                if (connection != null) {
+                    Logger.log(QualityNonconformitiesImpactDAOImpl.class.getName(), Level.INFO, "Disconnecting to jdbc/qualityfollowup from updateNonconformitiesImpact");
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                Logger.log(QualityNonconformitiesDAOImpl.class.getName(), Level.WARN, e.toString());
+            }
+        }
+
         return statusmessage;
 }
 
@@ -227,23 +319,42 @@ try{
                 + idnci
                 + "'";
         
-try{
-        databaseSpring.connect();
-        if (databaseSpring.execute(sql) == true){
-        statusmessage = "[Success] IDNCI:"+idnci+" has successfully been deleted";
-        }
-        else {
-        statusmessage = "[Error] IDNCI:"+idnci+" has not been deleted";
-        }
-        } catch (Exception ex) {
-            Logger.log(QualityNonconformitiesImpactDAOImpl.class.getName(),Level.FATAL, ""+ ex);
-        }finally {
+        Logger.log(QualityNonconformitiesImpactDAOImpl.class.getName(), Level.INFO, "Connecting to jdbc/qualityfollowup from deleteNonconformitiesImpact");
+        Connection connection = this.databaseSpring.connect();
+        try {
+            PreparedStatement preStat = connection.prepareStatement(sql.toString());
+            try {
+                int resultSet = preStat.executeUpdate();
                 try {
-                    databaseSpring.disconnect();
-                } catch (Exception ex) {
-                    Logger.log(QualityNonconformitiesImpactDAOImpl.class.getName(),Level.FATAL, ""+ ex);
-                }
+                    if (resultSet > 0){
+                    statusmessage = "[Success] IDNCI:"+idnci+" has successfully been deleted";
+                    }
+                    else {
+                    statusmessage = "[Error] IDNCI:"+idnci+" has not been deleted";
+                    }
+                } catch (Exception exception) {
+                    Logger.log(QualityNonconformitiesDAOImpl.class.getName(), Level.ERROR, exception.toString());
+                } 
+         
+            } catch (SQLException exception) {
+                Logger.log(QualityNonconformitiesDAOImpl.class.getName(), Level.ERROR, exception.toString());
+            } finally {
+                preStat.close();
             }
+        
+        } catch (SQLException exception) {
+            Logger.log(QualityNonconformitiesDAOImpl.class.getName(), Level.ERROR, exception.toString());
+        } finally {
+            try {
+                if (connection != null) {
+                    Logger.log(QualityNonconformitiesImpactDAOImpl.class.getName(), Level.INFO, "Disconnecting to jdbc/qualityfollowup from deleteNonconformitiesImpact");
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                Logger.log(QualityNonconformitiesDAOImpl.class.getName(), Level.WARN, e.toString());
+            }
+        }
+
         return statusmessage; }
 
     @Override
@@ -252,26 +363,44 @@ try{
         StringBuilder query = new StringBuilder();
                query.append("SELECT max(idqualitynonconformitiesimpact) FROM qualitynonconformitiesimpact");
   
+        Logger.log(QualityNonconformitiesImpactDAOImpl.class.getName(), Level.INFO, "Connecting to jdbc/qualityfollowup from getMaxId");
+        Connection connection = this.databaseSpring.connect();
         try {
-            databaseSpring.connect();
-            ResultSet rs = databaseSpring.query(query.toString());
+            PreparedStatement preStat = connection.prepareStatement(query.toString());
+            try {
+                ResultSet resultSet = preStat.executeQuery();
+                try {
             
-            if (rs.next()) {
+            if (resultSet.next()) {
                 nonconformitiesImpact = new QualityNonconformitiesImpact();
-                nonconformitiesImpact.setIdqualitynonconformitiesimpact(rs.getInt(1));
+                nonconformitiesImpact.setIdqualitynonconformitiesimpact(resultSet.getInt(1));
             }
                         
-        } catch (SQLException ex) {
-            Logger.log(QualityNonconformitiesImpactDAOImpl.class.getName(),Level.FATAL, ""+ ex);
-        }finally {
-                try {
-                    databaseSpring.disconnect();
-                } catch (Exception ex) {
-            Logger.log(QualityNonconformitiesImpactDAOImpl.class.getName(),Level.FATAL, ""+ ex);
-            }
+        } catch (SQLException exception) {
+                    Logger.log(QualityNonconformitiesDAOImpl.class.getName(), Level.ERROR, exception.toString());
+                } finally {
+                    resultSet.close();
+                }
+         
+            } catch (SQLException exception) {
+                Logger.log(QualityNonconformitiesDAOImpl.class.getName(), Level.ERROR, exception.toString());
+            } finally {
+                preStat.close();
             }
         
-        
+        } catch (SQLException exception) {
+            Logger.log(QualityNonconformitiesDAOImpl.class.getName(), Level.ERROR, exception.toString());
+        } finally {
+            try {
+                if (connection != null) {
+                    Logger.log(QualityNonconformitiesImpactDAOImpl.class.getName(), Level.INFO, "Connecting to jdbc/qualityfollowup from getMaxId");
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                Logger.log(QualityNonconformitiesDAOImpl.class.getName(), Level.WARN, e.toString());
+            }
+        }
+
         return nonconformitiesImpact;
     }
 

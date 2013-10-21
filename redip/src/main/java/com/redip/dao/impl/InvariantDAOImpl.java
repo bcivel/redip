@@ -3,11 +3,10 @@ package com.redip.dao.impl;
 import com.redip.dao.IInvariantDAO;
 import com.redip.database.DatabaseSpring;
 import com.redip.entity.Invariant;
-import com.redip.config.MessageGeneral;
-import com.redip.config.MessageGeneralEnum;
 import com.redip.exception.QualityException;
 import com.redip.factory.IFactoryInvariant;
 import com.redip.log.Logger;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -49,8 +48,10 @@ public class InvariantDAOImpl implements IInvariantDAO {
         Invariant result = null;
         final String query = "SELECT * FROM invariant i  WHERE i.idname = ? AND i.value = ?";
 
+        Logger.log(LogDAO.class.getName(), Level.INFO, "Connecting to jdbc/qualityfollowup from findInvariantByIdValue");
+        Connection connection = databaseSpring.connect();
         try {
-            PreparedStatement preStat = this.databaseSpring.connect("InvariantDAOImpl","findInvariantByIdValue").prepareStatement(query);
+            PreparedStatement preStat = connection.prepareStatement(query);
             preStat.setString(1, idName);
             preStat.setString(2, value);
             try {
@@ -79,10 +80,14 @@ public class InvariantDAOImpl implements IInvariantDAO {
         } catch (SQLException exception) {
             Logger.log(InvariantDAOImpl.class.getName(), Level.ERROR, exception.toString());
         } finally {
-            this.databaseSpring.disconnect("InvariantDAOImpl","findInvariantByIdValue");
-        }
-        if (throwException) {
-            throw new QualityException(new MessageGeneral(MessageGeneralEnum.NO_DATA_FOUND));
+            try {
+                if (connection != null) {
+                    Logger.log(LogDAO.class.getName(), Level.INFO, "Disconnecting to jdbc/qualityfollowup from findInvariantByIdValue");
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                Logger.log(InvariantDAOImpl.class.getName(), Level.WARN, e.toString());
+            }
         }
         return result;
     }
@@ -93,10 +98,13 @@ public class InvariantDAOImpl implements IInvariantDAO {
         List<Invariant> result = null;
         final String query = "SELECT * FROM invariant i  WHERE i.idname = ? ORDER BY sort";
 
+        Logger.log(LogDAO.class.getName(), Level.INFO, "Connecting to jdbc/qualityfollowup from findListOfInvariantById");
+        Connection connection = this.databaseSpring.connect();
         try {
-            PreparedStatement preStat = this.databaseSpring.connect("InvariantDAOImpl","findListOfInvariantById").prepareStatement(query);
-            preStat.setString(1, idName);
+            PreparedStatement preStat = connection.prepareStatement(query);
+            
             try {
+                preStat.setString(1, idName);
                 ResultSet resultSet = preStat.executeQuery();
                 result = new ArrayList<Invariant>();
                 try {
@@ -124,10 +132,14 @@ public class InvariantDAOImpl implements IInvariantDAO {
         } catch (SQLException exception) {
             Logger.log(InvariantDAOImpl.class.getName(), Level.ERROR, exception.toString());
         } finally {
-            this.databaseSpring.disconnect("InvariantDAOImpl","findListOfInvariantById");
-        }
-        if (throwException) {
-            throw new QualityException(new MessageGeneral(MessageGeneralEnum.NO_DATA_FOUND));
+            try {
+                if (connection != null) {
+                    Logger.log(LogDAO.class.getName(), Level.INFO, "Disconnecting to jdbc/qualityfollowup from findListOfInvariantById");
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                Logger.log(InvariantDAOImpl.class.getName(), Level.WARN, e.toString());
+            }
         }
         return result;
     }
@@ -138,8 +150,10 @@ public class InvariantDAOImpl implements IInvariantDAO {
         List<Invariant> result = null;
         final String query = "SELECT * FROM invariant i ORDER BY sort";
 
+        Logger.log(LogDAO.class.getName(), Level.INFO, "Connecting to jdbc/qualityfollowup from findListOfInvariant");
+        Connection connection = this.databaseSpring.connect();
         try {
-            PreparedStatement preStat = this.databaseSpring.connect("InvariantDAOImpl","findListOfInvariantById").prepareStatement(query);
+            PreparedStatement preStat = connection.prepareStatement(query);
             try {
                 ResultSet resultSet = preStat.executeQuery();
                 result = new ArrayList<Invariant>();
@@ -168,11 +182,16 @@ public class InvariantDAOImpl implements IInvariantDAO {
         } catch (SQLException exception) {
             Logger.log(InvariantDAOImpl.class.getName(), Level.ERROR, exception.toString());
         } finally {
-            this.databaseSpring.disconnect("InvariantDAOImpl","findListOfInvariantById");
+            try {
+                if (connection != null) {
+                    Logger.log(LogDAO.class.getName(), Level.INFO, "Disconnecting to jdbc/qualityfollowup from findListOfInvariant");
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                Logger.log(InvariantDAOImpl.class.getName(), Level.WARN, e.toString());
+            }
         }
-        if (throwException) {
-            throw new QualityException(new MessageGeneral(MessageGeneralEnum.NO_DATA_FOUND));
-        }
+        
         return result;
     }
 
@@ -182,11 +201,13 @@ public class InvariantDAOImpl implements IInvariantDAO {
         List<Invariant> result = null;
         final String query = "SELECT * FROM invariant i  WHERE i.idname = ? AND i.gp1 = ? ORDER BY sort";
 
+        Logger.log(LogDAO.class.getName(), Level.INFO, "Connecting to jdbc/qualityfollowup from findInvariantByIdGp1");
+        Connection connection = this.databaseSpring.connect();
         try {
-            PreparedStatement preStat = this.databaseSpring.connect("InvariantDAOImpl","findInvariantByIdGp1").prepareStatement(query);
-            preStat.setString(1, idName);
-            preStat.setString(2, gp);
+            PreparedStatement preStat = connection.prepareStatement(query);
             try {
+                preStat.setString(1, idName);
+                preStat.setString(2, gp);
                 ResultSet resultSet = preStat.executeQuery();
                 result = new ArrayList<Invariant>();
                 try {
@@ -202,23 +223,30 @@ public class InvariantDAOImpl implements IInvariantDAO {
                         result.add(factoryInvariant.create(idName, value, sort, id, description, gp1, gp2, gp3));
                     }
                 } catch (SQLException exception) {
-                    Logger.log(InvariantDAOImpl.class.getName(), Level.ERROR, exception.toString());
+                    Logger.log(QualityNonconformitiesDAOImpl.class.getName(), Level.ERROR, exception.toString());
                 } finally {
                     resultSet.close();
                 }
+         
             } catch (SQLException exception) {
                 Logger.log(InvariantDAOImpl.class.getName(), Level.ERROR, exception.toString());
             } finally {
                 preStat.close();
             }
+        
         } catch (SQLException exception) {
             Logger.log(InvariantDAOImpl.class.getName(), Level.ERROR, exception.toString());
         } finally {
-            this.databaseSpring.disconnect("InvariantDAOImpl","findInvariantByIdGp1");
+            try {
+                if (connection != null) {
+                    Logger.log(LogDAO.class.getName(), Level.INFO, "Disconnecting to jdbc/qualityfollowup from findInvariantByIdGp1");
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                Logger.log(InvariantDAOImpl.class.getName(), Level.WARN, e.toString());
+            }
         }
-        if (throwException) {
-            throw new QualityException(new MessageGeneral(MessageGeneralEnum.NO_DATA_FOUND));
-        }
+
         return result;
     }
 }

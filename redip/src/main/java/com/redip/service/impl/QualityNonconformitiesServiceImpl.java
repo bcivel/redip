@@ -62,13 +62,13 @@ public class QualityNonconformitiesServiceImpl implements IQualityNonconformitie
     @Override
     public String addNonconformity(String problemTitle, String problemDescription,
                 String severity, String reproductibility, String linkToDoc, String behaviorExpected,
-                String detection, String startDate, String startTime) {
+                String detection, String startDate, String startTime, String screenshot) {
         String result = "";
         String date = DateUtil.getTodayFormat("yyyy/MM/dd HH:mm:ss");
                 
         QualityNonconformities nonconformitiestoadd = factoryQNC.create(problemTitle, 
                 problemDescription, severity, reproductibility, linkToDoc, behaviorExpected, detection,
-                startDate, startTime);
+                startDate, startTime, screenshot);
         
         result = qualityNonconformitiesDao.addNonconformity(nonconformitiestoadd);
         Integer id = qualityNonconformitiesDao.getMaxId().getIdqualitynonconformities();

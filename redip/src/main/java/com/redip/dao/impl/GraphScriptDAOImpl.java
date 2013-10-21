@@ -12,6 +12,7 @@ import com.redip.entity.GraphScript;
 import com.redip.exception.QualityException;
 import com.redip.factory.IFactoryGraphScript;
 import com.redip.log.Logger;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -39,12 +40,15 @@ public class GraphScriptDAOImpl implements IGraphScriptDAO {
         List<GraphScript> result = new ArrayList();
         final String query = "SELECT * FROM graphscript i  WHERE i.title = ?";
 
+        Logger.log(GraphScriptDAOImpl.class.getName(), Level.INFO, "Connecting to jdbc/qualityfollowup from findGraphScriptByTitle");
+        Connection connection = this.databaseSpring.connect();
         try {
-            PreparedStatement preStat = this.databaseSpring.connect().prepareStatement(query);
-            preStat.setString(1, title);
+            PreparedStatement preStat = connection.prepareStatement(query.toString());
             try {
+                preStat.setString(1, title);
                 ResultSet resultSet = preStat.executeQuery();
                 try {
+            
                     while (resultSet.next()) {
                         throwException = false;
                         int id = resultSet.getInt("idgraphscript");
@@ -52,21 +56,31 @@ public class GraphScriptDAOImpl implements IGraphScriptDAO {
                         String script = resultSet.getString("script");
                         result.add(factoryGraphScript.create(id, title, type, script));
                     }
-                } catch (SQLException exception) {
-                    Logger.log(InvariantDAOImpl.class.getName(), Level.ERROR, exception.toString());
+               } catch (SQLException exception) {
+                    Logger.log(QualityNonconformitiesDAOImpl.class.getName(), Level.ERROR, exception.toString());
                 } finally {
                     resultSet.close();
                 }
+         
             } catch (SQLException exception) {
-                Logger.log(InvariantDAOImpl.class.getName(), Level.ERROR, exception.toString());
+                Logger.log(QualityNonconformitiesDAOImpl.class.getName(), Level.ERROR, exception.toString());
             } finally {
                 preStat.close();
             }
+        
         } catch (SQLException exception) {
-            Logger.log(InvariantDAOImpl.class.getName(), Level.ERROR, exception.toString());
+            Logger.log(QualityNonconformitiesDAOImpl.class.getName(), Level.ERROR, exception.toString());
         } finally {
-            this.databaseSpring.disconnect();
+            try {
+                if (connection != null) {
+                    Logger.log(GraphScriptDAOImpl.class.getName(), Level.INFO, "Disconnecting to jdbc/qualityfollowup from findGraphScriptByTitle");
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                Logger.log(QualityNonconformitiesDAOImpl.class.getName(), Level.WARN, e.toString());
+            }
         }
+
         return result;
     }
     

@@ -3,16 +3,13 @@ package com.redip.dao.impl;
 import com.redip.dao.ILogDAO;
 import com.redip.database.DatabaseSpring;
 import com.redip.entity.Log;
-import com.redip.config.MessageGeneral;
-import com.redip.config.MessageGeneralEnum;
 import com.redip.exception.QualityException;
 import com.redip.factory.IFactoryLog;
 import com.redip.log.Logger;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.log4j.Level;
@@ -39,8 +36,11 @@ public class LogDAO implements ILogDAO {
         List<Log> list = null;
         boolean throwExe = true;
         final String query = "SELECT * FROM log order by logid ; ";
+        
+        Logger.log(LogDAO.class.getName(), Level.INFO, "Connecting to jdbc/qualityfollowup from findAllLogEvent");
+        Connection connection = this.databaseSpring.connect();
         try {
-            PreparedStatement preStat = this.databaseSpring.connect().prepareStatement(query);
+            PreparedStatement preStat = connection.prepareStatement(query);
             try {
                 ResultSet resultSet = preStat.executeQuery();
                 try {
@@ -59,22 +59,26 @@ public class LogDAO implements ILogDAO {
                         list.add(myLogEvent);
                     }
                 } catch (SQLException exception) {
-                    Logger.log(UserDAO.class.getName(), Level.ERROR, exception.toString());
+                    Logger.log(LogDAO.class.getName(), Level.ERROR, exception.toString());
                 } finally {
                     resultSet.close();
                 }
             } catch (SQLException exception) {
-                Logger.log(UserDAO.class.getName(), Level.ERROR, exception.toString());
+                Logger.log(LogDAO.class.getName(), Level.ERROR, exception.toString());
             } finally {
                 preStat.close();
             }
         } catch (SQLException exception) {
-            Logger.log(UserDAO.class.getName(), Level.ERROR, exception.toString());
+            Logger.log(LogDAO.class.getName(), Level.ERROR, exception.toString());
         } finally {
-            this.databaseSpring.disconnect();
-        }
-        if (throwExe) {
-            throw new QualityException(new MessageGeneral(MessageGeneralEnum.NO_DATA_FOUND));
+            try {
+                if (connection != null) {
+                    Logger.log(LogDAO.class.getName(), Level.INFO, "Disconnecting to jdbc/qualityfollowup from findAllLogEvent");
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                Logger.log(LogDAO.class.getName(), Level.WARN, e.toString());
+            }
         }
         return list;
     }
@@ -133,10 +137,10 @@ public class LogDAO implements ILogDAO {
         query.append(" , ");
         query.append(amount);
         
-        
-        Logger.log(LogDAO.class.getName(), Level.DEBUG, query.toString());
+        Logger.log(LogDAO.class.getName(), Level.INFO, "Connecting to jdbc/qualityfollowup from findAllLogEvent");
+        Connection connection = this.databaseSpring.connect();
         try {
-            PreparedStatement preStat = this.databaseSpring.connect().prepareStatement(query.toString());
+            PreparedStatement preStat = connection.prepareStatement(query.toString());
             try {
                 ResultSet resultSet = preStat.executeQuery();
                 try {
@@ -155,22 +159,26 @@ public class LogDAO implements ILogDAO {
                         list.add(myLogEvent);
                     }
                 } catch (SQLException exception) {
-                    Logger.log(UserDAO.class.getName(), Level.ERROR, exception.toString());
+                    Logger.log(LogDAO.class.getName(), Level.ERROR, exception.toString());
                 } finally {
                     resultSet.close();
                 }
             } catch (SQLException exception) {
-                Logger.log(UserDAO.class.getName(), Level.ERROR, exception.toString());
+                Logger.log(LogDAO.class.getName(), Level.ERROR, exception.toString());
             } finally {
                 preStat.close();
             }
         } catch (SQLException exception) {
-            Logger.log(UserDAO.class.getName(), Level.ERROR, exception.toString());
+            Logger.log(LogDAO.class.getName(), Level.ERROR, exception.toString());
         } finally {
-            this.databaseSpring.disconnect();
-        }
-        if (throwExe) {
-            throw new QualityException(new MessageGeneral(MessageGeneralEnum.NO_DATA_FOUND));
+            try {
+                if (connection != null) {
+                    Logger.log(LogDAO.class.getName(), Level.INFO, "Disconnecting to jdbc/qualityfollowup from findAllLogEvent");
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                Logger.log(LogDAO.class.getName(), Level.WARN, e.toString());
+            }
         }
         return list;
     }
@@ -179,8 +187,11 @@ public class LogDAO implements ILogDAO {
     public Integer getNumberOfLogEvent() throws QualityException {
         boolean throwExe = true;
         final String query = "SELECT count(*) c FROM log ; ";
+        
+        Logger.log(LogDAO.class.getName(), Level.INFO, "Connecting to jdbc/qualityfollowup from getNumberOfLogEvent");
+        Connection connection = this.databaseSpring.connect();
         try {
-            PreparedStatement preStat = this.databaseSpring.connect().prepareStatement(query);
+            PreparedStatement preStat = connection.prepareStatement(query);
             try {
                 ResultSet resultSet = preStat.executeQuery();
                 try {
@@ -199,12 +210,16 @@ public class LogDAO implements ILogDAO {
                 preStat.close();
             }
         } catch (SQLException exception) {
-            Logger.log(UserDAO.class.getName(), Level.ERROR, exception.toString());
+            Logger.log(LogDAO.class.getName(), Level.ERROR, exception.toString());
         } finally {
-            this.databaseSpring.disconnect();
-        }
-        if (throwExe) {
-            throw new QualityException(new MessageGeneral(MessageGeneralEnum.NO_DATA_FOUND));
+            try {
+                if (connection != null) {
+                    Logger.log(LogDAO.class.getName(), Level.INFO, "Disconnecting to jdbc/qualityfollowup from getNumberOfLogEvent");
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                Logger.log(LogDAO.class.getName(), Level.WARN, e.toString());
+            }
         }
         return 0;
     }
@@ -213,36 +228,48 @@ public class LogDAO implements ILogDAO {
     public boolean insertLogEvent(Log logevent) {
         boolean bool = false;
         final String query = "INSERT INTO log (`time`, `user`, `type`, `table`, `row`, `field`, `value`) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        
+        Logger.log(LogDAO.class.getName(), Level.INFO, "Connecting to jdbc/qualityfollowup from insertLogEvent");
+        Connection connection = this.databaseSpring.connect();
         try {
-            PreparedStatement preStat = this.databaseSpring.connect().prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-            preStat.setString(1, logevent.getTime());
-            preStat.setString(2, logevent.getUser());
-            preStat.setString(3, logevent.getType());
-            preStat.setString(4, logevent.getTable());
-            preStat.setString(5, logevent.getRow());
-            preStat.setString(6, logevent.getField());
-            preStat.setString(7, logevent.getValue());
+            PreparedStatement preStat = connection.prepareStatement(query);
             try {
-                preStat.executeUpdate();
-                ResultSet resultSet = preStat.getGeneratedKeys();
+                preStat.setString(1, logevent.getTime());
+                preStat.setString(2, logevent.getUser());
+                preStat.setString(3, logevent.getType());
+                preStat.setString(4, logevent.getTable());
+                preStat.setString(5, logevent.getRow());
+                preStat.setString(6, logevent.getField());
+                preStat.setString(7, logevent.getValue());
+            
+                //ResultSet resultSet = preStat.executeQuery();
+                
                 try {
-                    if (resultSet.first()) {
+            
+                int res = preStat.executeUpdate();
+                
+                    if (res > 0) {
                         bool = true;
                     }
                 } catch (SQLException exception) {
                     Logger.log(UserDAO.class.getName(), Level.ERROR, exception.toString());
-                } finally {
-                    resultSet.close();
-                }
+                } 
             } catch (SQLException exception) {
                 Logger.log(UserDAO.class.getName(), Level.ERROR, exception.toString());
             } finally {
                 preStat.close();
             }
         } catch (SQLException exception) {
-            Logger.log(UserDAO.class.getName(), Level.ERROR, exception.toString());
+            Logger.log(LogDAO.class.getName(), Level.ERROR, exception.toString());
         } finally {
-            this.databaseSpring.disconnect();
+            try {
+                if (connection != null) {
+                    Logger.log(LogDAO.class.getName(), Level.INFO, "Disconnecting to jdbc/qualityfollowup from insertLogEvent");
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                Logger.log(LogDAO.class.getName(), Level.WARN, e.toString());
+            }
         }
         return bool;
     }

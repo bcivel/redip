@@ -8,6 +8,7 @@ import com.redip.factory.IFactoryUser;
 import com.redip.factory.impl.FactoryUser;
 import com.redip.log.Logger;
 import com.redip.util.ParameterParserUtil;
+import java.sql.Connection;
 import org.apache.log4j.Level;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -39,10 +40,13 @@ public class UserDAO implements IUserDAO {
     public User findUserByKey(String login) {
         User result = null;
         final String query = "SELECT * FROM user u WHERE u.login = ? ";
+
+        Connection connection = this.databaseSpring.connect();
         try {
-            PreparedStatement preStat = this.databaseSpring.connect().prepareStatement(query);
-            preStat.setString(1, login);
+            PreparedStatement preStat = connection.prepareStatement(query);
             try {
+                preStat.setString(1, login);
+
                 ResultSet resultSet = preStat.executeQuery();
                 try {
                     if (resultSet.first()) {
@@ -61,7 +65,13 @@ public class UserDAO implements IUserDAO {
         } catch (SQLException exception) {
             Logger.log(UserDAO.class.getName(), Level.ERROR, exception.toString());
         } finally {
-            this.databaseSpring.disconnect();
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                Logger.log(UserDAO.class.getName(), Level.WARN, e.toString());
+            }
         }
         return result;
     }
@@ -70,8 +80,10 @@ public class UserDAO implements IUserDAO {
     public List<User> findAllUser() {
         List<User> list = null;
         final String query = "SELECT * FROM user ORDER BY userid";
+
+        Connection connection = this.databaseSpring.connect();
         try {
-            PreparedStatement preStat = this.databaseSpring.connect().prepareStatement(query);
+            PreparedStatement preStat = connection.prepareStatement(query);
             try {
                 ResultSet resultSet = preStat.executeQuery();
                 try {
@@ -93,7 +105,13 @@ public class UserDAO implements IUserDAO {
         } catch (SQLException exception) {
             Logger.log(UserDAO.class.getName(), Level.ERROR, exception.toString());
         } finally {
-            this.databaseSpring.disconnect();
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                Logger.log(UserDAO.class.getName(), Level.WARN, e.toString());
+            }
         }
         return list;
     }
@@ -101,15 +119,18 @@ public class UserDAO implements IUserDAO {
     @Override
     public boolean insertUser(User user) {
         boolean bool = false;
-        final String query = "INSERT INTO user (Login, Password, Name, Request, Team) VALUES (?, ?, ?, ?, ?)";
+        final String query = "INSERT INTO user (Login, Password, Name, Request, ,Team) VALUES (?, SHA(?), ?, ?, ?)";
+
+        Connection connection = this.databaseSpring.connect();
         try {
-            PreparedStatement preStat = this.databaseSpring.connect().prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-            preStat.setString(1, user.getLogin());
-            preStat.setString(2, user.getPassword());
-            preStat.setString(3, user.getName());
-            preStat.setString(4, user.getRequest());
-            preStat.setString(8, user.getTeam());
+            PreparedStatement preStat = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             try {
+                preStat.setString(1, user.getLogin());
+                preStat.setString(2, user.getPassword());
+                preStat.setString(3, user.getName());
+                preStat.setString(4, user.getRequest());
+                preStat.setString(5, user.getTeam());
+
                 preStat.executeUpdate();
                 ResultSet resultSet = preStat.getGeneratedKeys();
                 try {
@@ -130,7 +151,13 @@ public class UserDAO implements IUserDAO {
         } catch (SQLException exception) {
             Logger.log(UserDAO.class.getName(), Level.ERROR, exception.toString());
         } finally {
-            this.databaseSpring.disconnect();
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                Logger.log(UserDAO.class.getName(), Level.WARN, e.toString());
+            }
         }
         return bool;
     }
@@ -139,12 +166,14 @@ public class UserDAO implements IUserDAO {
     public boolean deleteUser(User user) {
         boolean bool = false;
         final String query = "DELETE FROM user WHERE userid = ?";
+
+        Connection connection = this.databaseSpring.connect();
         try {
-            PreparedStatement preStat = this.databaseSpring.connect().prepareStatement(query);
-            preStat.setInt(1, user.getUserID());
+            PreparedStatement preStat = connection.prepareStatement(query);
             try {
-                int res = preStat.executeUpdate();
-                bool = res > 0;
+                preStat.setInt(1, user.getUserID());
+
+                bool = preStat.executeUpdate() > 0;
             } catch (SQLException exception) {
                 Logger.log(UserDAO.class.getName(), Level.ERROR, exception.toString());
             } finally {
@@ -153,7 +182,13 @@ public class UserDAO implements IUserDAO {
         } catch (SQLException exception) {
             Logger.log(UserDAO.class.getName(), Level.ERROR, exception.toString());
         } finally {
-            this.databaseSpring.disconnect();
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                Logger.log(UserDAO.class.getName(), Level.WARN, e.toString());
+            }
         }
         return bool;
     }
@@ -161,17 +196,19 @@ public class UserDAO implements IUserDAO {
     @Override
     public boolean updateUser(User user) {
         boolean bool = false;
-        final String query = "UPDATE user SET Login = ?, Name = ?, Request = ?, Team = ?  WHERE userid = ?";
+        final String query = "UPDATE user SET Login = ?, Name = ?, Request = ?, Team = ? WHERE userid = ?";
+
+        Connection connection = this.databaseSpring.connect();
         try {
-            PreparedStatement preStat = this.databaseSpring.connect().prepareStatement(query);
-            preStat.setString(1, user.getLogin());
-            preStat.setString(2, user.getName());
-            preStat.setString(3, user.getRequest());
-            preStat.setString(4, user.getTeam());
-            preStat.setInt(5, user.getUserID());
+            PreparedStatement preStat = connection.prepareStatement(query);
             try {
-                int res = preStat.executeUpdate();
-                bool = res > 0;
+                preStat.setString(1, user.getLogin());
+                preStat.setString(2, user.getName());
+                preStat.setString(3, user.getRequest());
+                preStat.setString(4, user.getTeam());
+                preStat.setInt(5, user.getUserID());
+
+                bool = preStat.executeUpdate() > 0;
             } catch (SQLException exception) {
                 Logger.log(UserDAO.class.getName(), Level.ERROR, exception.toString());
             } finally {
@@ -180,22 +217,48 @@ public class UserDAO implements IUserDAO {
         } catch (SQLException exception) {
             Logger.log(UserDAO.class.getName(), Level.ERROR, exception.toString());
         } finally {
-            this.databaseSpring.disconnect();
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                Logger.log(UserDAO.class.getName(), Level.WARN, e.toString());
+            }
         }
         return bool;
     }
 
     @Override
-    public User updateUserPassword(User user, String password) throws QualityException {
+    public User updateUserPassword(User user, String password) {
+        boolean res = false;
         final String sql = "UPDATE User SET Password = SHA(?) , Request = ? WHERE Login LIKE ?";
-        ArrayList<String> al = new ArrayList<String>();
-        al.add(password);
-        al.add("N");
-        al.add(user.getLogin());
 
-        databaseSpring.connect();
-        boolean res = databaseSpring.update(sql, al) > 0;
-        databaseSpring.disconnect();
+        Connection connection = this.databaseSpring.connect();
+        try {
+            PreparedStatement preStat = connection.prepareStatement(sql);
+            try {
+                preStat.setString(1, password);
+                preStat.setString(2, "N");
+                preStat.setString(3, user.getLogin());
+
+                res = preStat.executeUpdate() > 0;
+            } catch (SQLException exception) {
+                Logger.log(UserDAO.class.getName(), Level.ERROR, exception.toString());
+            } finally {
+                preStat.close();
+            }
+        } catch (SQLException exception) {
+            Logger.log(UserDAO.class.getName(), Level.ERROR, exception.toString());
+        } finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                Logger.log(UserDAO.class.getName(), Level.WARN, e.toString());
+            }
+        }
+
         if (res) {
             return this.findUserByKey(user.getLogin());
         } else {
@@ -207,22 +270,40 @@ public class UserDAO implements IUserDAO {
     @Override
     public boolean verifyPassword(User user, String password) {
         boolean bool = false;
-        final String sql = "SELECT Password, SHA(?) as currentPassword FROM User WHERE Login LIKE ?";
-        ArrayList<String> al = new ArrayList<String>();
-        al.add(password);
-        al.add(user.getLogin());
+        final String sql = "SELECT Password, SHA(?) AS currentPassword FROM User WHERE Login LIKE ?";
 
-        databaseSpring.connect();
-        ResultSet rs = databaseSpring.query(sql, al);
+        Connection connection = this.databaseSpring.connect();
         try {
-            if (rs.first()) {
-                bool = rs.getString("Password").equals(rs.getString("currentPassword"));
+            PreparedStatement preStat = connection.prepareStatement(sql);
+            try {
+                preStat.setString(1, password);
+                preStat.setString(2, user.getLogin());
+                ResultSet rs = preStat.executeQuery();
+                try {
+                    if (rs.first()) {
+                        bool = rs.getString("Password").equals(rs.getString("currentPassword"));
+                    }
+                } catch (SQLException ex) {
+                    Logger.log(UserDAO.class.getName(), Level.FATAL, ex.toString());
+                } finally {
+                    rs.close();
+                }
+            } catch (SQLException exception) {
+                Logger.log(UserDAO.class.getName(), Level.ERROR, exception.toString());
+            } finally {
+                preStat.close();
             }
-            rs.close();
-        } catch (SQLException ex) {
-            Logger.log(UserDAO.class.getName(), Level.FATAL, ex.toString());
+        } catch (SQLException exception) {
+            Logger.log(UserDAO.class.getName(), Level.ERROR, exception.toString());
+        } finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                Logger.log(UserDAO.class.getName(), Level.WARN, e.toString());
+            }
         }
-        databaseSpring.disconnect();
 
         return bool;
     }
@@ -234,12 +315,9 @@ public class UserDAO implements IUserDAO {
         String request = ParameterParserUtil.parseStringParam(rs.getString("request"), "");
         String name = ParameterParserUtil.parseStringParam(rs.getString("name"), "");
         String team = ParameterParserUtil.parseStringParam(rs.getString("team"), "");
-        String reportingFavorite = ParameterParserUtil.parseStringParam(rs.getString("reportingFavorite"), "");
-        String defaultIP = ParameterParserUtil.parseStringParam(rs.getString("defaultIP"), "");
-        String defaultSystem = ParameterParserUtil.parseStringParam(rs.getString("defaultSystem"), "");
 
         //TODO remove when working in test with mockito and autowired
         factoryUser = new FactoryUser();
-        return factoryUser.create(userID, login, password, request, name, team, reportingFavorite, defaultIP, defaultSystem);
+        return factoryUser.create(userID, login, password, request, name, team);
     }
 }

@@ -76,7 +76,7 @@ public class UserAdd extends HttpServlet {
         /**
          * Creating user.
          */
-        User myUser = factory.create(0, login, password, newPassword, name, team, "", "", defaultSystem);
+        User myUser = factory.create(0, login, password, newPassword, name, team);
         try {
             userService.insertUser(myUser);
             userGroupService.updateUserGroups(myUser, groups);

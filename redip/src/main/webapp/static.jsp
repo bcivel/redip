@@ -28,13 +28,19 @@ Document   : menu
     
 <div id="menu" >
     <table>
-        <td id="wob" rowspan="2" style="font-weight: bold; font-size:large; text-align: center">
+        <tr>
+        <td id="wob" rowspan="1" style="font-weight: bold; font-size:large; width:100px"  valign="Bottom">
         <!--<img src="pictures/index.png" style="width:170px; height:70px" valign="Top" alt="Index"/>-->
-        La Redoute : DSI Quality Follow Up</td>
+        <!--La Redoute : DSI Quality Follow Up</td>-->
+        <a style="font-size:30px ;color:black; float:left; text-decoration:none" href="./index.jsp" valign="Bottom">Red</a>
+        <a style="font-size:30px ;color:red;float:left;-webkit-transform:rotate(-90deg);
+    -moz-transform:rotate(-90deg);
+    -o-transform: rotate(-90deg);" class="vertical" href="./index.jsp" >IP</a>
+        </td>
 <!--        <td id="wob" style="font-weight: bold; font-size:large; text-align: center" >Quality Application
         </td>-->
-        </tr>
-        <tr>
+<!--        </tr>
+        <tr>-->
         <td id="wob" valign="Bottom">
      <div id="navcontainer">
      <ul id="navlist">

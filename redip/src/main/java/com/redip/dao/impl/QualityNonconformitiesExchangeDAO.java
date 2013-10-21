@@ -10,6 +10,8 @@ import com.redip.database.DatabaseSpring;
 import com.redip.entity.QualityNonconformitiesExchange;
 import com.redip.factory.IFactoryQualityNonconformitiesExchange;
 import com.redip.log.Logger;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -44,26 +46,45 @@ public class QualityNonconformitiesExchangeDAO implements IQualityNonconformitie
         ArrayList<String> al = new ArrayList<String>();
         al.add(String.valueOf(ncid));
         
+        Logger.log(QualityNonconformitiesExchangeDAO.class.getName(), Level.INFO, "Connecting to jdbc/qualityfollowup from findQualityNonconformitiesActionByID");
+        Connection connection = this.databaseSpring.connect();
         try {
-            databaseSpring.connect();
-            ResultSet rs = databaseSpring.query(query.toString(), al);
+            PreparedStatement preStat = connection.prepareStatement(query.toString());
+            try {
+                ResultSet resultSet = preStat.executeQuery();
+                try {
 
-            while (rs.next()) {
-                Integer idqualitynonconformitiesexchange = rs.getString("idqualitynonconformitiesexchange") == null ? 0 : rs.getInt("idqualitynonconformitiesexchange");
-                String date = rs.getString("date") == null ? "" : rs.getString("date");
-                String exchangetitle = rs.getString("exchangetitle") == null ? "" : rs.getString("exchangetitle");
-                String exchangecontent = rs.getString("exchangecontent") == null ? "" : rs.getString("exchangecontent");
-                String user = rs.getString("user") == null ? "" : rs.getString("user");
+            while (resultSet.next()) {
+                Integer idqualitynonconformitiesexchange = resultSet.getString("idqualitynonconformitiesexchange") == null ? 0 : resultSet.getInt("idqualitynonconformitiesexchange");
+                String date = resultSet.getString("date") == null ? "" : resultSet.getString("date");
+                String exchangetitle = resultSet.getString("exchangetitle") == null ? "" : resultSet.getString("exchangetitle");
+                String exchangecontent = resultSet.getString("exchangecontent") == null ? "" : resultSet.getString("exchangecontent");
+                String user = resultSet.getString("user") == null ? "" : resultSet.getString("user");
                 result.add(factoryNonconformitiesExchange.create(idqualitynonconformitiesexchange, ncid, date, user, exchangetitle, exchangecontent));
             }
 
-        } catch (SQLException ex) {
-            Logger.log(QualityNonconformitiesExchangeDAO.class.getName(), Level.FATAL, "" + ex);
+        } catch (SQLException exception) {
+                    Logger.log(QualityNonconformitiesDAOImpl.class.getName(), Level.ERROR, exception.toString());
+                } finally {
+                    resultSet.close();
+                }
+         
+            } catch (SQLException exception) {
+                Logger.log(QualityNonconformitiesDAOImpl.class.getName(), Level.ERROR, exception.toString());
+            } finally {
+                preStat.close();
+            }
+        
+        } catch (SQLException exception) {
+            Logger.log(QualityNonconformitiesDAOImpl.class.getName(), Level.ERROR, exception.toString());
         } finally {
             try {
-                databaseSpring.disconnect();
-            } catch (Exception ex) {
-                Logger.log(QualityNonconformitiesExchangeDAO.class.getName(), Level.FATAL, "" + ex);
+                if (connection != null) {
+                    Logger.log(QualityNonconformitiesExchangeDAO.class.getName(), Level.INFO, "Disconnecting to jdbc/qualityfollowup from findQualityNonconformitiesActionByID");
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                Logger.log(QualityNonconformitiesDAOImpl.class.getName(), Level.WARN, e.toString());
             }
         }
 
@@ -80,30 +101,47 @@ public class QualityNonconformitiesExchangeDAO implements IQualityNonconformitie
         sql.append(" `date`, `exchangecontent`, `exchangetitle`, `user`) ");
         sql.append(" values (?,?,?,?,?)");
         
-        ArrayList<String> al = new ArrayList<String>();
-        al.add(qnc.getIdQualityNonconformities() == null ? "" : String.valueOf(qnc.getIdQualityNonconformities()));
-        al.add(qnc.getDate() == null ? "" : qnc.getDate());
-        al.add(qnc.getExchangeContent() == null ? "" : qnc.getExchangeContent());
-        al.add(qnc.getExchangeTitle() == null ? "" : qnc.getExchangeTitle());
-        al.add(qnc.getUser() == null ? "" : qnc.getUser());
         
-        
+        Logger.log(QualityNonconformitiesExchangeDAO.class.getName(), Level.INFO, "Connecting to jdbc/qualityfollowup from addNonconformityExchange");
+        Connection connection = this.databaseSpring.connect();
         try {
-            databaseSpring.connect();
-            if (databaseSpring.update(sql.toString(), al) > 0) {
-                statusmessage = StatusMessage.SUCCESS_NONCONFORMITYCREATED;
-            } else {
-                statusmessage = StatusMessage.ERROR_NONCONFORMITYCREATEDCREATED;
+            PreparedStatement preStat = connection.prepareStatement(sql.toString());
+            try {
+                preStat.setString(1, qnc.getIdQualityNonconformities() == null ? "" : String.valueOf(qnc.getIdQualityNonconformities()));
+                preStat.setString(2, qnc.getDate() == null ? "" : qnc.getDate());
+                preStat.setString(3, qnc.getExchangeContent() == null ? "" : qnc.getExchangeContent());
+                preStat.setString(4, qnc.getExchangeTitle() == null ? "" : qnc.getExchangeTitle());
+                preStat.setString(5, qnc.getUser() == null ? "" : qnc.getUser());
+                int resultSet = preStat.executeUpdate();
+                try {
+                    if (resultSet > 0) {
+                        statusmessage = StatusMessage.SUCCESS_NONCONFORMITYCREATED;
+                    } else {
+                        statusmessage = StatusMessage.ERROR_NONCONFORMITYCREATEDCREATED;
+                    }
+                } catch (Exception exception) {
+                    Logger.log(QualityNonconformitiesDAOImpl.class.getName(), Level.ERROR, exception.toString());
+                } 
+         
+            } catch (SQLException exception) {
+                Logger.log(QualityNonconformitiesDAOImpl.class.getName(), Level.ERROR, exception.toString());
+            } finally {
+                preStat.close();
             }
-        } catch (Exception ex) {
-            Logger.log(QualityNonconformitiesExchangeDAO.class.getName(), Level.FATAL, "" + ex);
+        
+        } catch (SQLException exception) {
+            Logger.log(QualityNonconformitiesDAOImpl.class.getName(), Level.ERROR, exception.toString());
         } finally {
             try {
-                databaseSpring.disconnect();
-            } catch (Exception ex) {
-                Logger.log(QualityNonconformitiesExchangeDAO.class.getName(), Level.FATAL, "" + ex);
+                if (connection != null) {
+                    Logger.log(QualityNonconformitiesExchangeDAO.class.getName(), Level.INFO, "Connecting to jdbc/qualityfollowup from addNonconformityExchange");
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                Logger.log(QualityNonconformitiesDAOImpl.class.getName(), Level.WARN, e.toString());
             }
         }
+
 
         return statusmessage;
     }
@@ -112,27 +150,46 @@ public class QualityNonconformitiesExchangeDAO implements IQualityNonconformitie
     public String updateQualityNonConformitiesExchange(Integer idnca, String column, String value) {
         String statusmessage = "";
         final String sql = "UPDATE qualitynonconformitiesexchange SET ? = ? WHERE Idqualitynonconformitiesexchange LIKE ?";
-        ArrayList<String> al = new ArrayList<String>();
-        al.add(column);
-        al.add(value);
-        al.add(String.valueOf(idnca));
+        
 
+        Logger.log(QualityNonconformitiesExchangeDAO.class.getName(), Level.INFO, "Connecting to jdbc/qualityfollowup from updateQualityNonConformitiesExchange");
+        Connection connection = this.databaseSpring.connect();
         try {
-            databaseSpring.connect();
-            if (databaseSpring.update(sql, al) > 0) {
-                statusmessage = "[Success] IDNC:"+idnca+" -- Field "+column+" has successfully been updated with value "+value;
-            } else {
-                statusmessage = "[Error] IDNC:"+idnca+" -- Field "+column+" has not been updated with value "+value;
+            PreparedStatement preStat = connection.prepareStatement(sql.toString());
+            try {
+                preStat.setString(1, column);
+                preStat.setString(2, value);
+                preStat.setString(3, String.valueOf(idnca));
+                int resultSet = preStat.executeUpdate();
+                try {
+                    if (resultSet > 0) {
+                        statusmessage = "[Success] IDNC:"+idnca+" -- Field "+column+" has successfully been updated with value "+value;
+                    } else {
+                        statusmessage = "[Error] IDNC:"+idnca+" -- Field "+column+" has not been updated with value "+value;
+                    }
+                } catch (Exception exception) {
+                    Logger.log(QualityNonconformitiesDAOImpl.class.getName(), Level.ERROR, exception.toString());
+                } 
+         
+            } catch (SQLException exception) {
+                Logger.log(QualityNonconformitiesDAOImpl.class.getName(), Level.ERROR, exception.toString());
+            } finally {
+                preStat.close();
             }
-        } catch (Exception ex) {
-            Logger.log(QualityNonconformitiesExchangeDAO.class.getName(), Level.FATAL, "" + ex);
+        
+        } catch (SQLException exception) {
+            Logger.log(QualityNonconformitiesDAOImpl.class.getName(), Level.ERROR, exception.toString());
         } finally {
             try {
-                databaseSpring.disconnect();
-            } catch (Exception ex) {
-                Logger.log(QualityNonconformitiesExchangeDAO.class.getName(), Level.FATAL, "" + ex);
+                if (connection != null) {
+                    Logger.log(QualityNonconformitiesExchangeDAO.class.getName(), Level.INFO, "Disconnecting to jdbc/qualityfollowup from updateQualityNonConformitiesExchange");
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                Logger.log(QualityNonconformitiesDAOImpl.class.getName(), Level.WARN, e.toString());
             }
         }
+
         return statusmessage;
     }
     

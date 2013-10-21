@@ -29,7 +29,7 @@ public interface IQualityNonconformitiesService {
     
     String addNonconformity(String problemTitle, String problemDescription,
                 String severity, String reproductibility, String linkToDoc, 
-                String behaviorExpected, String detection, String startDate, String startTime);
+                String behaviorExpected, String detection, String startDate, String startTime, String screenshot);
     
     String updateNonconformity(int id, String column, String value);
     

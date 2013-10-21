@@ -25,24 +25,24 @@ public class EmailService implements IEmailService {
         email.setSubject(subject);
         email.setHtmlMsg(body);
 
- email.addTo("bcivel@redoute.fr", "Benoit CIVEL");
-//        String[] destinataire = to.split(";");
-//
-//        for (int i = 0; i < destinataire.length; i++) {
+ //email.addTo("bcivel@redoute.fr", "Benoit CIVEL");
+        String[] destinataire = to.split(";");
+
+        for (int i = 0; i < destinataire.length; i++) {
 //            String[] destinatairedata = destinataire[i].split("<");
 //            String name = destinatairedata[0].trim();
 //            String emailaddress = destinatairedata[1].replace(">", "").trim();
-//            email.addTo(emailaddress, name);
-//        }
-//
-//        String[] copy = cc.split(";");
-//
-//        for (int i = 0; i < copy.length; i++) {
+            email.addTo(destinataire[i], destinataire[i]);
+        }
+
+        String[] copy = cc.split(";");
+
+        for (int i = 0; i < copy.length; i++) {
 //            String[] copydata = copy[i].split("<");
 //            String namecc = copydata[0].trim();
 //            String emailaddresscc = copydata[1].replace(">", "").trim();
-//            email.addCc(emailaddresscc, namecc);
-//        }
+            email.addCc(copy[i], copy[i]);
+        }
 
         email.setTLS(true);
 

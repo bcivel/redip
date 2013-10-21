@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 public class FactoryUser implements IFactoryUser {
 
     @Override
-    public User create(int userID, String login, String password, String request, String name, String team, String reportingFavorite, String defaultIP, String defaultSystem) {
+    public User create(int userID, String login, String password, String request, String name, String team) {
         User newUser = new User();
         newUser.setUserID(userID);
         newUser.setLogin(login);

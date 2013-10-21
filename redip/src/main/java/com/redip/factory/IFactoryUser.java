@@ -18,11 +18,8 @@ public interface IFactoryUser {
      * @param request           Y if the user needs to change the password on next login
      * @param name              Name of the user
      * @param team              Team the user belong to.
-     * @param reportingFavorite Default parameters for reporting.
-     * @param defaultIP         Default IP used for Selenium sApplicationerver.
-     * @param defaultSystem     Default System of the user.
      * @return A User.
      */
-    User create(int userID, String login, String password, String request, String name, String team, String reportingFavorite, String defaultIP, String defaultSystem);
+    User create(int userID, String login, String password, String request, String name, String team);
 
 }

@@ -42,19 +42,19 @@ public class NonConformityDetails extends HttpServlet {
         String[] cols = {"Idqualitynonconformities", "ProblemTitle",
             "ProblemDescription", "Status", "Severity", " "};
         String[] creator = null;
-        String fromDate = null;
-        String toDate = null;
+        String[] startDate = null;
+        String[] deadline = null;
         String[] applicationFunctionnality = null;
         String[] statusList = null;
 
         if (request.getParameterValues("creator") != null) {
             creator = request.getParameterValues("creator");
         }
-        if (request.getParameterValues("fromDate") != null) {
-            fromDate = request.getParameter("fromDate");
+        if (request.getParameterValues("startDate") != null) {
+            startDate = request.getParameterValues("startDate");
         }
-        if (request.getParameterValues("toDate") != null) {
-            toDate = request.getParameter("toDate");
+        if (request.getParameterValues("deadline") != null) {
+            deadline = request.getParameterValues("deadline");
         }
         if (request.getParameterValues("applicationFunctionnality") != null) {
             applicationFunctionnality = request.getParameterValues("applicationFunctionnality");
@@ -110,6 +110,22 @@ public class NonConformityDetails extends HttpServlet {
             }
             sCreator += " Detection like '%" + creator[creator.length - 1] + "%') ";
             sArray.add(sCreator);
+        }
+        if (startDate != null) {
+            String sStartDate = " (";
+            for (int a = 0; a < startDate.length - 1; a++) {
+                sStartDate += " startDate like '%" + startDate[a] + "%' or";
+            }
+            sStartDate += " startDate like '%" + startDate[startDate.length - 1] + "%') ";
+            sArray.add(sStartDate);
+        }
+        if (deadline != null) {
+            String sDeadline = " (";
+            for (int a = 0; a < deadline.length - 1; a++) {
+                sDeadline += " deadline like '%" + deadline[a] + "%' or";
+            }
+            sDeadline += " deadline like '%" + deadline[deadline.length - 1] + "%') ";
+            sArray.add(sDeadline);
         }
 //        if (fromDate != null) {
 //        String sFromDate = " fromDate > '" + fromDate + "'";

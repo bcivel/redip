@@ -4,10 +4,12 @@ import com.redip.dao.IParameterDAO;
 import com.redip.database.DatabaseSpring;
 import com.redip.config.MessageGeneral;
 import com.redip.config.MessageGeneralEnum;
+import com.redip.entity.Invariant;
 import com.redip.entity.Parameter;
 import com.redip.exception.QualityException;
 import com.redip.factory.IFactoryParameter;
 import com.redip.log.Logger;
+import java.sql.Connection;
 import org.apache.log4j.Level;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -36,8 +38,10 @@ public class ParameterDAO implements IParameterDAO {
         Parameter result = null;
         final String query = "SELECT * FROM parameter p WHERE p.param = ? ";
 
+        Logger.log(ParameterDAO.class.getName(), Level.INFO, "Connecting to jdbc/qualityfollowup from findParameterByKey");
+        Connection connection = this.databaseSpring.connect();
         try {
-            PreparedStatement preStat = this.databaseSpring.connect().prepareStatement(query);
+            PreparedStatement preStat = connection.prepareStatement(query);
             preStat.setString(1, key);
 
             try {
@@ -61,14 +65,16 @@ public class ParameterDAO implements IParameterDAO {
                 preStat.close();
             }
         } catch (SQLException exception) {
-            Logger.log(ParameterDAO.class.getName(), Level.ERROR, exception.toString());
+            Logger.log(InvariantDAOImpl.class.getName(), Level.ERROR, exception.toString());
         } finally {
-            this.databaseSpring.disconnect();
-        }
-        if (throwExep) {
-            MessageGeneral mes = new MessageGeneral(MessageGeneralEnum.NO_DATA_FOUND);
-            mes.setDescription(mes.getDescription()+" Parameter not defined : " + key);
-            throw new QualityException(mes);
+            try {
+                if (connection != null) {
+                    Logger.log(ParameterDAO.class.getName(), Level.INFO, "Disconnecting to jdbc/qualityfollowup from findParameterByKey");
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                Logger.log(InvariantDAOImpl.class.getName(), Level.WARN, e.toString());
+            }
         }
         return result;
     }
@@ -80,8 +86,10 @@ public class ParameterDAO implements IParameterDAO {
         Parameter paramet = null;
         final String query = "SELECT * FROM parameter p ";
 
+        Logger.log(ParameterDAO.class.getName(), Level.INFO, "Connecting to jdbc/qualityfollowup from findAllParameter");
+        Connection connection = this.databaseSpring.connect();
         try {
-            PreparedStatement preStat = this.databaseSpring.connect().prepareStatement(query);
+            PreparedStatement preStat = connection.prepareStatement(query);
 
             try {
                 ResultSet resultSet = preStat.executeQuery();
@@ -106,14 +114,16 @@ public class ParameterDAO implements IParameterDAO {
                 preStat.close();
             }
         } catch (SQLException exception) {
-            Logger.log(ParameterDAO.class.getName(), Level.ERROR, exception.toString());
+            Logger.log(InvariantDAOImpl.class.getName(), Level.ERROR, exception.toString());
         } finally {
-            this.databaseSpring.disconnect();
-        }
-        if (throwExep) {
-            MessageGeneral mes = new MessageGeneral(MessageGeneralEnum.NO_DATA_FOUND);
-            mes.setDescription(mes.getDescription()+" Parameter table empty.");
-            throw new QualityException(mes);
+            try {
+                if (connection != null) {
+                    Logger.log(ParameterDAO.class.getName(), Level.INFO, "Disconnecting to jdbc/qualityfollowup from findAllParameter");
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                Logger.log(InvariantDAOImpl.class.getName(), Level.WARN, e.toString());
+            }
         }
         return result;
     }
@@ -124,27 +134,46 @@ public class ParameterDAO implements IParameterDAO {
         final String sql = "UPDATE parameter SET `"
                 + column
                 + "` = ? WHERE parameter LIKE ?";
-        ArrayList<String> al = new ArrayList<String>();
-        al.add(value);
-        al.add(param);
-        
-try{
-        databaseSpring.connect();
-        if (databaseSpring.update(sql, al) > 0){
-        statusmessage = "[Success] Param:"+param+" -- Field "+column+" has successfully been updated with value "+value;
-        }
-        else {
-        statusmessage = "[Error] Param:"+param+" -- Field "+column+" has not been updated with value "+value;
-        }
-        } catch (Exception ex) {
-            Logger.log(QualityNonconformitiesImpactDAOImpl.class.getName(),Level.FATAL, ""+ ex);
-        }finally {
+       
+        Logger.log(ParameterDAO.class.getName(), Level.INFO, "Connecting to jdbc/qualityfollowup from updateParameter");
+        Connection connection = this.databaseSpring.connect();
+        try {
+            PreparedStatement preStat = connection.prepareStatement(sql);
+            try {
+                preStat.setString(1, value);
+                preStat.setString(2, param);
+                int res = preStat.executeUpdate(sql);
+                
                 try {
-                    databaseSpring.disconnect();
-                } catch (Exception ex) {
-                    Logger.log(QualityNonconformitiesImpactDAOImpl.class.getName(),Level.FATAL, ""+ ex);
+                
+                    if (res > 0){
+                        statusmessage = "[Success] Param:"+param+" -- Field "+column+" has successfully been updated with value "+value;
+                     }
+                     else {
+                         statusmessage = "[Error] Param:"+param+" -- Field "+column+" has not been updated with value "+value;
+                        }
+                } catch (Exception exception) {
+                    Logger.log(QualityNonconformitiesDAOImpl.class.getName(), Level.ERROR, exception.toString());
                 }
+         
+            } catch (SQLException exception) {
+                Logger.log(InvariantDAOImpl.class.getName(), Level.ERROR, exception.toString());
+            } finally {
+                preStat.close();
             }
+        
+        } catch (SQLException exception) {
+            Logger.log(InvariantDAOImpl.class.getName(), Level.ERROR, exception.toString());
+        } finally {
+            try {
+                if (connection != null) {
+                    Logger.log(ParameterDAO.class.getName(), Level.INFO, "Connecting to jdbc/qualityfollowup from updateParameter");
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                Logger.log(InvariantDAOImpl.class.getName(), Level.WARN, e.toString());
+            }
+        }
         return statusmessage;
     }
     

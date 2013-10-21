@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 public class FactoryQualityNonconformities implements IFactoryQualityNonconformities {
 
     @Override
-    public QualityNonconformities create(int idqualitynonconformities, String problemCategory, String problemDescription, String problemTitle, String rootCauseCategory, String rootCauseDescription, String responsabilities, String status, String comments, String severity, String application, String applicationFunctionnality, String problemType, String deadline, String detection, String linkToDoc, String showInReporting, String qualityFollower, String testToAvoid, String reproductibility, String behaviorExpected) {
+    public QualityNonconformities create(int idqualitynonconformities, String problemCategory, String problemDescription, String problemTitle, String rootCauseCategory, String rootCauseDescription, String responsabilities, String status, String comments, String severity, String application, String applicationFunctionnality, String problemType, String deadline, String detection, String linkToDoc, String showInReporting, String qualityFollower, String testToAvoid, String reproductibility, String behaviorExpected, String screenshot) {
     QualityNonconformities qnc = new QualityNonconformities();
     qnc.setApplication(application);
     qnc.setApplicationFunctionnality(applicationFunctionnality);
@@ -39,6 +39,7 @@ public class FactoryQualityNonconformities implements IFactoryQualityNonconformi
     qnc.setTestToAvoid(testToAvoid);
     qnc.setReproductibility(reproductibility);
     qnc.setBehaviorExpected(behaviorExpected);
+    qnc.setScreenshot(screenshot);
             
     return qnc;
     }
@@ -46,7 +47,7 @@ public class FactoryQualityNonconformities implements IFactoryQualityNonconformi
     @Override
     public QualityNonconformities create(String problemTitle, String problemDescription, String severity, 
     String reproductibility, String linkToDoc, String behaviorExpected, String detection
-            , String startDate, String startTime) {
+            , String startDate, String startTime, String screenshot) {
         QualityNonconformities qnc = new QualityNonconformities();
         qnc.setProblemTitle(problemTitle);
         qnc.setProblemDescription(problemDescription);
@@ -57,6 +58,7 @@ public class FactoryQualityNonconformities implements IFactoryQualityNonconformi
         qnc.setDetection(detection);
         qnc.setStartDate(startDate);
         qnc.setStartTime(startTime);
+        qnc.setScreenshot(screenshot);
         return qnc;
     }
 

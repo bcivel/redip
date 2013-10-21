@@ -7,9 +7,11 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
         <link rel="stylesheet" type="text/css" href="style.css">
+        <script type="text/javascript" src="javascript/Form.js"></script>
     </head>
-    <body>
+    <body  id="wrapper">
         <%@ include file="static.jsp" %> 
         <h1>Hello World!</h1>
+        <text style="text-decoration:underline" onClick="javascript:popup('./documentation/redip_doc.html')">Documentation</text>
     </body>
 </html>

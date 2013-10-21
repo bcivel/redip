@@ -105,6 +105,10 @@
         <servlet-name>GetDistinctValueFromNonconformities</servlet-name>
         <servlet-class>com.redip.servlet.GetDistinctValueFromNonconformities</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>GenerateEmail</servlet-name>
+        <servlet-class>com.redip.servlet.GenerateEmail</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>UpdateParameter</servlet-name>
         <url-pattern>/UpdateParameter</url-pattern>
@@ -208,6 +212,10 @@
     <servlet-mapping>
         <servlet-name>GetDistinctValueFromNonconformities</servlet-name>
         <url-pattern>/GetDistinctValueFromNonconformities</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GenerateEmail</servlet-name>
+        <url-pattern>/GenerateEmail</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
