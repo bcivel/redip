@@ -3,23 +3,23 @@
     <display-name>RedIP</display-name>
     <servlet>
         <servlet-name>NonConformityDetails</servlet-name>
-        <servlet-class>com.redip.servlet.NonConformityDetails</servlet-class>
+        <servlet-class>com.redip.servlet.nonconformity.NonConformityDetails</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>GeneratePicture</servlet-name>
-        <servlet-class>com.redip.servlet.GeneratePicture</servlet-class>
+        <servlet-class>com.redip.servlet.graph.GeneratePicture</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>AddNonConformity</servlet-name>
-        <servlet-class>com.redip.servlet.NonConformityAdd</servlet-class>
+        <servlet-class>com.redip.servlet.nonconformity.NonConformityAdd</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>AddNonConformityImpact</servlet-name>
-        <servlet-class>com.redip.servlet.NonConformityAddImpact</servlet-class>
+        <servlet-class>com.redip.servlet.impact.NonConformityAddImpact</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>NonConformityDeleteImpact</servlet-name>
-        <servlet-class>com.redip.servlet.NonConformityDeleteImpact</servlet-class>
+        <servlet-class>com.redip.servlet.impact.NonConformityDeleteImpact</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>AddNonConformityAction</servlet-name>
@@ -27,15 +27,15 @@
     </servlet>
     <servlet>
         <servlet-name>UpdateNonConformity</servlet-name>
-        <servlet-class>com.redip.servlet.NonConformityUpdate</servlet-class>
+        <servlet-class>com.redip.servlet.nonconformity.NonConformityUpdate</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>UpdateNonConformityImpact</servlet-name>
-        <servlet-class>com.redip.servlet.NonConformityUpdateImpact</servlet-class>
+        <servlet-class>com.redip.servlet.impact.NonConformityUpdateImpact</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>NonConformitiesReportingImageGeneration</servlet-name>
-        <servlet-class>com.redip.servlet.NonConformitiesReportingImageGeneration</servlet-class>
+        <servlet-class>com.redip.servlet.graph.NonConformitiesReportingImageGeneration</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>EmailSubscriptionList</servlet-name>
@@ -55,7 +55,7 @@
     </servlet>
     <servlet>
         <servlet-name>NonConformityImpacts</servlet-name>
-        <servlet-class>com.redip.servlet.NonConformityImpacts</servlet-class>
+        <servlet-class>com.redip.servlet.impact.NonConformityImpacts</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ImportFile</servlet-name>
@@ -71,7 +71,7 @@
     </servlet>
     <servlet>
         <servlet-name>SendEmail</servlet-name>
-        <servlet-class>com.redip.servlet.SendEmail</servlet-class>
+        <servlet-class>com.redip.servlet.email.SendEmail</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>NonConformityAction</servlet-name>
@@ -87,15 +87,15 @@
     </servlet>
     <servlet>
         <servlet-name>NonConformityRootCause</servlet-name>
-        <servlet-class>com.redip.servlet.NonConformityRootCause</servlet-class>
+        <servlet-class>com.redip.servlet.rootcause.NonConformityRootCause</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>NonConformityList</servlet-name>
-        <servlet-class>com.redip.servlet.NonConformityList</servlet-class>
+        <servlet-class>com.redip.servlet.nonconformity.NonConformityList</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>NonConformityUpdatePriority</servlet-name>
-        <servlet-class>com.redip.servlet.NonConformityUpdatePriority</servlet-class>
+        <servlet-class>com.redip.servlet.nonconformity.NonConformityUpdatePriority</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>NonConformityCalendar</servlet-name>
@@ -103,12 +103,36 @@
     </servlet>
     <servlet>
         <servlet-name>GetDistinctValueFromNonconformities</servlet-name>
-        <servlet-class>com.redip.servlet.GetDistinctValueFromNonconformities</servlet-class>
+        <servlet-class>com.redip.servlet.nonconformity.GetDistinctValueFromNonconformities</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>GenerateEmail</servlet-name>
-        <servlet-class>com.redip.servlet.GenerateEmail</servlet-class>
+        <servlet-class>com.redip.servlet.email.GenerateEmail</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>GetDistinctValueFromRootCause</servlet-name>
+        <servlet-class>com.redip.servlet.rootcause.GetDistinctValueFromRootCause</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>NonConformityAddRootCause</servlet-name>
+        <servlet-class>com.redip.servlet.rootcause.NonConformityAddRootCause</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>nonconformities</servlet-name>
+        <jsp-file>/qualitynonconformities.jsp</jsp-file>
+    </servlet>
+    <servlet>
+        <servlet-name>NonConformityActionList</servlet-name>
+        <servlet-class>com.redip.servlet.NonConformityActionList</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GetDistinctValueFromNonconformitiesAction</servlet-name>
+        <servlet-class>com.redip.servlet.GetDistinctValueFromNonconformitiesAction</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>nonconformities</servlet-name>
+        <url-pattern>/nonconformities</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>UpdateParameter</servlet-name>
         <url-pattern>/UpdateParameter</url-pattern>
@@ -217,6 +241,22 @@
         <servlet-name>GenerateEmail</servlet-name>
         <url-pattern>/GenerateEmail</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetDistinctValueFromRootCause</servlet-name>
+        <url-pattern>/GetDistinctValueFromRootCause</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>NonConformityAddRootCause</servlet-name>
+        <url-pattern>/NonConformityAddRootCause</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>NonConformityActionList</servlet-name>
+        <url-pattern>/NonConformityActionList</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetDistinctValueFromNonconformitiesAction</servlet-name>
+        <url-pattern>/GetDistinctValueFromNonconformitiesAction</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30
@@ -225,6 +265,29 @@
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
+    <!-- Start JAAS Configuration -->
+    <!--    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>Simple Web Resource</web-resource-name>
+            <url-pattern>/GetInvariantList</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>user</role-name>
+        </auth-constraint>
+    </security-constraint>-->
+    <login-config>
+        <auth-method>FORM</auth-method>
+        <realm-name>file</realm-name>
+        <form-login-config>
+            <form-login-page>/Login.jsp</form-login-page>
+            <form-error-page>/LoginError.jsp</form-error-page>
+        </form-login-config>
+    </login-config>
+    <!--    <security-role>
+        <description>users</description>
+        <role-name>user</role-name>
+    </security-role>-->
+    <!--End JAAS Configuration -->
     <context-param>
         <param-name>webAppRootKey</param-name>
         <param-value>webappredip.root</param-value>

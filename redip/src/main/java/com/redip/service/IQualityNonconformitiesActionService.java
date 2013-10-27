@@ -23,5 +23,7 @@ public interface IQualityNonconformitiesActionService {
     
     List<QualityNonconformitiesAction> findQualityNonconformitiesUsingLimit(String fromLimit, String toLimit);
     
-    
+    List<QualityNonconformitiesAction> getAllNonconformitiesAction(int start, int amount, String column, String dir, String searchTerm, String individualSearch);
+
+    List<String> findDistinctValueFromParameter (String parameter);
 }

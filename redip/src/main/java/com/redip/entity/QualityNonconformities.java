@@ -36,7 +36,17 @@ public class QualityNonconformities {
     private String startDate;
     private String startTime;
     private String screenshot;
+    private String partnerId;
 
+    public String getPartnerId() {
+        return partnerId;
+    }
+
+    public void setPartnerId(String partnerId) {
+        this.partnerId = partnerId;
+    }
+
+    
     public String getScreenshot() {
         return screenshot;
     }

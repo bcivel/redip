@@ -315,7 +315,7 @@ public class QualityNonconformitiesDAOImpl implements IQualityNonconformitiesDAO
         query.append(" RootCauseCategory, RootCauseDescription, Responsabilities, ");
         query.append(" Status, Comments, Severity, application, applicationfunctionnality, ");
         query.append(" problemType, deadline, detection, linktodoc, showinreporting, ");
-        query.append(" qualityfollower, testtoavoid, reproductibility, behaviorexpected, screenshot FROM qualitynonconformities where idqualitynonconformities = '");
+        query.append(" qualityfollower, testtoavoid, reproductibility, behaviorexpected, screenshot, partnerId FROM qualitynonconformities where idqualitynonconformities = '");
         query.append(id);
         query.append("'");
 
@@ -349,10 +349,11 @@ public class QualityNonconformitiesDAOImpl implements IQualityNonconformitiesDAO
                         String reproductibility = resultSet.getString("reproductibility") == null ? "" : resultSet.getString("reproductibility");
                         String behaviorExpected = resultSet.getString("behaviorexpected") == null ? "" : resultSet.getString("behaviorexpected");
                     String screenshot = resultSet.getString("screenshot") == null ? "" : resultSet.getString("screenshot");
+                    String partnerId = resultSet.getString("partnerId") == null ? "" : resultSet.getString("partnerId");
                     result = factory.create(id, problemCategory, problemDescription, problemTitle, 
                             rootCauseCategory, rootCauseDescription, responsabilities, status, comments, 
                             severity, application, applicationFunctionnality, problemType, deadline, detection,
-                            linktodoc, showinreporting, qualityfollower, testtoavoid, reproductibility, behaviorExpected, screenshot);
+                            linktodoc, showinreporting, qualityfollower, testtoavoid, reproductibility, behaviorExpected, screenshot, partnerId);
             }
                 } catch (SQLException exception) {
                     Logger.log(QualityNonconformitiesDAOImpl.class.getName(), Level.ERROR, exception.toString());
@@ -709,7 +710,9 @@ public class QualityNonconformitiesDAOImpl implements IQualityNonconformitiesDAO
         StringBuilder query = new StringBuilder();
         query.append("SELECT distinct ");
         query.append(parameter);
-        query.append(" FROM qualitynonconformities");
+        query.append(" FROM qualitynonconformities order by ");
+        query.append(parameter);
+        query.append(" asc");
         
         Logger.log(QualityNonconformitiesDAOImpl.class.getName(), Level.INFO, "Connecting to jdbc/qualityfollowup from findDistinctValuesfromParameter");
         Connection connection = this.databaseSpring.connect();

@@ -54,13 +54,7 @@
 		$( 'input' ).filter('.timeClass').timepicker();
 	});
 	</script>
-
-    </head>
-    <body  id="wrapper">
-        <%@ include file="static.jsp" %>
-        <br>
-        <div>
-        <script type="text/javascript">      
+<script type="text/javascript">      
             $(document).ready(function(){
                 $('#nonConformityRootCause').dataTable({
                     "aaSorting": [[ 0, "desc" ]],
@@ -83,12 +77,12 @@
                     ]
                 }
             ).makeEditable({
-                    sAddURL: "AddNonConformity",
+                    sAddURL: "NonConformityAddRootCause",
                     sAddHttpMethod: "POST",
                     
 
                     oAddNewRowButtonOptions: {
-                        label: "Add NonConformity...",
+                        label: "Add Root Cause...",
                         icons: {primary:'ui-icon-plus'}
                     },
                     sDeleteHttpMethod: "POST",
@@ -129,21 +123,24 @@
                         { },
                         { }
                     ]
-                }).rowReordering({
-                    sURL: "" ,
-                    sRequestType: "GET"});
+                })
             });
             
         </script>
+    </head>
+    <body  id="wrapper">
+        <%@ include file="static.jsp" %>
+        <br>
+        <div>
         <div style="width: 80%;  font: 90% sans-serif">
             <table id="nonConformityRootCause" class="display">
                 <thead>
                     <tr>
                         <th>Id</th>
-                        <th>ProblemTitle</th>
-                        <th>ProblemDescription</th>
-                        <th>ActionStatus</th>
-                        <th>ID NonConformity</th>
+                        <th>Root Cause</th>
+                        <th>Description</th>
+                        <th>Status</th>
+                        <th>Severity</th>
                         <th>Edit</th>
                     </tr>
                 </thead>
@@ -153,6 +150,41 @@
         </div>
                 <br><br>
        </div><br>
+       <div>
+            <form id="formAddNewRow" action="#" title="Add Root Cause" style="width:350px" method="post">
+                <br>
+               
+                <div style="width: 310px; float:left">
+                    <label for="rootcauseCategory" style="font-weight:bold">rootcauseCategory</label>
+                    <input id="rootcauseCategory" name="rootcauseCategory" style="width:210px;" 
+                            class="ncdetailstext">
+                </div>
+                <div style="width: 250px; float:left">
+                <label for="rootcauseDescription" style="font-weight:bold">rootcauseDescription</label>
+                <input id="rootcauseDescription" name="rootcauseDescription" style="width:150px;" 
+                                    class="ncdetailstext"
+                                    >
+                </div>
+                <label for="component" style="font-weight:bold">component</label>
+                <input type="text" name="component" id="component" style="width:100px"/>
+                <label for="responsabilities" style="font-weight:bold">responsabilities</label>
+                <input type="text" name="responsabilities" id="responsabilities" style="width:100px"/>
+                
+                <br /><br>
+                <label for="status" style="font-weight:bold">status</label>
+                <input type="text" name="status" id="status" class="ncdetailstext" style="width:400px"/>
+                
+                <br /><br><br>
+                <div style="width: 900px; clear:both">
+                <label for="severity" style="font-weight:bold">severity</label>
+                <input type="text" name="severity" class="ncdetailstext" id="severity" style="width:700px;"/>
+                </div>
+                
+                <br /><br />
+                <button id="btnAddNewRowOk">Add</button>
+                <button id="btnAddNewRowCancel">Cancel</button>
+            </form>
+        </div>
 
     </body>
 </html>

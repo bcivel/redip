@@ -23,4 +23,6 @@ public interface IQualityNonconformitiesRootCauseDAO {
     
     String updateQualityNonConformitiesRootCause(Integer id, String field, String content);
     
+    List<String> findDistinctValuesfromParameter (String parameter);
+    
    }

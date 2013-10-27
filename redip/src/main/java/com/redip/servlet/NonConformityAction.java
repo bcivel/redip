@@ -4,6 +4,7 @@
  */
 package com.redip.servlet;
 
+import com.redip.servlet.nonconformity.NonConformityDetails;
 import com.redip.entity.QualityNonconformities;
 import com.redip.entity.QualityNonconformitiesAction;
 import com.redip.log.Logger;

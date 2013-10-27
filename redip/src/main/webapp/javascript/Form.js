@@ -57,8 +57,8 @@ function menuColoring(arg) {
                 
 		if (location.toString().indexOf(menuCollection[cpt_menu]) != -1) {
                     if (unicityMenu == 0){
-			menuCollection[cpt_menu].style.background = "#00FF00";
-                        menuCollection[cpt_menu].parentNode.parentNode.parentNode.firstChild.style.background = "#00FF00";
+			menuCollection[cpt_menu].style.background = "#cad3f1";
+                        menuCollection[cpt_menu].parentNode.parentNode.parentNode.firstChild.style.background = "#cad3f1";
                     unicityMenu = 1;
                 }
                     
@@ -67,7 +67,7 @@ function menuColoring(arg) {
 	}
 	
         if (location.toString().indexOf("jsp") == -1) {
-			document.getElementById("Index").style.background = "#00FF00";
+			document.getElementById("Index").style.background = "#cad3f1";
                     }
 }
 

@@ -45,16 +45,31 @@ Document   : menu
      <div id="navcontainer">
      <ul id="navlist">
 <!--     <li><a name="menu" id="Index" href="index.jsp" style="width:130px">Index</a></li>-->
-<!--     <li id="active"><a id="current" name="menu" href="#" style="width:230px">Non Conformities</a>
+     <li id="active"><a id="current" name="menu" href="#" style="width:160px">Non Conformity</a>
      <ul id="subnavlist">
-     <li id="subactive"><a name="menu" href="qualitynonconformities.jsp" style="width:230px">List</a></li>
-        <li><a name="menu" href="qualitynonconformitydetails.jsp" style="width:230px">Details</a></li>
-        <li><a name="menu" href="qualitynonconformitiesreporting.jsp" style="width:230px">Reporting</a></li>
+     <li id="subactive"><a name="menu" href="qualitynonconformities.jsp" style="width:160px">Non Conformity List</a></li>
+        <li><a name="menu" href="qualitynonconformitydetails.jsp" style="width:160px">Non Conformity Details</a></li>
         </ul>
-         </li>-->
-    <li><a name="menu" href="qualitynonconformities.jsp" style="width:160px">Non Conformity List</a></li>
-    <li><a name="menu" href="qualitynonconformitydetails.jsp" style="width:160px">Non Conformity Details</a></li>
-    <li><a name="menu" href="qualitynonconformitiespriority.jsp" style="width:160px">BackLog</a></li> 
+         </li>
+         <li id="active"><a id="current" name="menu" href="#" style="width:160px">Root Cause</a>
+     <ul id="subnavlist">
+     <li id="subactive"><a name="menu" href="qualitynonconformitiesrootcause.jsp" style="width:160px">Root Cause List</a></li>
+        <li><a name="menu" href="qualitynonconformityrootcausedetails.jsp" style="width:160px">Root Cause Details</a></li>
+        </ul>
+         </li>
+         <li id="active"><a id="current" name="menu" href="#" style="width:160px">Corrective Action</a>
+     <ul id="subnavlist">
+     <li id="subactive">
+     <a name="menu" href="qualitynonconformitiesaction.jsp" style="width:160px">Corrective Action List</a></li>
+        <li>
+        <a name="menu" href="qualitynonconformitiespriority.jsp" style="width:160px">BackLog</a></li>
+     <!--<li><a name="menu" href="qualitynonconformitydetails.jsp" style="width:160px">Non Conformity Details</a></li>-->
+        </ul>
+         </li>
+<!--    <li><a name="menu" href="qualitynonconformities.jsp" style="width:160px">Non Conformity List</a></li>
+    <li><a name="menu" href="qualitynonconformitydetails.jsp" style="width:160px">Non Conformity Details</a></li>-->
+    <!--<li><a name="menu" href="qualitynonconformitiesrootcause.jsp" style="width:160px">Problem</a></li>-->
+     
     <li><a name="menu" href="nonconformitiesplanning.jsp" style="width:160px">Calendar</a></li>
     <li><a name="menu" href="qualitynonconformitiesreporting.jsp" style="width:160px">Reporting</a></li>
     </ul></div>

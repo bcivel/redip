@@ -617,3 +617,20 @@ border-radius: 4px 4px 4px 4px;
     -o-transform: rotate(90deg);
 
 }
+
+.nc_custom_color_OPEN,
+.nc_custom_color_OPEN div,
+.nc_custom_color_OPEN span {
+   background-color: #ff3300; /* background color */
+    border-color: #ff3300;     /* border color */
+    color: yellow;           /* text color */
+}
+
+.nc_custom_color_CLOSED,
+.nc_custom_color_CLOSED div,
+.nc_custom_color_CLOSED span {
+    background-color: #00cc00; /* background color */
+    border-color: #00cc00;     /* border color */
+    color: yellow;
+    
+}

@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 public class FactoryQualityNonconformities implements IFactoryQualityNonconformities {
 
     @Override
-    public QualityNonconformities create(int idqualitynonconformities, String problemCategory, String problemDescription, String problemTitle, String rootCauseCategory, String rootCauseDescription, String responsabilities, String status, String comments, String severity, String application, String applicationFunctionnality, String problemType, String deadline, String detection, String linkToDoc, String showInReporting, String qualityFollower, String testToAvoid, String reproductibility, String behaviorExpected, String screenshot) {
+    public QualityNonconformities create(int idqualitynonconformities, String problemCategory, String problemDescription, String problemTitle, String rootCauseCategory, String rootCauseDescription, String responsabilities, String status, String comments, String severity, String application, String applicationFunctionnality, String problemType, String deadline, String detection, String linkToDoc, String showInReporting, String qualityFollower, String testToAvoid, String reproductibility, String behaviorExpected, String screenshot, String partnerId) {
     QualityNonconformities qnc = new QualityNonconformities();
     qnc.setApplication(application);
     qnc.setApplicationFunctionnality(applicationFunctionnality);
@@ -40,7 +40,7 @@ public class FactoryQualityNonconformities implements IFactoryQualityNonconformi
     qnc.setReproductibility(reproductibility);
     qnc.setBehaviorExpected(behaviorExpected);
     qnc.setScreenshot(screenshot);
-            
+    qnc.setPartnerId(partnerId);        
     return qnc;
     }
 

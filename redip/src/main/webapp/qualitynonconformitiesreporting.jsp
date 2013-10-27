@@ -46,7 +46,7 @@
         <script type="text/javascript" src="javascript/jquery.datepicker.addons.js"></script>
         <script type="text/javascript" src="javascript/jquery-te-1.4.0.min.js" charset="utf-8"></script>
     </head>
-    <body>
+    <body id="wrapper">
         <script>
             $(function() {
                 $( 'input' ).filter('.dateClass').datepicker({dateFormat: 'yy-mm-dd'});
@@ -57,19 +57,15 @@
 
         <%
                 
-            String fromDate = "";
-            if (request.getParameter("fromDate") != null) {
-                fromDate = request.getParameter("fromDate");
+            String fromWeek = "";
+            if (request.getParameter("fromWeek") != null) {
+                fromWeek = request.getParameter("fromWeek");
             }
-            String toDate = "";
-            if (request.getParameter("toDate") != null) {
-                toDate = request.getParameter("toDate");
+            String toWeek = "";
+            if (request.getParameter("toWeek") != null) {
+                toWeek = request.getParameter("toWeek");
             }
-            String app = "all";
-            if (request.getParameter("application") != null) {
-                app = request.getParameter("application");
-            }
-
+            
             ApplicationContext appContext = WebApplicationContextUtils.getWebApplicationContext(this.getServletContext());
             IQualityNonconformitiesReportingService nonconformitiesReportingService = appContext.getBean(IQualityNonconformitiesReportingService.class);
             
@@ -78,38 +74,43 @@
 
         <form action="qualitynonconformitiesreporting.jsp" method="get" name="reporting">
             <table id="arrond">
-                <tr><td id="wob" style="width: 50px; font-weight: bold;">From Date</td>
-                    <td class="simpleline" style="width:127px;"><input name="fromDate" style="width:127px;" id="fromDate" class="dateClass" class="wob" value="<%=fromDate%>"></td>
-                    <td class="wob" style="width: 70px; font-weight: bold;">To Date</td>
-                    <td class="simpleline" style="width:127px;"><input name="toDate" style="width:127px;" id="toDate" class="dateClass" class="wob" value="<%=toDate%>"></td>
-                    <td class="wob" style="width: 70px; font-weight: bold;">Country</td>
-                    <td class="simpleline" style="width:127px;"><select id="Application" name="Application" 
-                                                                        style="width:127px;"></select></td>
+                <tr><td id="wob" style="width: 50px; font-weight: bold;">From Week</td>
+                    <td class="simpleline" style="width:127px;">
+                        <select name="fromWeek" style="width:127px;" 
+                          id="fromWeek" class="wob" value="<%=fromWeek%>">
+                            <option value="1">sem39</option>
+                            <option value="2">sem40</option>
+                            <option value="3">sem41</option>
+                            <option value="4">sem42</option>
+                            <option value="5">sem43</option>
+                        </select>
+                        
+                    </td>
+                    <td class="wob" style="width: 70px; font-weight: bold;">To Week</td>
+                    <td class="simpleline" style="width:127px;">
+                        <select name="toWeek" style="width:127px;" 
+                          id="toWeek" class="wob" value="<%=toWeek%>">
+                        <option value="1">sem39</option>
+                            <option value="2">sem40</option>
+                            <option value="3">sem41</option>
+                            <option value="4">sem42</option>
+                            <option value="5">sem43</option>
+                        </select>
+                    </td>
                     <td  class="wob"><input id="loadbutton" class="button" type="submit" name="Load" value="Load"></td>
                 </tr>
             </table>    
         </form>
-  <script type="text/javascript">
-                        $.get('GetInvariantList?idName=application', function(data) {
-                            for (var i = 0; i < data.length; i++) {
-                                $("#Application").append($("<option></option>")
-                                        .attr("value", data[i])
-                                        .text(data[i]))
-                            }
-                            $("#Application").val("<%=app%>");
-                        });
-                    </script>
-
-        
+  
         <table><tr><td>
                     <table id="arrond">
-                        <tr><td><img src="GeneratePicture?graph=nc_opened"></br>
+                        <tr><td><img src="GeneratePicture?graph=nc_opened&fromWeek=<%=fromWeek%>&toWeek=<%=toWeek%>"></br>
                             </td>
-                        <td><img src="GeneratePicture?graph=nc_week_opened"></br>
+                        <td><img src="GeneratePicture?graph=nc_week_opened&fromWeek=<%=fromWeek%>&toWeek=<%=toWeek%>"></br>
                             </td></tr>
-                        <tr><td><img src="GeneratePicture?graph=nc_week_closed"></br>
+                        <tr><td><img src="GeneratePicture?graph=nc_week_closed&fromWeek=<%=fromWeek%>&toWeek=<%=toWeek%>"></br>
                             </td>
-                        <td><img src="GeneratePicture?graph=nc_week_team"></br>
+                        <td><img src="GeneratePicture?graph=nc_week_team&fromWeek=<%=fromWeek%>&toWeek=<%=toWeek%>"></br>
                             </td></tr>
                     </table>
 

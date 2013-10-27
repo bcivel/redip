@@ -4,6 +4,7 @@
  */
 package com.redip.servlet;
 
+import com.redip.servlet.nonconformity.NonConformityDetails;
 import com.redip.entity.QualityNonconformities;
 import com.redip.entity.QualityNonconformitiesAction;
 import com.redip.log.Logger;
@@ -60,6 +61,8 @@ public class NonConformityCalendar extends HttpServlet {
 
                 json.put("title", listofnonconformities.getProblemTitle());
                 json.put("start", listofnonconformities.getStartDate());
+                json.put("className", "nc_custom_color_"+listofnonconformities.getStatus());
+                        
                 //json.put("end", "2013-10-13 14:00");
                 json.put("url", "qualitynonconformitydetails.jsp?ncid=" + listofnonconformities.getIdqualitynonconformities());
 

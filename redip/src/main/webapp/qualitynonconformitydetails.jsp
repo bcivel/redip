@@ -373,12 +373,6 @@
                        onChange="javascript:updateNonconformity(this, 'TestToAvoid', '<%=ncid%>')"
                        value="<%=qnc.getTestToAvoid()%>">
             </div>
-                       <div style="width: 200px; float:right; vertical-align: middle"><img src="pictures/mail_send.png" onclick="sendMail('<%=ncid%>')"</img>
-                       </div>
-        </div><div class="nctablefooter" style="height:6px; clear:both"></div></div>
-        <br>
-        <div class="nctablecontour" style="clear:both;background-color:#E2E4FF">
-            <div class="ncdescriptionheader"  colspan="3" style="height:30px">Root Cause Description</div>
             <div style="width: 100px; float:left">
                 <label for="Application" class="ncheader" >Application</label><br/>
                 <input id="Application" name="Application" style="font-size: medium" 
@@ -400,26 +394,37 @@
                        onChange="javascript:updateNonconformity(this, 'Deadline', '<%=ncid%>')"
                        value="<%=qnc.getDeadline()%>">
             </div>
-            <div style="width: 100px; float:left">
+             <div style="width: 100px; float:left">
                 <label for="Responsabilities" class="ncheader" style="width: 100px">Responsabilities</label><br/>
                 <input id="Responsabilities" name="Responsabilities" style="width:100px; font-size: medium" 
                        class="ncdetailstext" 
                        onChange="javascript:updateNonconformity(this, 'Responsabilities', '<%=ncid%>')"
                        value="<%=qnc.getResponsabilities()%>">
             </div>
-            <div style="width: 100px; float:left">
+            <div style="width: 200px; float:left">
+                <label for="PartnerId" class="ncheader" style="width: 200px">PartnerId</label><br/>
+                <input id="PartnerId" name="PartnerId" style="width:200px; font-size: medium" 
+                       class="ncdetailstext" 
+                       onChange="javascript:updateNonconformity(this, 'PartnerId', '<%=ncid%>')"
+                       value="<%=qnc.getPartnerId()%>">
+            </div>
+                       <div style="width: 200px; float:right; vertical-align: middle"><img src="pictures/mail_send.png" onclick="sendMail('<%=ncid%>')"</img>
+                       </div>
+        </div><div class="nctablefooter" style="height:6px; clear:both"></div></div>
+        <br>
+        <div class="nctablecontour" style="clear:both;background-color:#E2E4FF">
+            <div class="ncdescriptionheader"  colspan="3" style="height:30px">Root Cause
+            <input type="button" class="smallbutton" style="background-color:red; float:right" onClick="javascript:setInvisibleDiv('nonconformitiesDescriptionContent')">
+            <input type="button" class="smallbutton" style="background-color: green; float:right" onClick="javascript:setVisibleDiv('nonconformitiesDescriptionContent')">
+            </div>
+            <div style="width: 100px; clear:both">
                 <label for="RootCauseCategory" class="ncheader" style="width: 100px">RootCauseCategory</label><br/>
-                <input id="RootCauseCategory" name="RootCauseCategory" style="width:550px; font-size: medium" 
+                <select id="RootCauseCategory" name="RootCauseCategory" style="width:300px; font-size: medium" 
                        class="ncdetailstext" 
                        onChange="javascript:updateNonconformity(this, 'RootCauseCategory', '<%=ncid%>')"
                        value="<%=qnc.getRootCauseCategory()%>">
-            </div>
-            <div style="clear:both">
-                <label for="RootCauseDescription" class="ncheader" style="width: 100px">RootCauseDescritpion</label><br/>
-                <textarea id="RootCauseDescription" name="RootCauseDescription" rows="4" style="width:1000px; font-size: medium" 
-                       class="ncdetailstext" 
-                       onChange="javascript:updateNonconformity(this, 'RootCauseDescription', '<%=ncid%>')"
-                       value="<%=qnc.getRootCauseDescription()%>"><%=qnc.getRootCauseDescription()%></textarea>
+                    <option value="NotDefined">-- To Be Defined --</option>
+                </select>
             </div>
             <div class="nctablefooter" style="height:6px"></div>
         </div>
@@ -602,6 +607,16 @@
         }));
     </script>
     <script type="text/javascript">
+        (document).ready($.get('GetDistinctValueFromRootCause?parameter=rootcausecategory', function(data) {
+            for (var i = 0; i < data.length; i++) {
+                $("#RootCauseCategory").append($("<option></option>")
+                        .attr("value", data[i])
+                        .text(data[i]))
+            }
+            $("#RootCauseCategory").val("<%=qnc.getRootCauseCategory()%>");
+        }));
+    </script>
+    <script type="text/javascript">
         (document).ready($.get('GetInvariantList?idName=status', function(data) {
             for (var i = 0; i < data.length; i++) {
                 $("#Status").append($("<option></option>")
@@ -609,17 +624,6 @@
                         .text(data[i]))
             }
             $("#Status").val("<%=qnc.getStatus()%>");
-        }));
-    </script>
-
-    <script type="text/javascript">
-        (document).ready($.get('GetInvariantList?idName==rootcausecategory', function(data) {
-            for (var i = 0; i < data.length; i++) {
-                $("#RootCauseCategory").append($("<option></option>")
-                        .attr("value", data[i])
-                        .text(data[i]))
-            }
-            $("#RootCauseCategory").val("<%=qnc.getRootCauseCategory()%>");
         }));
     </script>
     <script type="text/javascript">

@@ -50,5 +50,15 @@ public class QualityNonconformitiesActionService implements IQualityNonconformit
     public List<QualityNonconformitiesAction> findQualityNonconformitiesUsingLimit(String fromLimit, String toLimit) {
         return qualityNonconformitiesDao.findQualityNonconformitiesActionUsingLimit(fromLimit, toLimit);
     }
+
+    @Override
+    public List<QualityNonconformitiesAction> getAllNonconformitiesAction(int start, int amount, String column, String dir, String searchTerm, String individualSearch) {
+        return qualityNonconformitiesDao.getAllNonconformitiesAction(start, amount, column, dir, searchTerm, individualSearch);
+    }
+    
+    @Override
+    public List<String> findDistinctValueFromParameter(String parameter) {
+        return qualityNonconformitiesDao.findDistinctValuesfromParameter(parameter);
+                }
     
 }

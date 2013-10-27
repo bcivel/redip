@@ -24,4 +24,8 @@ public interface IQualityNonconformitiesActionDAO {
     List<QualityNonconformitiesAction> findQualityNonconformitiesActionUsingLimit(String fromLimit, String toLimit);
     
     Integer getMaxPriorityNumber();
+    
+    List<QualityNonconformitiesAction> getAllNonconformitiesAction(int start, int amount, String column, String dir, String searchTerm, String individualSearch);
+
+    List<String> findDistinctValuesfromParameter (String parameter);
 }

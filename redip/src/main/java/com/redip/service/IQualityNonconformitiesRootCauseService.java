@@ -23,4 +23,6 @@ public interface IQualityNonconformitiesRootCauseService {
     
     String updateQualityNonConformitiesRootCause(Integer id, String field, String content);
     
+    List<String> findDistinctValueFromParameter (String parameter);
+    
 }

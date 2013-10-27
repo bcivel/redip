@@ -312,7 +312,7 @@ public class GraphGenerationServiceImpl implements IGraphGenerationService {
                 String serie = listOfData.get(1);
                 String name = listOfData.get(2);
                 defaultcategorydataset.addValue(new Double(value), serie, name);
-                Logger.log(GraphGenerationServiceImpl.class.getName(), Level.FATAL, value + "/" + serie + "/" + name);
+                Logger.log(GraphGenerationServiceImpl.class.getName(), Level.INFO, value + "/" + serie + "/" + name);
             }
 
             bi = graphGenerationService.generateVerticalBarChart(defaultcategorydataset, title, data.size());
@@ -336,7 +336,7 @@ public class GraphGenerationServiceImpl implements IGraphGenerationService {
                 String serie = listOfData.get(1);
                 String name = listOfData.get(2);
                 defaultcategorydataset.addValue(new Double(value), serie, name);
-                Logger.log(GraphGenerationServiceImpl.class.getName(), Level.FATAL, value + "/" + serie + "/" + name);
+                Logger.log(GraphGenerationServiceImpl.class.getName(), Level.INFO, value + "/" + serie + "/" + name);
             }
 
             bi = graphGenerationService.generateStackedVerticalBarChart(defaultcategorydataset, title, data.size());

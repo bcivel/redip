@@ -282,8 +282,8 @@ public class QualityNonconformitiesRootCauseDAO implements IQualityNonconformiti
     public String addNonconformityRootCause(QualityNonconformitiesRootCause ncrc) {
         String statusmessage = "";
         final String sql = "INSERT INTO qualitynonconformitiesrootcause (rootCauseCategory, "
-                + "rootCauseDescription,responsabilities,status,component,severity,"
-                + "startDate,startTime,endDate,endTime) values (?,?,?,?,?,?,?,?,?,?,?)";
+                + "rootCauseDescription,responsabilities,status,component,severity"
+                + ") values (?,?,?,?,?,?)";
        
         Logger.log(QualityNonconformitiesRootCauseDAO.class.getName(), Level.INFO, "Connecting to jdbc/qualityfollowup from addNonconformityRootCause");
         Connection connection = this.databaseSpring.connect();
@@ -296,10 +296,10 @@ public class QualityNonconformitiesRootCauseDAO implements IQualityNonconformiti
                 preStat.setString(4, ncrc.getStatus() == null ? "" : ncrc.getStatus());
                 preStat.setString(5, ncrc.getComponent() == null ? "" : ncrc.getComponent());
                 preStat.setString(6, ncrc.getSeverity()== null ? "" : ncrc.getSeverity());
-                preStat.setString(7, ncrc.getStartDate() == null ? "" : ncrc.getStartDate());
-                preStat.setString(8, ncrc.getStartTime() == null ? "" : ncrc.getStartTime());
-                preStat.setString(9, ncrc.getEndDate() == null ? "" : ncrc.getEndDate());
-                preStat.setString(10, ncrc.getEndTime()== null ? "" : ncrc.getEndTime());
+//                preStat.setString(7, ncrc.getStartDate() == null ? "" : ncrc.getStartDate());
+//                preStat.setString(8, ncrc.getStartTime() == null ? "" : ncrc.getStartTime());
+//                preStat.setString(9, ncrc.getEndDate() == null ? "" : ncrc.getEndDate());
+//                preStat.setString(10, ncrc.getEndTime()== null ? "" : ncrc.getEndTime());
                 
                 int resultSet = preStat.executeUpdate();
                 try {
@@ -384,5 +384,53 @@ public class QualityNonconformitiesRootCauseDAO implements IQualityNonconformiti
 
         return statusmessage;
     }
+
+    @Override
+    public List<String> findDistinctValuesfromParameter(String parameter) {
+        List<String> result = new ArrayList<String>();
+        
+        StringBuilder query = new StringBuilder();
+        query.append("SELECT distinct ");
+        query.append(parameter);
+        query.append(" FROM qualitynonconformitiesrootcause");
+        
+        Logger.log(QualityNonconformitiesRootCauseDAO.class.getName(), Level.INFO, "Connecting to jdbc/qualityfollowup from findDistinctValuesfromParameter");
+        Connection connection = this.databaseSpring.connect();
+        try {
+            PreparedStatement preStat = connection.prepareStatement(query.toString());
+            try {
+                ResultSet resultSet = preStat.executeQuery();
+                try {
+                 
+                    while (resultSet.next()) {
+                        result.add(resultSet.getString(1)== null ? "" : resultSet.getString(1) );
+                    }
+
+            resultSet.close();
+                } catch (SQLException exception) {
+                    Logger.log(QualityNonconformitiesRootCauseDAO.class.getName(), Level.ERROR, exception.toString());
+                } finally {
+                    resultSet.close();
+                } 
+         
+            } catch (SQLException exception) {
+                Logger.log(QualityNonconformitiesRootCauseDAO.class.getName(), Level.ERROR, exception.toString());
+            } finally {
+                preStat.close();
+            }
+        
+        } catch (SQLException exception) {
+            Logger.log(QualityNonconformitiesRootCauseDAO.class.getName(), Level.ERROR, exception.toString());
+        } finally {
+            try {
+                if (connection != null) {
+                    Logger.log(QualityNonconformitiesRootCauseDAO.class.getName(), Level.INFO, "Disconnecting to jdbc/qualityfollowup from findDistinctValuesfromParameter");
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                Logger.log(QualityNonconformitiesRootCauseDAO.class.getName(), Level.WARN, e.toString());
+            }
+        }
+        return result;  }
     
 }

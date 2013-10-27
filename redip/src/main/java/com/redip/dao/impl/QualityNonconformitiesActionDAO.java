@@ -388,4 +388,167 @@ public class QualityNonconformitiesActionDAO implements IQualityNonconformitiesA
 
     }
     
+    @Override
+    public List<QualityNonconformitiesAction> getAllNonconformitiesAction(int start, int amount, String column, String dir, String searchTerm, String individualSearch) {
+        List<QualityNonconformitiesAction> nonconformitiesaction = new ArrayList<QualityNonconformitiesAction>();
+        StringBuilder gSearch = new StringBuilder();
+        String searchSQL = "";
+        
+        StringBuilder query = new StringBuilder();
+        query.append("SELECT idqualitynonconformitiesaction, ");
+        query.append(" action,  ");
+        query.append(" deadline, follower, status, ");
+        query.append(" `date`, percentage, priority,  idqualitynonconformities FROM qualitynonconformitiesaction ");
+        
+        gSearch.append(" where (idqualitynonconformitiesaction like '%");
+        gSearch.append(searchTerm);
+        gSearch.append("%'");
+        gSearch.append(" or idqualitynonconformities like '%");
+        gSearch.append(searchTerm);
+        gSearch.append("%'");
+        gSearch.append(" or action like '%");
+        gSearch.append(searchTerm);
+        gSearch.append("%'");
+        gSearch.append(" or deadline like '%");
+        gSearch.append(searchTerm);
+        gSearch.append("%'");
+        gSearch.append(" or follower like '%");
+        gSearch.append(searchTerm);
+        gSearch.append("%'");
+        gSearch.append(" or status like '%");
+        gSearch.append(searchTerm);
+        gSearch.append("%'");
+        gSearch.append(" or `date` like '%");
+        gSearch.append(searchTerm);
+        gSearch.append("%'");
+        gSearch.append(" or percentage like '%");
+        gSearch.append(searchTerm);
+        gSearch.append("%'");
+        gSearch.append(" or priority like '%");
+        gSearch.append(searchTerm);
+        gSearch.append("%')");
+        
+        if(!searchTerm.equals("") && !individualSearch.equals("")){
+            searchSQL = gSearch.toString() + " and " + individualSearch;
+        }
+        else if(!individualSearch.equals("")){
+            searchSQL = " where " + individualSearch;
+        }else if(!searchTerm.equals("")){
+            searchSQL=gSearch.toString();
+        }
+       
+        query.append(searchSQL);
+        query.append("order by ");
+        query.append(column);
+        query.append(" ");
+        query.append(dir);
+        query.append(" limit ");
+        query.append(start);
+        query.append(" , ");
+        query.append(amount);
+
+        QualityNonconformitiesAction nonconformitiesactiontoadd;
+
+        Logger.log(QualityNonconformitiesDAOImpl.class.getName(), Level.INFO, "Connecting to jdbc/qualityfollowup from getAllNonconformitiesAction");
+        Connection connection = this.databaseSpring.connect();
+        try {
+            PreparedStatement preStat = connection.prepareStatement(query.toString());
+            try {
+                ResultSet resultSet = preStat.executeQuery();
+                try {
+                
+                while (resultSet.next()) {
+                nonconformitiesactiontoadd = new QualityNonconformitiesAction();
+
+                nonconformitiesactiontoadd.setIdQualityNonconformitiesActions(resultSet.getInt(1));
+                nonconformitiesactiontoadd.setAction(resultSet.getString(2) == null ? "" : resultSet.getString(2));
+                nonconformitiesactiontoadd.setDeadline(resultSet.getString(3) == null ? "" : resultSet.getString(3));
+                nonconformitiesactiontoadd.setFollower(resultSet.getString(4) == null ? "" : resultSet.getString(4));
+                nonconformitiesactiontoadd.setStatus(resultSet.getString(5) == null ? "" : resultSet.getString(5));
+                nonconformitiesactiontoadd.setDate(resultSet.getString(6) == null ? "" : resultSet.getString(6));
+                nonconformitiesactiontoadd.setPercentage(resultSet.getString(7) == null ? "" : resultSet.getString(7));
+                nonconformitiesactiontoadd.setPriority(resultSet.getString(8) == null ? "" : resultSet.getString(8));
+                nonconformitiesactiontoadd.setIdQualityNonconformities(resultSet.getString(9) == null ? 0 : resultSet.getInt(9));
+                
+                nonconformitiesaction.add(nonconformitiesactiontoadd);
+            }
+
+                } catch (SQLException exception) {
+                    Logger.log(QualityNonconformitiesActionDAO.class.getName(), Level.ERROR, exception.toString());
+                } finally {
+                    resultSet.close();
+                }
+         
+            } catch (SQLException exception) {
+                Logger.log(QualityNonconformitiesActionDAO.class.getName(), Level.ERROR, exception.toString());
+            } finally {
+                preStat.close();
+            }
+        
+        } catch (SQLException exception) {
+            Logger.log(QualityNonconformitiesActionDAO.class.getName(), Level.ERROR, exception.toString());
+        } finally {
+            try {
+                if (connection != null) {
+                    Logger.log(QualityNonconformitiesActionDAO.class.getName(), Level.INFO, "Disconnecting to jdbc/qualityfollowup from getAllNonconformitiesAction");
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                Logger.log(QualityNonconformitiesActionDAO.class.getName(), Level.WARN, e.toString());
+            }
+        }
+
+        return nonconformitiesaction;
+    }
+    
+    @Override
+    public List<String> findDistinctValuesfromParameter(String parameter) {
+        List<String> result = new ArrayList<String>();
+        
+        StringBuilder query = new StringBuilder();
+        query.append("SELECT distinct ");
+        query.append(parameter);
+        query.append(" FROM qualitynonconformitiesaction order by ");
+        query.append(parameter);
+        query.append(" asc");
+        
+        Logger.log(QualityNonconformitiesActionDAO.class.getName(), Level.INFO, "Connecting to jdbc/qualityfollowup from findDistinctValuesfromParameter");
+        Connection connection = this.databaseSpring.connect();
+        try {
+            PreparedStatement preStat = connection.prepareStatement(query.toString());
+            try {
+                ResultSet resultSet = preStat.executeQuery();
+                try {
+                 
+                    while (resultSet.next()) {
+                        result.add(resultSet.getString(1)== null ? "" : resultSet.getString(1) );
+                    }
+
+            resultSet.close();
+                } catch (SQLException exception) {
+                    Logger.log(QualityNonconformitiesActionDAO.class.getName(), Level.ERROR, exception.toString());
+                } finally {
+                    resultSet.close();
+                } 
+         
+            } catch (SQLException exception) {
+                Logger.log(QualityNonconformitiesActionDAO.class.getName(), Level.ERROR, exception.toString());
+            } finally {
+                preStat.close();
+            }
+        
+        } catch (SQLException exception) {
+            Logger.log(QualityNonconformitiesActionDAO.class.getName(), Level.ERROR, exception.toString());
+        } finally {
+            try {
+                if (connection != null) {
+                    Logger.log(QualityNonconformitiesActionDAO.class.getName(), Level.INFO, "Disconnecting to jdbc/qualityfollowup from findDistinctValuesfromParameter");
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                Logger.log(QualityNonconformitiesActionDAO.class.getName(), Level.WARN, e.toString());
+            }
+        }
+        return result;  }
+    
 }

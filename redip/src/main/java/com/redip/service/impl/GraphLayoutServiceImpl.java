@@ -7,8 +7,13 @@ package com.redip.service.impl;
 import com.redip.service.IGraphLayoutService;
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.GradientPaint;
+import java.awt.Paint;
 import java.awt.Shape;
+import java.awt.TexturePaint;
+import java.awt.Transparency;
 import java.awt.image.BufferedImage;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -16,7 +21,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JPanel;
 import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.CategoryAxis;
 import org.jfree.chart.axis.CategoryLabelPositions;
@@ -31,6 +38,7 @@ import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.chart.renderer.category.CategoryItemRenderer;
 import org.jfree.chart.renderer.category.LineAndShapeRenderer;
+import org.jfree.chart.renderer.category.StackedBarRenderer;
 import org.jfree.chart.renderer.xy.XYBarRenderer;
 import org.jfree.chart.renderer.xy.XYItemRenderer;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
@@ -308,13 +316,24 @@ public class GraphLayoutServiceImpl implements IGraphLayoutService {
         NumberAxis numberaxis = (NumberAxis) categoryplot.getRangeAxis();
         numberaxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
         numberaxis.setUpperMargin(0.14999999999999999D);
+        Paint p1 = new GradientPaint(0.0f, 0.0f, new Color(0x22, 0x22, 0xFF),
+                0.0f, 0.0f, new Color(0x88, 0x88, 0xFF));
+        Paint p2 = new GradientPaint(
+            0.0f, 0.0f, new Color(0x22, 0xFF, 0x22), 0.0f, 0.0f, new Color(0x88, 0xFF, 0x88));
+        Paint p3 = new GradientPaint(
+            0.0f, 0.0f, new Color(0xFF, 0x22, 0x22), 0.0f, 0.0f, new Color(0xFF, 0x88, 0x88));
+        Paint p4 = new GradientPaint(
+            0.0f, 0.0f, new Color(0xFF, 0xFF, 0x22), 0.0f, 0.0f, new Color(0xFF, 0xFF, 0x88));
         CategoryItemRenderer categoryitemrenderer = categoryplot.getRenderer();
         categoryitemrenderer.setBaseItemLabelGenerator(new StandardCategoryItemLabelGenerator());
         categoryitemrenderer.setSeriesItemLabelsVisible(0, Boolean.TRUE);
-        
         categoryitemrenderer.setSeriesItemLabelsVisible(1, Boolean.TRUE);
         categoryitemrenderer.setSeriesItemLabelsVisible(2, Boolean.TRUE);
-        categoryitemrenderer.setSeriesPaint(0, Color.BLUE);
+        categoryitemrenderer.setSeriesItemLabelsVisible(3, Boolean.TRUE);
+        categoryitemrenderer.setSeriesPaint(0, p1);
+        categoryitemrenderer.setSeriesPaint(1, p2);
+        categoryitemrenderer.setSeriesPaint(2, p3);
+        categoryitemrenderer.setSeriesPaint(3, p4);
         CategoryAxis categoryaxis = categoryplot.getDomainAxis();
         categoryaxis.setCategoryLabelPositions(CategoryLabelPositions.UP_45);
 
@@ -334,16 +353,24 @@ public class GraphLayoutServiceImpl implements IGraphLayoutService {
         NumberAxis numberaxis = (NumberAxis) categoryplot.getRangeAxis();
         numberaxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
         numberaxis.setUpperMargin(0.14999999999999999D);
+        Paint p1 = new GradientPaint(0.0f, 0.0f, new Color(0x22, 0x22, 0xFF),
+                0.0f, 0.0f, new Color(0x88, 0x88, 0xFF));
+        Paint p2 = new GradientPaint(
+            0.0f, 0.0f, new Color(0x22, 0xFF, 0x22), 0.0f, 0.0f, new Color(0x88, 0xFF, 0x88));
+        Paint p3 = new GradientPaint(
+            0.0f, 0.0f, new Color(0xFF, 0x22, 0x22), 0.0f, 0.0f, new Color(0xFF, 0x88, 0x88));
+        Paint p4 = new GradientPaint(
+            0.0f, 0.0f, new Color(0xFF, 0xFF, 0x22), 0.0f, 0.0f, new Color(0xFF, 0xFF, 0x88));
         CategoryItemRenderer categoryitemrenderer = categoryplot.getRenderer();
         categoryitemrenderer.setBaseItemLabelGenerator(new StandardCategoryItemLabelGenerator());
         categoryitemrenderer.setSeriesItemLabelsVisible(0, Boolean.TRUE);
         categoryitemrenderer.setSeriesItemLabelsVisible(1, Boolean.TRUE);
         categoryitemrenderer.setSeriesItemLabelsVisible(2, Boolean.TRUE);
         categoryitemrenderer.setSeriesItemLabelsVisible(3, Boolean.TRUE);
-        categoryitemrenderer.setSeriesPaint(0, Color.BLUE);
-        categoryitemrenderer.setSeriesPaint(1, Color.RED);
-        categoryitemrenderer.setSeriesPaint(2, Color.GREEN);
-        categoryitemrenderer.setSeriesPaint(3, Color.ORANGE);
+        categoryitemrenderer.setSeriesPaint(0, p1);
+        categoryitemrenderer.setSeriesPaint(1, p2);
+        categoryitemrenderer.setSeriesPaint(2, p3);
+        categoryitemrenderer.setSeriesPaint(3, p4);
         CategoryAxis categoryaxis = categoryplot.getDomainAxis();
         categoryaxis.setCategoryLabelPositions(CategoryLabelPositions.UP_45);
 
@@ -360,6 +387,19 @@ public class GraphLayoutServiceImpl implements IGraphLayoutService {
 
         JFreeChart jfreechart = ChartFactory.createStackedBarChart(name, "Category", "Value", categorydataset, PlotOrientation.VERTICAL, true, true, false);
         CategoryPlot categoryplot = (CategoryPlot) jfreechart.getPlot();
+        StackedBarRenderer stackedbarrenderer = (StackedBarRenderer)categoryplot.getRenderer();
+        stackedbarrenderer.setDrawBarOutline(false);
+	stackedbarrenderer.setBaseItemLabelsVisible(true);
+	stackedbarrenderer.setBaseItemLabelGenerator(new StandardCategoryItemLabelGenerator());
+              
+        Paint p1 = new GradientPaint(0.0f, 0.0f, new Color(0x22, 0x22, 0xFF),
+                0.0f, 0.0f, new Color(0x88, 0x88, 0xFF));
+        Paint p2 = new GradientPaint(
+            0.0f, 0.0f, new Color(0x22, 0xFF, 0x22), 0.0f, 0.0f, new Color(0x88, 0xFF, 0x88));
+        Paint p3 = new GradientPaint(
+            0.0f, 0.0f, new Color(0xFF, 0x22, 0x22), 0.0f, 0.0f, new Color(0xFF, 0x88, 0x88));
+        Paint p4 = new GradientPaint(
+            0.0f, 0.0f, new Color(0xFF, 0xFF, 0x22), 0.0f, 0.0f, new Color(0xFF, 0xFF, 0x88));
         NumberAxis numberaxis = (NumberAxis) categoryplot.getRangeAxis();
         numberaxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
         numberaxis.setUpperMargin(0.14999999999999999D);
@@ -369,14 +409,18 @@ public class GraphLayoutServiceImpl implements IGraphLayoutService {
         categoryitemrenderer.setSeriesItemLabelsVisible(1, Boolean.TRUE);
         categoryitemrenderer.setSeriesItemLabelsVisible(2, Boolean.TRUE);
         categoryitemrenderer.setSeriesItemLabelsVisible(3, Boolean.TRUE);
-        categoryitemrenderer.setSeriesPaint(0, Color.BLUE);
-        categoryitemrenderer.setSeriesPaint(1, Color.RED);
-        categoryitemrenderer.setSeriesPaint(2, Color.GREEN);
-        categoryitemrenderer.setSeriesPaint(3, Color.ORANGE);
+        categoryitemrenderer.setSeriesPaint(0, p1);
+        categoryitemrenderer.setSeriesPaint(1, p2);
+        categoryitemrenderer.setSeriesPaint(2, p3);
+        categoryitemrenderer.setSeriesPaint(3, p4);
         CategoryAxis categoryaxis = categoryplot.getDomainAxis();
         categoryaxis.setCategoryLabelPositions(CategoryLabelPositions.UP_45);
 
-
+        JPanel jpanel = new ChartPanel(jfreechart);
+	jpanel.setPreferredSize(new Dimension(500, 270));
+	
+        
+        
         bi = jfreechart.createBufferedImage(500, 270);
 
         return bi;

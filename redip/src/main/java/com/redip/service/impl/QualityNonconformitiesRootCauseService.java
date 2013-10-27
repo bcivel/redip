@@ -45,5 +45,10 @@ public class QualityNonconformitiesRootCauseService implements IQualityNonconfor
     public String updateQualityNonConformitiesRootCause(Integer id, String field, String content) {
         return qnrcDao.updateQualityNonConformitiesRootCause(id, field, content);
     }
+
+    @Override
+    public List<String> findDistinctValueFromParameter(String parameter) {
+        return qnrcDao.findDistinctValuesfromParameter(parameter);
+    }
     
 }

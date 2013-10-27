@@ -40,8 +40,9 @@
 //					title: 'Test',
 //					start: new Date(y, m, 2, 10, 30),
 //                                        end: new Date(y, m, 2, 11, 30),
-//                                        allDay: false
-//				}
+//                                        allDay: false, 
+//                                        className :'custom',
+//				},
 //				{
 //					title: 'Long Event',
 //					start: new Date(y, m, d-5),

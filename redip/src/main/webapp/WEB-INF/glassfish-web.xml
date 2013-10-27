@@ -3,6 +3,10 @@
 <glassfish-web-app error-url="">
   <context-root>/RedIP-1.0-SNAPSHOT</context-root>
   <class-loader delegate="true"/>
+  <security-role-mapping>
+    <role-name>user</role-name>
+    <group-name>users</group-name>
+  </security-role-mapping>
   <jsp-config>
     <property name="keepgenerated" value="true">
       <description>Keep a copy of the generated servlet class' java code.</description>
