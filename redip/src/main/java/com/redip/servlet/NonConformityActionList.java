@@ -238,7 +238,7 @@ public class NonConformityActionList extends HttpServlet {
             response.setContentType("application/json");
             response.getWriter().print(jsonResponse.toString());
         } catch (JSONException e) {
-            Logger.log(NonConformityDetails.class.getName(), Level.FATAL, "" + e);
+            Logger.log(NonConformityActionList.class.getName(), Level.FATAL, "" + e);
             response.setContentType("text/html");
             response.getWriter().print(e.getMessage());
         }
