@@ -147,6 +147,7 @@ public class NonConformityList extends HttpServlet {
                 //"<a href=\'javascript:popup(\"qualitynonconformitydetails.jsp?ncid="+listofnonconformities.getIdqualitynonconformities()+"\")\'>"+listofnonconformities.getIdqualitynonconformities()+"</a>"
                 row.put(listofnonconformities.getIdqualitynonconformities())
                         .put(listofnonconformities.getPriority())
+                        .put(listofnonconformities.getPartnerId())
                         .put(listofnonconformities.getProblemTitle())
                         //                        .put(listofnonconformities.getRootCauseCategory())
                         //                        .put(listofnonconformities.getRootCauseDescription())

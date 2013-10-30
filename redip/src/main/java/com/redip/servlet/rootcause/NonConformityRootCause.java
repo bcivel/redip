@@ -149,7 +149,7 @@ public class NonConformityRootCause extends HttpServlet {
                         .put(listofnonconformities.getRootCauseDescription())
                         .put(listofnonconformities.getStatus())
                         .put(listofnonconformities.getSeverity())
-                        .put("<a href=\"qualitynonconformitydetails.jsp?ncid=" + listofnonconformities.getIdqualitynonconformitiesrootcause() + "\">edit</a>");
+                        .put("<a href=\"qualitynonconformityrootcausedetails.jsp?rcid=" + listofnonconformities.getIdqualitynonconformitiesrootcause() + "\">edit</a>");
                 data.put(row);
             }
             jsonResponse.put("aaData", data);

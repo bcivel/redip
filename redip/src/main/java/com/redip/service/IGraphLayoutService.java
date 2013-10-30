@@ -38,6 +38,19 @@ public interface IGraphLayoutService {
      */
     public BufferedImage generateLineChart(TimeSeriesCollection timeseriescollection, String title,
             String xname, String name, int countSerie, int countHistoSerie);
+    
+     /**
+     * 
+     * @param timeseriescollection
+     * @param title Title of the graph
+     * @param xname Label of the abcisse axis
+     * @param name
+     * @param countSerie Number of principal series
+     * @param countHistoSerie Number of historical series
+     * @return Line chart
+     */
+    public BufferedImage generateTimeBarChart(TimeSeriesCollection timeseriescollection, String title,
+            String xname, String name);
 
     /**
      * 

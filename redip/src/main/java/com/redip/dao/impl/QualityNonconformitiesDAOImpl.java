@@ -508,7 +508,7 @@ public class QualityNonconformitiesDAOImpl implements IQualityNonconformitiesDAO
         query.append("SELECT idqualitynonconformities, ProblemCategory, ");
         query.append(" ProblemDescription, ");
         query.append(" RootCauseCategory, RootCauseDescription, Responsabilities, ");
-        query.append(" Status, Comments, Severity, problemTitle, priority, deadline FROM qualitynonconformities where status not in ('CLOSED') and responsabilities = '");
+        query.append(" Status, Comments, Severity, problemTitle, priority, deadline, partnerID FROM qualitynonconformities where status not in ('CLOSED') and responsabilities = '");
         query.append(responsability);
         query.append("'");
         
@@ -598,6 +598,7 @@ public class QualityNonconformitiesDAOImpl implements IQualityNonconformitiesDAO
                 nonconformitiestoadd.setProblemTitle(resultSet.getString(10) == null ? "" : resultSet.getString(10));
                 nonconformitiestoadd.setPriority(resultSet.getString(11) == null ? "" : resultSet.getString(11));
                 nonconformitiestoadd.setDeadline(resultSet.getString(12) == null ? "" : resultSet.getString(12));
+                nonconformitiestoadd.setPartnerId(resultSet.getString(13) == null ? "" : resultSet.getString(13));
 
                 nonconformities.add(nonconformitiestoadd);
             }

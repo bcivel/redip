@@ -87,7 +87,7 @@ public class GeneratePicture extends HttpServlet {
             String fromDate = "";
             String toDate = "";
 
-            Logger.log(GeneratePicture.class.getName(), Level.INFO, type);
+            Logger.log(GeneratePicture.class.getName(), Level.INFO, "Type : "+type+" / title : "+title);
 
             List<GraphScript> gsList = gsService.findGraphScriptByGraphName(graphName);
 
@@ -165,6 +165,10 @@ public class GeneratePicture extends HttpServlet {
 
             if (type.equals("bar")) {
                 toto = ggs.generateHorizontalBarGraph(
+                        resultSetBar, title, xLabel);
+            }
+            if (type.equals("timebar")) {
+                toto = ggs.generateTimeBarGraph(
                         resultSetBar, title, xLabel);
             }
             if (type.equals("verticalbar")) {

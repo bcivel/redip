@@ -425,4 +425,36 @@ public class GraphLayoutServiceImpl implements IGraphLayoutService {
 
         return bi;
     }
+
+    @Override
+    public BufferedImage generateTimeBarChart(TimeSeriesCollection timeseriescollection, String title, String xname, String name) {
+        BufferedImage bi = null;
+        boolean fc = false;
+        XYDataset xydataset = timeseriescollection;
+
+        JFreeChart jfreechart = ChartFactory.createTimeSeriesChart(title, xname, "number", xydataset, true, true, false);
+        XYPlot xyplot = (XYPlot) jfreechart.getPlot();
+        XYBarRenderer barrenderer = new XYBarRenderer();
+        xyplot.setRenderer(barrenderer);
+        NumberAxis rangeAxis = (NumberAxis) xyplot.getRangeAxis();
+        rangeAxis.setAutoRangeIncludesZero(true);
+        xyplot.setDomainCrosshairVisible(true);
+        xyplot.setRangeCrosshairVisible(false);
+//        XYItemRenderer xyitemrenderer = xyplot.getRenderer();
+//        if (xyitemrenderer instanceof XYLineAndShapeRenderer) {
+//            Shape point = ShapeUtilities.createDiagonalCross(1, 1);
+//            XYLineAndShapeRenderer xylineandshaperenderer = (XYLineAndShapeRenderer) xyitemrenderer;
+//            xylineandshaperenderer.setBaseShapesVisible(true);
+//            xylineandshaperenderer.setBaseShapesFilled(true);
+//        }
+        DateAxis dateaxis = (DateAxis) xyplot.getDomainAxis();
+        dateaxis.setDateFormatOverride(new SimpleDateFormat("yyyy/MM/dd"));
+
+
+        bi = jfreechart.createBufferedImage(500, 270);
+
+
+
+        return bi;
+    }
 }

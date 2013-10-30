@@ -88,6 +88,7 @@
                     "aoColumns": [
                         {"sName": "ID",bVisible:false, "sWidth": "5%"},
                         {"sName": "Priority", "sWidth": "5%"},
+                        {"sName": "PartnerID", "sWidth": "10%"},
                         {"sName": "ProblemTitle", "sWidth": "30%"},
                         {"sName": "Status", "sWidth": "10%"},
                         {"sName": "Severity", "sWidth": "10%"},
@@ -126,6 +127,9 @@
                         {onblur: 'submit',
                             type: 'text',
                             placeholder:''},
+                        {onblur: 'submit',
+                            type: 'text',
+                            placeholder:''},
                         {onchange: 'submit',
                             placeholder:''},
                         {loadtext: 'loading...',
@@ -159,6 +163,7 @@
                     <tr>
                         <th>Id</th>
                         <th>Priority</th>
+                        <th>PartnerID</th>
                         <th>ProblemTitle</th>
                         <th>Status</th>
                         <th>Priority</th>

@@ -418,4 +418,46 @@ public class GraphGenerationServiceImpl implements IGraphGenerationService {
 
         return result;
     }
+
+    @Override
+    public BufferedImage generateTimeBarGraph(List<List<String>> data, String title, String xLabel) {
+        BufferedImage result = null;
+        TimeSeriesCollection timeseriescollection = new TimeSeriesCollection();
+
+        try {
+            /*Create timeseries with the data*/
+            String timeseriesname = "";
+            TimeSeries timeseries = new TimeSeries("", Minute.class);
+            String s = "init";
+            for (List<String> row : data) {
+                if (!row.get(0).equals(s)) {
+                    if (!s.equals("init")) {
+                        timeseriescollection.addSeries(timeseries);
+                    }
+                    s = row.get(0);
+                    timeseriesname = row.get(0);
+                    timeseries = new TimeSeries(timeseriesname, Minute.class);
+                }
+                String tims = row.get(1).toString();
+                int year = Integer.valueOf(tims.substring(0, 4));
+                int month = Integer.valueOf(tims.substring(5, 7));
+                int day = Integer.valueOf(tims.substring(8, 10));
+//                int hour = Integer.valueOf(tims.substring(11, 13));
+//                int min = Integer.valueOf(tims.substring(14, 16));
+                int hour = 00;
+                int min = 00;
+                float value = Float.valueOf(row.get(2).toString());
+                Logger.log(GraphGenerationServiceImpl.class.getName(), Level.INFO, year+"/"+month+":"+value);
+                timeseries.addOrUpdate(new Minute(min, hour, day, month, year), value);
+            }
+            timeseriescollection.addSeries(timeseries);
+
+            result = graphGenerationService.generateTimeBarChart(timeseriescollection, title, xLabel, title);
+            //result = graphGenerationService.generateLineChart(defaultcategorydataset, timeseriesname, 4);
+        } catch (Exception ex) {
+            Logger.log(GraphGenerationServiceImpl.class.getName(), Level.FATAL, ex.toString());
+        }
+
+        return result;
+    }
 }

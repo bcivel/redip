@@ -46,6 +46,15 @@ public interface IGraphGenerationService {
      */
     BufferedImage generateLineGraph(List<List<String>> data, List<List<String>> historicData, String versus, String title, String xLabel);
 
+    /**
+     * 
+     * @param data List of data
+     * @param title Title of the graphic
+     * @param xLabel Label of the abcisse
+     * @return Line graph in a BufferedImage format
+     */
+    BufferedImage generateTimeBarGraph(List<List<String>> data, String title, String xLabel);
+
    
     /**
      * 

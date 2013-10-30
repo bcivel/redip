@@ -71,9 +71,10 @@
             
             
         %>
-
+        <br>
+        <div class="ncdescriptionfirstpart" style="vertical-align: central">
         <form action="qualitynonconformitiesreporting.jsp" method="get" name="reporting">
-            <table id="arrond">
+            <table>
                 <tr><td id="wob" style="width: 50px; font-weight: bold;">From Week</td>
                     <td class="simpleline" style="width:127px;">
                         <select name="fromWeek" style="width:127px;" 
@@ -101,21 +102,19 @@
                 </tr>
             </table>    
         </form>
-  
-        <table><tr><td>
-                    <table id="arrond">
-                        <tr><td><img src="GeneratePicture?graph=nc_opened&fromWeek=<%=fromWeek%>&toWeek=<%=toWeek%>"></br>
-                            </td>
-                        <td><img src="GeneratePicture?graph=nc_week_opened&fromWeek=<%=fromWeek%>&toWeek=<%=toWeek%>"></br>
-                            </td></tr>
-                        <tr><td><img src="GeneratePicture?graph=nc_week_closed&fromWeek=<%=fromWeek%>&toWeek=<%=toWeek%>"></br>
-                            </td>
-                        <td><img src="GeneratePicture?graph=nc_week_team&fromWeek=<%=fromWeek%>&toWeek=<%=toWeek%>"></br>
-                            </td></tr>
-                    </table>
-
-
-                </td></tr></table>
-        
+  </div>
+                        <br>
+     <div style="float:left; width:1200px" >
+        <div style="float:left"><img src="GeneratePicture?graph=nc_opened&fromWeek=<%=fromWeek%>&toWeek=<%=toWeek%>">
+        </div>
+        <div style="float:right"><img src="GeneratePicture?graph=nc_week_opened&fromWeek=<%=fromWeek%>&toWeek=<%=toWeek%>">
+        </div>
+     </div>
+     <div>
+        <div style="float:left"><img src="GeneratePicture?graph=nc_week_closed&fromWeek=<%=fromWeek%>&toWeek=<%=toWeek%>">
+        </div>
+        <div style="float:right"><img src="GeneratePicture?graph=nc_week_team&fromWeek=<%=fromWeek%>&toWeek=<%=toWeek%>">
+        </div>
+     </div>  
     </body>
 </html>
