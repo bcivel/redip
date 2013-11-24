@@ -80,7 +80,6 @@
                     sAddURL: "NonConformityAddRootCause",
                     sAddHttpMethod: "POST",
                     
-
                     oAddNewRowButtonOptions: {
                         label: "Add Root Cause...",
                         icons: {primary:'ui-icon-plus'}
@@ -154,30 +153,35 @@
             <form id="formAddNewRow" action="#" title="Add Root Cause" style="width:350px" method="post">
                 <br>
                
-                <div style="width: 310px; float:left">
-                    <label for="rootcauseCategory" style="font-weight:bold">rootcauseCategory</label>
-                    <input id="rootcauseCategory" name="rootcauseCategory" style="width:210px;" 
+                <div style="width: 810px; float:left">
+                    <label for="rootcauseCategory" style="font-weight:bold">Root Cause</label>
+                    <input id="rootcauseCategory" name="rootcauseCategory" style="width:610px;" 
                             class="ncdetailstext">
                 </div>
-                <div style="width: 250px; float:left">
-                <label for="rootcauseDescription" style="font-weight:bold">rootcauseDescription</label>
-                <input id="rootcauseDescription" name="rootcauseDescription" style="width:150px;" 
+                <br><br><br>
+                <div style="width: 810px; clear:both">
+                <label for="rootcauseDescription" style="font-weight:bold">rootcause Description</label>
+                <input id="rootcauseDescription" name="rootcauseDescription" style="width:610px;" 
                                     class="ncdetailstext"
                                     >
                 </div>
+                <br><br><br>
+                <div style="width: 250px; float:left">
                 <label for="component" style="font-weight:bold">component</label>
                 <input type="text" name="component" id="component" style="width:100px"/>
+                </div>
+                <div style="width: 250px; float:left">
                 <label for="responsabilities" style="font-weight:bold">responsabilities</label>
                 <input type="text" name="responsabilities" id="responsabilities" style="width:100px"/>
-                
-                <br /><br>
+                </div>
+                <br><br><br>
+                <div style="width: 300px; clear:both">
                 <label for="status" style="font-weight:bold">status</label>
-                <input type="text" name="status" id="status" class="ncdetailstext" style="width:400px"/>
-                
-                <br /><br><br>
-                <div style="width: 900px; clear:both">
+                <select type="text" name="status" id="status" class="ncdetailstext" style="width:200px"></select>
+                </div>
+                <div style="width: 300px; float:left">
                 <label for="severity" style="font-weight:bold">severity</label>
-                <input type="text" name="severity" class="ncdetailstext" id="severity" style="width:700px;"/>
+                <select type="text" name="severity" class="ncdetailstext" id="severity" style="width:200px;"></select>
                 </div>
                 
                 <br /><br />
@@ -185,6 +189,23 @@
                 <button id="btnAddNewRowCancel">Cancel</button>
             </form>
         </div>
-
+<script type="text/javascript">
+                        (document).ready($.get('GetInvariantList?idName=severity', function(data) {
+                            for (var i = 0; i < data.length; i++) {
+                                $("#severity").append($("<option></option>")
+                                        .attr("value", data[i])
+                                        .text(data[i]))
+                            }
+                        }));
+</script>
+<script type="text/javascript">
+                        (document).ready($.get('GetInvariantList?idName=status', function(data) {
+                            for (var i = 0; i < data.length; i++) {
+                                $("#status").append($("<option></option>")
+                                        .attr("value", data[i])
+                                        .text(data[i]))
+                            }
+                        }));
+</script>
     </body>
 </html>

@@ -45,8 +45,8 @@ public class QualityNonconformitiesServiceImpl implements IQualityNonconformitie
     }
 
     @Override
-    public QualityNonconformities getNumberOfNonconformities() {
-        return qualityNonconformitiesDao.getNumberOfNonconformities();
+    public QualityNonconformities getNumberOfNonconformities(String searchTerm, String inds) {
+        return qualityNonconformitiesDao.getNumberOfNonconformities(searchTerm, inds);
     }
 
     @Override
@@ -60,22 +60,17 @@ public class QualityNonconformitiesServiceImpl implements IQualityNonconformitie
     }
 
     @Override
-    public String addNonconformity(String problemTitle, String problemDescription,
-                String severity, String reproductibility, String linkToDoc, String behaviorExpected,
-                String detection, String startDate, String startTime, String screenshot) {
+    public String addNonconformity(QualityNonconformities nonconformitiestoadd) {
         String result = "";
         String date = DateUtil.getTodayFormat("yyyy/MM/dd HH:mm:ss");
                 
-        QualityNonconformities nonconformitiestoadd = factoryQNC.create(problemTitle, 
-                problemDescription, severity, reproductibility, linkToDoc, behaviorExpected, detection,
-                startDate, startTime, screenshot);
-        
         result = qualityNonconformitiesDao.addNonconformity(nonconformitiestoadd);
         Integer id = qualityNonconformitiesDao.getMaxId().getIdqualitynonconformities();
         
         Log creationLog = factoryLog.create(0, null, date, "CREATE", "qualitynonconformities", id.toString(),
-                null, problemTitle+";-;"+problemDescription+";-;"+severity+";-;"+reproductibility+";-;"+linkToDoc+";-;"+
-                behaviorExpected);
+                null, nonconformitiestoadd.getProblemTitle()+";-;"+nonconformitiestoadd.getProblemDescription()
+               +";-;"+nonconformitiestoadd.getSeverity()+";-;"+nonconformitiestoadd.getReproductibility()+";-;"
+                        +nonconformitiestoadd.getLinkToDoc()+";-;"+nonconformitiestoadd.getBehaviorExpected());
         
         logService.insertLog(creationLog);
         

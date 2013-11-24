@@ -33,8 +33,7 @@ public class ParameterDAO implements IParameterDAO {
     private IFactoryParameter factoryParameter;
 
     @Override
-    public Parameter findParameterByKey(String key) throws QualityException{
-        boolean throwExep = false;
+    public Parameter findParameterByKey(String key){
         Parameter result = null;
         final String query = "SELECT * FROM parameter p WHERE p.param = ? ";
 
@@ -52,7 +51,7 @@ public class ParameterDAO implements IParameterDAO {
                         String desc = resultSet.getString("description");
                         result = factoryParameter.create(key, value, desc);
                     }else{
-                        throwExep = true;
+                        result = factoryParameter.create(key, null, null);
                     }
                 } catch (SQLException exception) {
                     Logger.log(ParameterDAO.class.getName(), Level.ERROR, exception.toString());

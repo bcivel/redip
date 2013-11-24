@@ -92,8 +92,10 @@
 
                 //document.UpdateNonConformityDetails.submit();
                 var xhttp = new XMLHttpRequest();
-                xhttp.open("GET", "UpdateNonConformity?value=" + sValue + "&id=" + id + "&columnName=" + columnName, true);
-                xhttp.send();
+                //xhttp.open("GET", "NonConformityUpdateRootCause?value=" + sValue + "&id=" + id + "&columnName=" + columnName, true);
+                xhttp.open("POST", "NonConformityUpdateRootCause", true);
+                xhttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+                xhttp.send("value=" + sValue + "&id=" + id + "&columnName=" + columnName);
                 var xmlDoc = xhttp.responseText;
                 //alert(xmlDoc);
 
@@ -168,7 +170,7 @@
                 <form for="Severity" style="width: 170px" class="ncheader">Severity</form>
                 <select id="Severity" name="Severity" style="width:170px; font-size: medium" 
                        class="ncdetailstext" 
-                       onChange="javascript:updateNonconformity(this, 'Severity', '<%=rcid%>')"
+                       onChange="javascript:updateNonconformityRC(this, 'Severity', '<%=rcid%>')"
                        value="<%=qrc.getSeverity()%>">
                     <option value="NotDefined">-- To Be Defined --</option>
                 </select>
@@ -193,7 +195,7 @@
                 <form for="Component"  class="ncheader" style="width: 200px">Component :</form>
                 <input id="Component" name="Component" style="width:200px; font-size: medium" 
                        class="ncdetailstext" 
-                       onChange="javascript:updateNonconformity(this, 'Component', '<%=rcid%>')"
+                       onChange="javascript:updateNonconformityRC(this, 'Component', '<%=rcid%>')"
                        value="<%=qrc.getComponent()%>">
             </div>
             
@@ -204,7 +206,7 @@
                 <form for="RootCauseDescription" class="ncheader" style="width: 590px;height:20px">RootCauseDescription :</form>
                 <textarea id="RootCauseDescription" name="RootCauseDescription" style="width:590px; font-size: medium" 
                        class="ncdetailstext" rows="9"
-                       onChange="javascript:updateNonconformity(this, 'RootCauseDescription', '<%=rcid%>')"
+                       onChange="javascript:updateNonconformityRC(this, 'RootCauseDescription', '<%=rcid%>')"
                        value="<%=qrc.getRootCauseDescription()%>"><%=qrc.getRootCauseDescription()%></textarea>
             </div>
         </div><div class="nctablefooter" style="height:6px; clear:both"></div></div>

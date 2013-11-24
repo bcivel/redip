@@ -107,7 +107,7 @@ public class QualityNonconformitiesDAOImpl implements IQualityNonconformitiesDAO
         query.append("SELECT idqualitynonconformities, ProblemCategory, ");
         query.append(" ProblemDescription, ");
         query.append(" RootCauseCategory, RootCauseDescription, Responsabilities, ");
-        query.append(" Status, Comments, Severity, problemTitle FROM qualitynonconformities ");
+        query.append(" Status, Comments, Severity, problemTitle, detection, substr(datecre,1,16) FROM qualitynonconformities ");
         
         gSearch.append(" where (idqualitynonconformities like '%");
         gSearch.append(searchTerm);
@@ -182,7 +182,10 @@ public class QualityNonconformitiesDAOImpl implements IQualityNonconformitiesDAO
                 nonconformitiestoadd.setComments(resultSet.getString(8) == null ? "" : resultSet.getString(8));
                 nonconformitiestoadd.setSeverity(resultSet.getString(9) == null ? "" : resultSet.getString(9));
                 nonconformitiestoadd.setProblemTitle(resultSet.getString(10) == null ? "" : resultSet.getString(10));
+                nonconformitiestoadd.setDetection(resultSet.getString(11) == null ? "" : resultSet.getString(11));
+                nonconformitiestoadd.setDateCre(resultSet.getString(12) == null ? "" : resultSet.getString(12));
 
+                
                 nonconformities.add(nonconformitiestoadd);
             }
 
@@ -215,10 +218,55 @@ public class QualityNonconformitiesDAOImpl implements IQualityNonconformitiesDAO
     }
 
     @Override
-    public QualityNonconformities getNumberOfNonconformities() {
+    public QualityNonconformities getNumberOfNonconformities(String searchTerm, String inds) {
         QualityNonconformities nonconformitiestoadd = new QualityNonconformities();
         StringBuilder query = new StringBuilder();
+        StringBuilder gSearch = new StringBuilder();
+        String searchSQL = "";
+        
         query.append("SELECT count(*) FROM qualitynonconformities");
+        
+        gSearch.append(" where (idqualitynonconformities like '%");
+        gSearch.append(searchTerm);
+        gSearch.append("%'");
+        gSearch.append(" or ProblemCategory like '%");
+        gSearch.append(searchTerm);
+        gSearch.append("%'");
+        gSearch.append(" or ProblemDescription like '%");
+        gSearch.append(searchTerm);
+        gSearch.append("%'");
+        gSearch.append(" or RootCauseCategory like '%");
+        gSearch.append(searchTerm);
+        gSearch.append("%'");
+        gSearch.append(" or RootCauseDescription like '%");
+        gSearch.append(searchTerm);
+        gSearch.append("%'");
+        gSearch.append(" or Responsabilities like '%");
+        gSearch.append(searchTerm);
+        gSearch.append("%'");
+        gSearch.append(" or Status like '%");
+        gSearch.append(searchTerm);
+        gSearch.append("%'");
+        gSearch.append(" or Comments like '%");
+        gSearch.append(searchTerm);
+        gSearch.append("%'");
+        gSearch.append(" or Severity like '%");
+        gSearch.append(searchTerm);
+        gSearch.append("%'");
+        gSearch.append(" or problemTitle like '%");
+        gSearch.append(searchTerm);
+        gSearch.append("%')");
+        
+        if(!searchTerm.equals("") && !inds.equals("")){
+            searchSQL = gSearch.toString() + " and " + inds;
+        }
+        else if(!inds.equals("")){
+            searchSQL = " where " + inds;
+        }else if(!searchTerm.equals("")){
+            searchSQL=gSearch.toString();
+        }
+       
+        query.append(searchSQL);
 
         Logger.log(QualityNonconformitiesDAOImpl.class.getName(), Level.INFO, "Connecting to jdbc/qualityfollowup from getNumberOfNonconformities");
         Connection connection = this.databaseSpring.connect();

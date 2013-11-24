@@ -40,19 +40,39 @@
             @import "css/demo_page.css";
             @import "css/demo_table.css";
             @import "css/demo_table_jui.css";
-            @import "css/themes/base/jquery-ui.css";
-            @import "css/themes/smoothness/jquery-ui-1.7.2.custom.css";
+            @import "css/smoothness/jquery-ui-1.10.2.custom.min.css";
+            @import "css/elrte.min.css";
         </style>
+        <link rel="stylesheet" type="text/css" href="css/elrte.min.css">
         <link rel="shortcut icon" type="image/x-icon" href="pictures/favicon.ico" >
         <script type="text/javascript" src="javascript/jquery.js"></script>
+        <script type="text/javascript" src="javascript/jquery-migrate-1.2.1.min.js"></script>
         <script type="text/javascript" src="javascript/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="javascript/elrte.min.js"></script>
+        <script type="text/javascript" src="javascript/i18n/elrte.en.js"></script>
         <script type="text/javascript" src="javascript/jquery.jeditable.mini.js"></script>
         <script type="text/javascript" src="javascript/jquery.dataTables.min.js"></script>
         <script type="text/javascript" src="javascript/jquery.dataTables.editable.js"></script>
         <script type="text/javascript" src="javascript/jquery.validate.min.js"></script>
         <script type="text/javascript" src="javascript/jquery.paginate.js"></script>
         <script type="text/javascript" src="javascript/jquery.datepicker.addons.js"></script>
-        <script type="text/javascript" src="javascript/jquery-te-1.4.0.min.js" charset="utf-8"></script>
+        <!--<script type="text/javascript" src="javascript/jquery-te-1.4.0.min.js" charset="utf-8"></script>-->
+        <script>
+           $().ready(function() {
+                elRTE.prototype.options.toolbars.redip = ['style', 'alignment', 'colors', 'format', 'indent', 'lists', 'links'];
+                var opts = {
+                    lang         : 'en',
+                    styleWithCSS : false,
+                    width        : 1180,
+                    height       : 150,
+                    toolbar      : 'complete',
+                    allowSource  : true
+                };
+                $('#Screenshot').elrte(opts);
+                   
+            });
+            
+        </script>
     </head>
     <body id="wrapper">
         <script type="text/javascript">
@@ -69,9 +89,14 @@
 
                 //document.UpdateNonConformityDetails.submit();
                 var xhttp = new XMLHttpRequest();
-                xhttp.open("GET", "UpdateNonConformity?value=" + sValue + "&id=" + id + "&columnName=" + columnName, true);
-                xhttp.send();
+                xhttp.open("POST", "UpdateNonConformity", true);
+                xhttp.setRequestHeader("Content-Type","application/json;charset=UTF-8");
+                xhttp.send(JSON.stringify({value:sValue, id: id, columnName: columnName}));
+//       xhttp.send("host=" + vhost + "&port=" + vport + "&template=" + vtemplate + "&subject=" + vsubject + "&from=" + vfrom + "&to=" + vto + "&cc=" + vcc);
                 var xmlDoc = xhttp.responseText;
+                //xhttp.open("GET", "UpdateNonConformity?value=" + sValue + "&id=" + id + "&columnName=" + columnName, true);
+                //xhttp.send();
+                //var xmlDoc = xhttp.responseText;
                 //alert(xmlDoc);
 
                 //            var mylink = "UpdateNonConformity?value="+sValue+"&id="+id+"&columnName="+columnName;
@@ -90,6 +115,10 @@
 
                 //document.UpdateNonConformityDetails.submit();
                 var xhttp = new XMLHttpRequest();
+                // xhttp.open("POST", "UpdateNonConformityImpact", true);
+                //xhttp.setRequestHeader("Content-Type","application/json;charset=UTF-8");
+                //xhttp.send(JSON.stringify({value:sValue, id: id, columnName: columnName}));
+                //var xmlDoc = xhttp.responseText;
                 xhttp.open("GET", "UpdateNonConformityImpact?value=" + sValue + "&id=" + id + "&columnName=" + columnName, true);
                 xhttp.send();
                 var xmlDoc = xhttp.responseText;
@@ -163,10 +192,17 @@
                 IQualityNonconformitiesExchangeService nonconformitiesExchangeService = appContext.getBean(IQualityNonconformitiesExchangeService.class);
 //                IQualityNonconformitiesFollowerService nonconformitiesFollowerService = appContext.getBean(IQualityNonconformitiesFollowerService.class);
                 /*Pagination*/
-                QualityNonconformities qncCount = nonconformitiesService.getNumberOfNonconformities();
-                int maxid = qncCount.getCount();
+                //QualityNonconformities qncCount = nonconformitiesService.getAllNonconformities().size();
+                int maxid = nonconformitiesService.getAllNonconformities().size();
 
                 QualityNonconformities qnc = nonconformitiesService.getOneNonconformities(ncid);
+                
+                String screenshot = qnc.getScreenshot();
+//                                if (screenshot == null || screenshot.compareTo("null") == 0) {
+//                                    screenshot = new String(" ");
+//                                } else {
+//                                    screenshot = screenshot.replace(">", "&gt;");
+//                                }
 
 
                 /*NCImpact information*/
@@ -176,7 +212,8 @@
                 List<QualityNonconformitiesExchange> qnce = nonconformitiesExchangeService.findQualityNonconformitiesExchangeByID(ncid);
 //                List<QualityNonconformitiesFollower> qncf = nonconformitiesFollowerService.findQualityNonconformitiesFollowerByID(ncid);
 %>
-        <br>
+
+<br>
         <div class="ncdescriptioncontour">
         <div class="ncdescriptionfirstpart">
             <div style="width: 270px; float:left">
@@ -242,6 +279,8 @@
                     <%
                         for (QualityNonconformitiesImpact qnciInd : qnci) {
                             int numInc = qnciInd.getIdqualitynonconformitiesimpact();
+                            
+                           
                     %>
                     <tr>
                         <td><img style="vertical-align: middle" src="pictures/ButtonDelete.png" onClick="deleteLine('<%=numInc%>', '<%=ncid%>')"></img></td>
@@ -322,16 +361,21 @@
             </div>
             
             <div style="float:right; border-style: solid; border-width: 1px; background-color: white ">
-                <form  for="LinkToDoc" class="ncheader" style="width: 100%">Join File</form>
+                
+                <form  class="ncheader" style="width: 100%">Joined File</form>
     <form action="ImportFile" method="post" name="selectFile" enctype="multipart/form-data">    
-        
+        <div style="float:right; border-style: solid; border-width: 1px; background-color: white ">
+        Add File : 
         <input type="file" id="file" name="file" style="width:300px">
         <input id="Load" name="Load" style="display:none" value="Y">
+        <input id="idNC" name="idNC" style="display:none" value="<%=ncid%>">
         <input type="submit" value="Save Documents">
-    </form></div>
-            <div style="width: 100px; float:left">
-                <%=qnc.getLinkToDoc()%>
+        </div>
+    </form>
+        <div id="DocLink" name="DocLink"></div>
+                
             </div>
+            
 </div>
             <br><br><br>
             <div>
@@ -360,9 +404,11 @@
             </div>
             <div style="width: 1180px;float:left">
                 <form for="Screenshot" class="ncheader" style="width: 1180px;height:20px">Screenshot :</form>
-                <textarea id="Screenshot" name="Screenshot" style="width:1180px;height:150px; font-size: medium" 
+<!--                <textarea id="Screenshot" name="Screenshot" style="width:1180px;height:150px; font-size: medium" 
                        class="ncdetailstext" rows="9"
-                       value="<%=qnc.getScreenshot()%>"><%=qnc.getScreenshot()%></textarea>
+                       onChange="javascript:updateNonconformity(this, 'Screenshot', '<%=ncid%>')"></textarea>
+                 <input id="ScreenshotDetail" name="ScreenshotDetail" style="display:none" value="<%=qnc.getScreenshot()%>" />-->
+           <%out.print(screenshot);%>
             </div>
             
             <div class="field" style="width: 250px; clear:both">
@@ -394,12 +440,14 @@
                        onChange="javascript:updateNonconformity(this, 'Deadline', '<%=ncid%>')"
                        value="<%=qnc.getDeadline()%>">
             </div>
-             <div style="width: 100px; float:left">
-                <label for="Responsabilities" class="ncheader" style="width: 100px">Responsabilities</label><br/>
-                <input id="Responsabilities" name="Responsabilities" style="width:100px; font-size: medium" 
+             <div style="width: 150px; float:left">
+                <label for="Responsabilities" class="ncheader" style="width: 150px">Responsabilities</label><br/>
+                <select id="Responsabilities" name="Responsabilities" style="width:150px; font-size: medium" 
                        class="ncdetailstext" 
                        onChange="javascript:updateNonconformity(this, 'Responsabilities', '<%=ncid%>')"
                        value="<%=qnc.getResponsabilities()%>">
+                    <option value="NotDefined">-- To Be Defined --</option>
+                </select>
             </div>
             <div style="width: 200px; float:left">
                 <label for="PartnerId" class="ncheader" style="width: 200px">PartnerId</label><br/>
@@ -626,8 +674,8 @@
             $("#Status").val("<%=qnc.getStatus()%>");
         }));
     </script>
-    <script type="text/javascript">
-        (document).ready($.get('GetInvariantList?idName==responsablities', function(data) {
+   <script type="text/javascript">
+        (document).ready($.get('GetDistinctValueFromNonconformities?parameter=responsabilities', function(data) {
             for (var i = 0; i < data.length; i++) {
                 $("#Responsabilities").append($("<option></option>")
                         .attr("value", data[i])
@@ -636,30 +684,30 @@
             $("#Responsabilities").val("<%=qnc.getResponsabilities()%>");
         }));
     </script>
+    <script type="text/javascript">
+        (document).ready($.get('GetLinkToDoc?idNC=<%=ncid%>', function(data) {
+            for (var i = 0; i < data.length; i++) {
+                $("#DocLink").append($("<a></a>")
+                    .attr("href", "http://192.168.134.35/CerberusPictures/redip/"+<%=ncid%>+"/"+data[i].link)    
+                    .text(data[i].link)
+                    .append("<br>"))
+            }
+            
+        }));
+    </script>
    
     <br> 
 
-<!--    <script>
-        $('#ProblemDescription').jqte({blur: function() {
-                var id = <%=ncid%>;
-                var sValue = $('#ProblemDescription').val();
-                var xhttp = new XMLHttpRequest();
-                xhttp.open("GET", "UpdateNonConformity?value=" + sValue + "&id=" + id + "&columnName=ProblemDescription", true);
-                xhttp.send();
-                var xmlDoc = xhttp.responseText;
-            }});
-    </script>
-    <script>
-        $('#RootCauseDescription').jqte({blur: function() {
-                var id = <%=ncid%>;
-                var sValue = $('#RootCauseDescription').val();
-                var xhttp = new XMLHttpRequest();
-                xhttp.open("GET", "UpdateNonConformity?value=" + sValue + "&id=" + id + "&columnName=RootCauseDescription", true);
-                xhttp.send();
-                var xmlDoc = xhttp.responseText;
-            }});
+<script>
+        (document).ready($("#Screenshot").elrte('val', $('#ScreenshotDetail').val()));
+        //var valu = window.document.getElementById("ScreenshotDetail").value;
+//        var valu = "toti";
+//        alert("toto");
+//       
+//    $("#Screenshot").elrte('val', "valu");
+//});
+</script>
 
-    </script>-->
     <script>
         (document).ready($('#Pagination').paginate({
             count: <%=maxid%>,
@@ -705,11 +753,6 @@
     
 }
     </script>
-    <script>
-        $("#Screenshot").jqte();
-</script>
-    
-
     <%
         } catch (Exception e) {
             out.println(e);

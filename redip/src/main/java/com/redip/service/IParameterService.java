@@ -14,7 +14,7 @@ import java.util.List;
  */
 public interface IParameterService {
 
-    Parameter findParameterByKey(String key) throws QualityException;
+    Parameter findParameterByKey(String key);
     
     List<Parameter> findAllParameter() throws QualityException;
     

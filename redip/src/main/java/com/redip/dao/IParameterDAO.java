@@ -11,7 +11,7 @@ import java.util.List;
  */
 public interface IParameterDAO {
 
-    Parameter findParameterByKey(String key) throws QualityException;
+    Parameter findParameterByKey(String key);
 
     public List<Parameter> findAllParameter() throws QualityException;
     

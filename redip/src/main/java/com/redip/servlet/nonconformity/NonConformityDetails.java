@@ -46,6 +46,8 @@ public class NonConformityDetails extends HttpServlet {
         String[] deadline = null;
         String[] applicationFunctionnality = null;
         String[] statusList = null;
+        String[] rootcausecategory = null;
+        String[] responsabilities = null;
 
         if (request.getParameterValues("creator") != null) {
             creator = request.getParameterValues("creator");
@@ -62,7 +64,14 @@ public class NonConformityDetails extends HttpServlet {
         if (request.getParameterValues("status") != null) {
             statusList = request.getParameterValues("status");
         }
+        if (request.getParameterValues("responsabilities") != null) {
+            responsabilities = request.getParameterValues("responsabilities");
+        }
+        if (request.getParameterValues("rootcausecategory") != null) {
+            rootcausecategory = request.getParameterValues("rootcausecategory");
+        }
 
+        
         JSONObject result = new JSONObject();
         JSONArray array = new JSONArray();
         int amount = 10;
@@ -151,6 +160,25 @@ public class NonConformityDetails extends HttpServlet {
             sStatusList += " status like '%" + statusList[statusList.length - 1] + "%') ";
             sArray.add(sStatusList);
         }
+        
+        if (rootcausecategory != null) {
+            String sRootcausecategory = " (";
+            for (int a = 0; a < rootcausecategory.length - 1; a++) {
+                sRootcausecategory += " rootcausecategory like '%" + rootcausecategory[a] + "%' or";
+            }
+            sRootcausecategory += " rootcausecategory like '%" + rootcausecategory[rootcausecategory.length - 1] + "%') ";
+            sArray.add(sRootcausecategory);
+        }
+            
+        
+            if (responsabilities != null) {
+            String sResponsabilities = " (";
+            for (int a = 0; a < responsabilities.length - 1; a++) {
+                sResponsabilities += " responsabilities like '%" + responsabilities[a] + "%' or";
+            }
+            sResponsabilities += " responsabilities like '%" + responsabilities[responsabilities.length - 1] + "%') ";
+            sArray.add(sResponsabilities);
+        }
 
         StringBuilder individualSearch = new StringBuilder();
         if (sArray.size() == 1) {
@@ -202,7 +230,7 @@ public class NonConformityDetails extends HttpServlet {
         ApplicationContext appContext = WebApplicationContextUtils.getWebApplicationContext(this.getServletContext());
         IQualityNonconformitiesService qualityNonconformitiesService = appContext.getBean(IQualityNonconformitiesService.class);
 
-        QualityNonconformities numberOfNC = qualityNonconformitiesService.getNumberOfNonconformities();
+        QualityNonconformities numberOfNC = qualityNonconformitiesService.getNumberOfNonconformities(searchTerm, inds);
         List<QualityNonconformities> nonconformitieslist = qualityNonconformitiesService.getAllNonconformities(start, amount, colName, dir, searchTerm, inds);
 
         try {
@@ -212,20 +240,24 @@ public class NonConformityDetails extends HttpServlet {
                 JSONArray row = new JSONArray();
                 //"<a href=\'javascript:popup(\"qualitynonconformitydetails.jsp?ncid="+listofnonconformities.getIdqualitynonconformities()+"\")\'>"+listofnonconformities.getIdqualitynonconformities()+"</a>"
                 row.put(listofnonconformities.getIdqualitynonconformities())
+                        .put(listofnonconformities.getDetection())
+                        .put(listofnonconformities.getDateCre())
+                        .put(listofnonconformities.getStatus())
+                        .put(listofnonconformities.getSeverity())
                         .put(listofnonconformities.getProblemTitle())
                         .put(listofnonconformities.getProblemDescription())
+                        
                         //                        .put(listofnonconformities.getRootCauseCategory())
                         //                        .put(listofnonconformities.getRootCauseDescription())
-                        //                        .put(listofnonconformities.getResponsabilities())
-                        .put(listofnonconformities.getStatus())
-                        //                        .put(listofnonconformities.getComments())
-                        .put(listofnonconformities.getSeverity())
+                        .put(listofnonconformities.getResponsabilities())
+                        
                         .put("<a href=\"qualitynonconformitydetails.jsp?ncid=" + listofnonconformities.getIdqualitynonconformities() + "\">edit</a>");
                 data.put(row);
             }
             jsonResponse.put("aaData", data);
             jsonResponse.put("sEcho", echo);
             jsonResponse.put("iTotalRecords", numberOfNC.getCount());
+            //numberOfNC.getCount()
             jsonResponse.put("iDisplayLength", data.length());
             jsonResponse.put("iTotalDisplayRecords", numberOfNC.getCount());
 

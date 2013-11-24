@@ -136,7 +136,7 @@ public class NonConformityList extends HttpServlet {
         ApplicationContext appContext = WebApplicationContextUtils.getWebApplicationContext(this.getServletContext());
         IQualityNonconformitiesService qualityNonconformitiesService = appContext.getBean(IQualityNonconformitiesService.class);
 
-        QualityNonconformities numberOfNC = qualityNonconformitiesService.getNumberOfNonconformities();
+        //QualityNonconformities numberOfNC = qualityNonconformitiesService.getNumberOfNonconformities();
         List<QualityNonconformities> nonconformitieslist = qualityNonconformitiesService.findNonconformitiesOpenedByResponsability(start, amount, colName, dir, searchTerm, inds, responsabilities, null, null);
 
         try {
@@ -164,9 +164,10 @@ public class NonConformityList extends HttpServlet {
             }
             jsonResponse.put("aaData", data);
             jsonResponse.put("sEcho", echo);
-            jsonResponse.put("iTotalRecords", numberOfNC.getCount());
+            jsonResponse.put("iTotalRecords", data.length());
+            //numberOfNC.getCount()
             jsonResponse.put("iDisplayLength", data.length());
-            jsonResponse.put("iTotalDisplayRecords", numberOfNC.getCount());
+            jsonResponse.put("iTotalDisplayRecords", data.length());
 
             response.setContentType("application/json");
             response.getWriter().print(jsonResponse.toString());

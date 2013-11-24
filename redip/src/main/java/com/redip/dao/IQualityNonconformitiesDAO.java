@@ -21,7 +21,7 @@ public interface IQualityNonconformitiesDAO {
     
     List<QualityNonconformities> findNonconformitiesOpenedByResponsability(String responsability, String fromPriority, String toPriority);
     
-    QualityNonconformities  getNumberOfNonconformities();
+    QualityNonconformities  getNumberOfNonconformities(String searchTerm, String inds);
     
     QualityNonconformities  getMaxId();
     

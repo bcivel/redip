@@ -29,17 +29,23 @@
             @import "css/demo_table.css";
             @import "css/demo_table_jui.css";
             @import "css/themes/base/jquery-ui.css";
-            @import "css/themes/smoothness/jquery-ui-1.7.2.custom.css";
+            @import "css/smoothness/jquery-ui-1.10.2.custom.min.css";
+            @import "css/elrte.min.css";
         </style>
+        <link rel="stylesheet" type="text/css" href="css/elrte.min.css">
+        
         <link rel="shortcut icon" type="image/x-icon" href="pictures/favicon.ico" >
         <script type="text/javascript" src="javascript/jquery.js"></script>
         <script type="text/javascript" src="javascript/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="javascript/elrte.min.js"></script>
+        <script type="text/javascript" src="javascript/i18n/elrte.en.js"></script>
         <script type="text/javascript" src="javascript/jquery.jeditable.mini.js"></script>
         <script type="text/javascript" src="javascript/jquery.dataTables.min.js"></script>
         <script type="text/javascript" src="javascript/jquery.dataTables.editable.js"></script>
         <script type="text/javascript" src="javascript/jquery.validate.min.js"></script>
         <script type="text/javascript" src="javascript/jquery.datepicker.addons.js"></script>
         <script type="text/javascript" src="javascript/jquery-te-1.4.0.min.js" charset="utf-8"></script>
+        <script type="text/javascript" src="javascript/jquery-migrate-1.2.1.min.js"></script>
         <script type="text/javascript" src="javascript/jqplot/jquery.multiselect.js" charset="utf-8"></script>
         <script>
 	$(function() {
@@ -52,6 +58,7 @@
 		$( 'input' ).filter('.timeClass').timepicker();
 	});
 	</script>
+        
         <script>
 function getValue()
   {
@@ -63,7 +70,7 @@ function getValue()
             
     $(document).ready(function(){
             var test = getValue();
-                $('#nonConformityList').dataTable({
+              var oTable =  $('#nonConformityList').dataTable({
                     "aaSorting": [[ 0, "desc" ]],
 //                    "sDom": '<"top"p>',
                     "bServerSide": true,
@@ -76,6 +83,12 @@ function getValue()
                     "bSearchable": true,
                     "aTargets": [ 0 ],
                     "iDisplayLength":25,
+//                    "fnDrawCallback": function(){oTable.fnReloadAjax();},
+//                    "fnDrawCallback": function( nRow, aData, iDisplayIndex ) {
+//                            $(nRow).attr("id", aData[0][0]);
+//                            alert("TOTO");
+//                            return nRow;
+//                        },
                     "fnRowCallback": function( nRow, aData, iDisplayIndex ) {
 						/* Append the grade to the default row class name */
 						if ( aData[3] == "NEW" )
@@ -90,21 +103,26 @@ function getValue()
 					},
                     "aoColumns": [
                         {"sName": "Idqualitynonconformities", "sWidth": "5%"},
-                        {"sName": "ProblemTitle", "sWidth": "30%"},
-                        {"sName": "ProblemDescription", "sWidth": "30%"},
+                        {"sName": "Detection", "sWidth": "10%", "sClass": "center"},
+                        {"sName": "DateCre", "sWidth": "5%", "sClass": "center"},
                         {"sName": "Status", "sWidth": "10%"},
                         {"sName": "Severity", "sWidth": "10%"},
+                        {"sName": "ProblemTitle", "sWidth": "30%"},
+                        {"sName": "ProblemDescription", "sWidth": "30%"},
+                        {"sName": "Responsabilities", "sWidth": "30%"},
                         {"sName": "Edit", "sWidth": "5%"}
                     ]
                 }
             ).makeEditable({
                     sAddURL: "AddNonConformity",
                     sAddHttpMethod: "POST",
-                    callback: function(){window.open("qualitynonconformities", "_self");},
+//                    
+                   
                     oAddNewRowButtonOptions: {
                         label: "<b>Declare NonConformity...</b>",
                         background:"#AAAAAA",
                         icons: {primary:'ui-icon-plus'}
+//                        onclick: elrtEditor()
                     },
                     sDeleteHttpMethod: "POST",
                     sDeleteURL: "DeleteUser",
@@ -113,7 +131,7 @@ function getValue()
                         label: "Remove",
                         icons: {primary:'ui-icon-trash'}
                     },
-                    sUpdateURL: "UpdateNonConformity",
+                    sUpdateURL: "NonConformityUpdateTable",
                     fnOnEdited: function(status){
                         $(".dataTables_processing").css('visibility', 'hidden');
                     },
@@ -127,8 +145,7 @@ function getValue()
                         { },
                         {onblur: 'submit',
                             placeholder:''},
-                        {onblur: 'submit',
-                            placeholder:''},
+                        { },
                         {loadtext: 'loading...',
                             type: 'select',
                             onblur: 'submit',
@@ -139,17 +156,24 @@ function getValue()
                             onblur: 'submit',
                             data: "{'1 - HIGH':'1 - HIGH','2 - MEDIUM':'2 - MEDIUM','3 - LOW':'3 - LOW'}" ,
                             placeholder:''}, 
+                        {onblur: 'submit'},
+                        
+                        {onblur: 'submit'},
+                        
+                        { },
                         { },
                         { },
                         { }
                     ]
-                });
+                })
             });
+            
             
         </script>
         
     </head>
     <body  id="wrapper">
+        
         <%@ include file="static.jsp" %>
                     <%
                     String uri = "?";
@@ -184,6 +208,18 @@ function getValue()
                         for (int a = 0; a < startDate.length ; a++){
                     uri += "&startDate="+startDate[a];}
                     };
+                    
+                    if (request.getParameterValues("responsabilities") != null && !request.getParameter("responsabilities").equals("All")){
+                        String[] responsabilities = request.getParameterValues("responsabilities");
+                        for (int a = 0; a < responsabilities.length ; a++){
+                    uri += "&responsabilities="+responsabilities[a];}
+                    };
+                    
+                    if (request.getParameterValues("rootcausecategory") != null && !request.getParameter("rootcausecategory").equals("All")){
+                        String[] rootcausecategory = request.getParameterValues("rootcausecategory");
+                        for (int a = 0; a < rootcausecategory.length ; a++){
+                    uri += "&rootcausecategory="+rootcausecategory[a];}
+                    };
                     %>
         <br>
         <input id="testtest" value="<%=uri%>" style="display:none">
@@ -214,19 +250,34 @@ function getValue()
             <select style="width: 200px;float:left" multiple="multiple" id="startDate" name="startDate">
                </select>
         </div>
-            <div><input style="float:left" type="button" value="Filter" onClick="document.ExecFilters.submit()"></div>
+        <div style="width: 230px;float:left">
+            <!--<p style="float:left">status</p>-->
+            <select style="width: 200px;float:left" multiple="multiple" id="responsabilities" name="responsabilities">
+               </select>
+        </div>
+        <div style="width: 230px;float:left">
+            <!--<p style="float:left">status</p>-->
+            <select style="width: 200px;float:left" multiple="multiple" id="rootcausecategory" name="rootcausecategory">
+               </select>
+        </div>
+            <div><input style="float:left" type="button" value="Apply Filter" onClick="document.ExecFilters.submit()"></div>
         </form>
         </div>
+        <br>
+        <button id="create-nc" onclick="javascript:redirect()"> + Declare Nonconformity</button>
         <br>
         <div style="width: 80%;  font: 90% sans-serif">
             <table id="nonConformityList" class="display">
                 <thead>
                     <tr>
                         <th>Id</th>
-                        <th>ProblemTitle</th>
-                        <th>ProblemDescription</th>
+                        <th>Creator</th>
+                        <th>Creation Date</th>
                         <th>Status</th>
                         <th>Severity</th>
+                        <th>ProblemTitle</th>
+                        <th>ProblemDescription</th>
+                        <th>Responsabilities</th>
                         <th>Edit</th>
                     </tr>
                 </thead>
@@ -234,8 +285,9 @@ function getValue()
                 </tbody>
             </table>
         </div>
-        <div>
-            <form id="formAddNewRow" action="#" title="Add NonConformity" style="width:350px" method="post">
+        <!--<textarea name="Screenshot" id="Screenshot" style="width:900px;" rows="8"></textarea>-->
+        <div id="dialog" style="display:none">
+            <form id="formAddNewRow2" action="#" title="Add NonConformity" style="width:350px" method="post">
                 <br>
                 <div style="width: 310px; float:left">
                     <label for="Application" style="font-weight:bold">Application</label>
@@ -265,15 +317,13 @@ function getValue()
                 <br><br>
                 <div style="width: 520px; float:left">
                 <label for="ProblemDescription" style="font-weight:bold">ProblemDescription</label><br>
-                <textarea name="ProblemDescription" class="ncdetailstext" id="ProblemDescription" style="width:500px;" rows="10">
-
-                </textarea>
+                <textarea name="ProblemDescription" class="ncdetailstext" id="ProblemDescription" style="width:500px;" rows="10"></textarea>
                 </div>
-                <div style="width: 400px; float:left">
+                <br><br>
+                <div style="width: 400px; clear:both">
                 <label for="Screenshot" style="font-weight:bold">Screenshot</label><br>
-                <textarea name="Screenshot" class="ncdetailstext" id="Screenshot" style="width:400px;" rows="8">
-
-                </textarea>
+                <textarea name="Screenshot" id="Screenshot" class="ncdetailstext"  style="width:500px; height:105px"></textarea>
+                <input id="ScreenshotDetail" class="ncdetailstext" name="ScreenshotDetail" type="hidden" value="" />
                 </div>
                 <br><br><br><br><br>
                 <div style="width: 900px; clear:both">
@@ -284,6 +334,7 @@ function getValue()
                 <br /><br />
                 <button id="btnAddNewRowOk">Add</button>
                 <button id="btnAddNewRowCancel">Cancel</button>
+                
             </form>
         </div>
         <script type="text/javascript">
@@ -308,7 +359,8 @@ function getValue()
             for (var i = 0; i < data.length; i++) {
                 $("#status").append($("<option></option>")
                         .attr("value", data[i])
-                        .text(data[i]))
+                        .text(data[i]));
+                
             }
             $("#status").multiselect({
    header: "Status",
@@ -351,9 +403,9 @@ function getValue()
     }
         ));
     </script>
-    <script>
+<!--    <script>
         $("#Screenshot").jqte();
-</script>
+</script>-->
     <script type="text/javascript">
         (document).ready($.get('GetDistinctValueFromNonconformities?parameter=deadline', function(data) {
             for (var i = 0; i < data.length; i++) {
@@ -386,6 +438,70 @@ function getValue()
     }
         ));
     </script>
+    <script type="text/javascript">
+        (document).ready($.get('GetDistinctValueFromNonconformities?parameter=responsabilities', function(data) {
+            for (var i = 0; i < data.length; i++) {
+                $("#responsabilities").append($("<option></option>")
+                        .attr("value", data[i])
+                        .text(data[i]))
+            }
+            $("#responsabilities").multiselect({
+   header: "Responsabilities",
+   noneSelectedText:"Select Responsabilities",
+   selectedText: "# of # Responsabilities selected"
+});
+      
+    }
+        ));
+    </script>
+    <script type="text/javascript">
+        (document).ready($.get('GetDistinctValueFromNonconformities?parameter=rootcausecategory', function(data) {
+            for (var i = 0; i < data.length; i++) {
+                $("#rootcausecategory").append($("<option></option>")
+                        .attr("value", data[i])
+                        .text(data[i]))
+            }
+            $("#rootcausecategory").multiselect({
+   header: "RootCause",
+   noneSelectedText:"Select RootCause",
+   selectedText: "# of # RootCause selected"
+});
+      
+    }
+        ));
+    </script>
+     
+    <script>
+           $(function() {
+                
+                $( "#dialog" ).dialog({autoOpen: false,
+                                        height: 300,
+                                            width: 350
+                                                });
+                
+                   elRTE.prototype.options.toolbars.redip = ['style', 'alignment', 'colors', 'format', 'indent', 'lists', 'links'];
+                var opts = {
+                    lang         : 'en',
+                    styleWithCSS : false,
+                    width        : 615,
+                    height       : 200,
+                    toolbar      : 'complete',
+                    allowSource  : false
+                }
+             
+            $('#Screenshot').elrte(opts);
+            
+            
+
+
+            });
+        </script>
+        <script type="text/javascript">
+    function redirect(){
+        window.location = "qualitynonconformitiesadd.jsp";
+    }
+</script>
+    
         <%
             
         %>

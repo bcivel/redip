@@ -37,6 +37,17 @@ public class QualityNonconformities {
     private String startTime;
     private String screenshot;
     private String partnerId;
+    private String dateCre;
+
+    public String getDateCre() {
+        return dateCre;
+    }
+
+    public void setDateCre(String dateCre) {
+        this.dateCre = dateCre;
+    }
+    
+    
 
     public String getPartnerId() {
         return partnerId;

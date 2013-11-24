@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="3.0" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
     <display-name>RedIP</display-name>
+    <jsp-config>
+        <jsp-property-group>
+            <url-pattern>*.jsp</url-pattern>
+            <page-encoding>UTF-8</page-encoding>
+        </jsp-property-group>
+    </jsp-config>
     <servlet>
         <servlet-name>NonConformityDetails</servlet-name>
         <servlet-class>com.redip.servlet.nonconformity.NonConformityDetails</servlet-class>
@@ -129,6 +135,18 @@
         <servlet-name>GetDistinctValueFromNonconformitiesAction</servlet-name>
         <servlet-class>com.redip.servlet.GetDistinctValueFromNonconformitiesAction</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>NonConformityUpdateRootCause</servlet-name>
+        <servlet-class>com.redip.servlet.rootcause.NonConformityUpdateRootCause</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GetLinkToDoc</servlet-name>
+        <servlet-class>com.redip.servlet.GetLinkToDoc</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>NonConformityUpdateTable</servlet-name>
+        <servlet-class>com.redip.servlet.nonconformity.NonConformityUpdateTable</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>nonconformities</servlet-name>
         <url-pattern>/nonconformities</url-pattern>
@@ -256,6 +274,18 @@
     <servlet-mapping>
         <servlet-name>GetDistinctValueFromNonconformitiesAction</servlet-name>
         <url-pattern>/GetDistinctValueFromNonconformitiesAction</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>NonConformityUpdateRootCause</servlet-name>
+        <url-pattern>/NonConformityUpdateRootCause</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetLinkToDoc</servlet-name>
+        <url-pattern>/GetLinkToDoc</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>NonConformityUpdateTable</servlet-name>
+        <url-pattern>/NonConformityUpdateTable</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

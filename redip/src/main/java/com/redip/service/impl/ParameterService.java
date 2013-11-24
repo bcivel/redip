@@ -23,7 +23,7 @@ public class ParameterService implements IParameterService {
     private IParameterDAO parameterDao;
     
     @Override
-    public Parameter findParameterByKey(String key) throws QualityException{
+    public Parameter findParameterByKey(String key){
         return parameterDao.findParameterByKey(key);
     }
     

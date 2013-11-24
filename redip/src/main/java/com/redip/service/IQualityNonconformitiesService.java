@@ -21,15 +21,13 @@ public interface IQualityNonconformitiesService {
     
     List<QualityNonconformities> findNonconformitiesOpenedByResponsability(String responsability, String fromPosition, String toPosition);
     
-    QualityNonconformities  getNumberOfNonconformities();
+    QualityNonconformities  getNumberOfNonconformities(String searchTerm, String inds);
     
     QualityNonconformities  getMaxId();
     
     QualityNonconformities getOneNonconformities(int id);
     
-    String addNonconformity(String problemTitle, String problemDescription,
-                String severity, String reproductibility, String linkToDoc, 
-                String behaviorExpected, String detection, String startDate, String startTime, String screenshot);
+    String addNonconformity(QualityNonconformities nonconformitiestoadd);
     
     String updateNonconformity(int id, String column, String value);
     
