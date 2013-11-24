@@ -113,7 +113,7 @@
                         label: "Remove",
                         icons: {primary:'ui-icon-trash'}
                     },
-                    sUpdateURL: "UpdateNonConformity",
+                    sUpdateURL: "NonConformityUpdateTable",
                     fnOnEdited: function(status){
                         $(".dataTables_processing").css('visibility', 'hidden');
                     },
