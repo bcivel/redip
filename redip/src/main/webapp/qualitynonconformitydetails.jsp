@@ -688,7 +688,7 @@
         (document).ready($.get('GetLinkToDoc?idNC=<%=ncid%>', function(data) {
             for (var i = 0; i < data.length; i++) {
                 $("#DocLink").append($("<a></a>")
-                    .attr("href", "http://192.168.134.35/CerberusPictures/redip/"+<%=ncid%>+"/"+data[i].link)    
+                    .attr("href", "http://192.168.134.35/CerberusDocuments/redip/"+<%=ncid%>+"/"+data[i].link)    
                     .text(data[i].link)
                     .append("<br>"))
             }

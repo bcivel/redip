@@ -13,6 +13,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -39,54 +40,6 @@ public class ImportFile extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-//        Date date=new Date();
-//        DateFormat df = new SimpleDateFormat("yyyyMMdd_hhmm");
-//        String d = df.format(date);
-//        
-//        String saveFile = "";
-//        String contentType = request.getContentType();
-//        if ((contentType != null) && (contentType.indexOf("multipart/form-data") >= 0)) {
-//            DataInputStream in = new DataInputStream(request.getInputStream());
-//            int formDataLength = request.getContentLength();
-//            byte dataBytes[] = new byte[formDataLength];
-//            int byteRead = 0;
-//            int totalBytesRead = 0;
-//            while (totalBytesRead < formDataLength) {
-//                byteRead = in.read(dataBytes, totalBytesRead, formDataLength);
-//                totalBytesRead += byteRead;
-//            }
-//            String file = new String(dataBytes);
-//            saveFile = file.substring(file.indexOf("filename=\"") + 10);
-//            saveFile = saveFile.substring(0, saveFile.indexOf("\n"));
-//            saveFile = saveFile.substring(saveFile.lastIndexOf("\\") + 1, saveFile.indexOf("\""));
-//            int lastIndex = contentType.lastIndexOf("=");
-//            String boundary = contentType.substring(lastIndex + 1, contentType.length());
-//            int pos;
-//            pos = file.indexOf("filename=\"");
-//            pos = file.indexOf("\n", pos) + 1;
-//            pos = file.indexOf("\n", pos) + 1;
-//            pos = file.indexOf("\n", pos) + 1;
-//            int boundaryLocation = file.indexOf(boundary, pos) - 4;
-//            int startPos = ((file.substring(0, pos)).getBytes()).length;
-//            int endPos = ((file.substring(0, boundaryLocation)).getBytes()).length;
-//            
-//            File dir = new File("D:/CerberusDocuments/redip/");
-//            dir.mkdirs();
-//            
-//            saveFile = "D:/CerberusDocuments/redip/"+d+"_"+ saveFile;
-//            File ff = new File(saveFile);
-//            FileOutputStream fileOut = new FileOutputStream(ff);
-//            fileOut.write(dataBytes, startPos, (endPos - startPos));
-//            fileOut.flush();
-//            fileOut.close();
-//            
-//            ApplicationContext appContext = WebApplicationContextUtils.getWebApplicationContext(this.getServletContext());
-//            IQualityNonconformitiesService nonconformitiesService = appContext.getBean(IQualityNonconformitiesService.class);
-//        
-//            nonconformitiesService.getOneNonconformities(id);
-//
-//        }
         
         if (ServletFileUpload.isMultipartContent(request)) {
             FileItemFactory factory = new DiskFileItemFactory();
@@ -95,34 +48,51 @@ public class ImportFile extends HttpServlet {
             try {
                 String fileName = null;
                 List items = upload.parseRequest(request);
+                List items2 = items;
                 Iterator iterator = items.iterator();
+                Iterator iterator2 = items2.iterator();
                 File uploadedFile = null;
                 String idNC = "";
+                
                 while (iterator.hasNext()) {
                     FileItem item = (FileItem) iterator.next();
 
-                    if (!item.isFormField()) {
-                        fileName = item.getName();
-
-//                        String root = getServletContext().getRealPath("/");
-                        
-                    } else {
+                    if (item.isFormField()) {
                         String name = item.getFieldName();
                         if (name.equals("idNC")) {
                             idNC = item.getString();
                             System.out.println(idNC);
                         } 
-                    }
+                    } 
+                }
+                
+                
+                while (iterator2.hasNext()) {
+                    FileItem item = (FileItem) iterator2.next();
+
+                    if (!item.isFormField()) {
+                        fileName = item.getName();
+                        System.out.print(item.getSize());
                     
-                    String root = "D:/CerberusDocuments/redip/";
+                    String root = "D:\\CerberusDocuments\\redip\\";
                         File pathFile = new File(root + idNC);
                         if (!pathFile.exists()) {
                             pathFile.mkdirs();
                         }
-
-                        uploadedFile = new File(pathFile + "/" + fileName);
-                        System.out.println(uploadedFile.getAbsolutePath());
-                        item.write(uploadedFile);
+                       
+                    String fullPath = pathFile + "\\" + fileName;
+                    OutputStream outputStream = new FileOutputStream(fullPath);
+                    InputStream inputStream = item.getInputStream();
+                                        
+                    int readBytes = 0;
+                    byte[] buffer = new byte[10000];
+                    while ((readBytes = inputStream.read(buffer, 0, 10000)) != -1) {
+                         outputStream.write(buffer, 0, readBytes);
+                    }
+                    outputStream.close();
+                    inputStream.close();
+                    
+                }
                 }
                 
                 ApplicationContext appContext = WebApplicationContextUtils.getWebApplicationContext(this.getServletContext());
