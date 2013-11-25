@@ -162,7 +162,7 @@ function getValue()
                     if (request.getParameterValues("status") != null && !request.getParameter("status").equals("All")){
                         status = request.getParameterValues("status");
                         for (int a = 0; a < status.length ; a++){
-                    uri += "&statusList="+status[a];}
+                    uri += "&status="+status[a];}
                     };
                     
         
@@ -198,21 +198,21 @@ function getValue()
             <select style="width: 200px;float:left" multiple="multiple"  id="status" name="status">
                  </select>
         </div>
-        <div style="width: 230px;float:left">
-            <!--<p style="float:left">status</p>-->
+<!--        <div style="width: 230px;float:left">
+            <p style="float:left">status</p>
             <select style="width: 200px;float:left" multiple="multiple" id="priority" name="priority">
                </select>
-        </div>
+        </div>-->
         <div style="width: 230px;float:left">
             <!--<p style="float:left">status</p>-->
             <select style="width: 200px;float:left" multiple="multiple" id="deadline" name="deadline">
                </select>
         </div>
-        <div style="width: 230px;float:left">
-            <!--<p style="float:left">status</p>-->
+<!--        <div style="width: 230px;float:left">
+            <p style="float:left">status</p>
             <select style="width: 200px;float:left" multiple="multiple" id="date" name="date">
                </select>
-        </div>
+        </div>-->
             <div><input style="float:left" type="button" value="Filter" onClick="document.ExecFilters.submit()"></div>
         </form>
         </div>

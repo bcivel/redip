@@ -471,7 +471,7 @@
                        class="ncdetailstext" 
                        onChange="javascript:updateNonconformity(this, 'RootCauseCategory', '<%=ncid%>')"
                        value="<%=qnc.getRootCauseCategory()%>">
-                    <option value="NotDefined">-- To Be Defined --</option>
+                    <option value="To_Be_Defined">-- To Be Defined --</option>
                 </select>
             </div>
             <div class="nctablefooter" style="height:6px"></div>

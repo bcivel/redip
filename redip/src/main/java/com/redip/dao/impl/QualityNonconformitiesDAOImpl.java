@@ -440,7 +440,7 @@ public class QualityNonconformitiesDAOImpl implements IQualityNonconformitiesDAO
         
         final String sql = "INSERT INTO qualitynonconformities ( ProblemTitle, "
                 + "ProblemDescription, Severity, reproductibility, linkToDoc, behaviorExpected, status, detection"
-                + ",startdate, starttime, screenshot  ) values (?,?,?,?,?,?,?,?,?,?,?)";
+                + ",startdate, starttime, screenshot, rootCauseCategory  ) values (?,?,?,?,?,?,?,?,?,?,?,?)";
         String problemTitle = qualitync.getProblemTitle() == null ? "" : qualitync.getProblemTitle();
         String problemDesc = qualitync.getProblemDescription() == null ? "" : qualitync.getProblemDescription();
         String severity = qualitync.getSeverity() == null ? "" : qualitync.getSeverity();
@@ -452,6 +452,7 @@ public class QualityNonconformitiesDAOImpl implements IQualityNonconformitiesDAO
         String startDate = qualitync.getStartDate().isEmpty() ? startD : qualitync.getStartDate();
         String startTime = qualitync.getStartTime().isEmpty() ? startT : qualitync.getStartTime();
         String screenshot = qualitync.getScreenshot()== null ? "" : qualitync.getScreenshot();
+        String rootCause = "To_Be_Defined";
         
         Logger.log(QualityNonconformitiesDAOImpl.class.getName(), Level.INFO, "Connecting to jdbc/qualityfollowup from addNonconformity");
         Connection connection = this.databaseSpring.connect();
@@ -469,6 +470,7 @@ public class QualityNonconformitiesDAOImpl implements IQualityNonconformitiesDAO
                 preStat.setString(9, startDate);
                 preStat.setString(10, startTime);
                 preStat.setString(11, screenshot);
+                preStat.setString(12, rootCause);
                 int res = preStat.executeUpdate();
                 try {
                     

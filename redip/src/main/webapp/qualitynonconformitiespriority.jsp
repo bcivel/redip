@@ -130,7 +130,7 @@
                         {onblur: 'submit',
                             type: 'text',
                             placeholder:''},
-                        {onchange: 'submit',
+                        {onblur: 'submit',
                             placeholder:''},
                         {loadtext: 'loading...',
                             type: 'select',
