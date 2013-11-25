@@ -9,6 +9,7 @@ import com.redip.dao.IQualityNonconformitiesImpactDAO;
 import com.redip.database.DatabaseSpring;
 import com.redip.entity.QualityNonconformitiesImpact;
 import com.redip.log.Logger;
+import com.redip.util.DateUtil;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -210,6 +211,9 @@ public class QualityNonconformitiesImpactDAOImpl implements IQualityNonconformit
 @Override
     public String addNonconformityImpact(QualityNonconformitiesImpact qualitynci) {
         String statusmessage = "";
+        String startD = DateUtil.getTodayFormat("yyyy-MM-dd");
+        String startT = DateUtil.getTodayFormat("hh:mm");
+        
         final String sql = "INSERT INTO qualitynonconformitiesimpact (  idqualitynonconformities, Application "
                 + ",StartDate,StartTime, EndDate, EndTime, ImpactOrCost, orderImpacted, errorPages, timeConsumed  "
                 + " ) values (?,?,?,?,?,?,?,?,?,?)";
@@ -221,8 +225,8 @@ public class QualityNonconformitiesImpactDAOImpl implements IQualityNonconformit
             try {
                 preStat.setString(1, String.valueOf(qualitynci.getIdqualitynonconformities()));
                 preStat.setString(2, qualitynci.getApplication()== null ? "" : qualitynci.getApplication());
-                preStat.setString(3, qualitynci.getStartDate()== null ? "" : qualitynci.getStartDate());
-                preStat.setString(4, qualitynci.getStartTime()== null ? "" : qualitynci.getStartTime());
+                preStat.setString(3, qualitynci.getStartDate().isEmpty() ? startD : qualitynci.getStartDate());
+                preStat.setString(4, qualitynci.getStartTime().isEmpty() ? startT : qualitynci.getStartTime());
                 preStat.setString(5, qualitynci.getEndDate()== null ? "" : qualitynci.getEndDate());
                 preStat.setString(6, qualitynci.getEndTime()== null ? "" : qualitynci.getEndTime());
                 preStat.setString(7, qualitynci.getImpactOrCost()== null ? "" : qualitynci.getImpactOrCost());

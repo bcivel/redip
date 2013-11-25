@@ -11,6 +11,7 @@ import com.redip.service.IEmailService;
 import com.redip.service.IQualityNonconformitiesDocService;
 import com.redip.service.IQualityNonconformitiesImpactService;
 import com.redip.service.IQualityNonconformitiesService;
+import com.redip.util.DateUtil;
 import java.io.File;
 import java.io.FileOutputStream;
 import org.springframework.context.ApplicationContext;
@@ -135,9 +136,12 @@ public class NonConformityAdd extends HttpServlet {
             IEmailService emailService = appContext.getBean(IEmailService.class);
             IFactoryQualityNonconformities factoryQNC = appContext.getBean(IFactoryQualityNonconformities.class);
         
-        QualityNonconformities nonconformitiestoadd = factoryQNC.create(problemTitle, 
+            String startD = DateUtil.getTodayFormat("yyyy-MM-dd");
+            String startT = DateUtil.getTodayFormat("hh:mm");
+        
+            QualityNonconformities nonconformitiestoadd = factoryQNC.create(problemTitle, 
                 problemDescription, severity, reproductibility, linkToDoc, behaviorExpected, detection,
-                startDate, startTime, screenshot);
+                startDate==null?startD:startDate, startTime==null?startT:startTime, screenshot);
         
         String str = nonconformitiesService.addNonconformity(nonconformitiestoadd);
 
@@ -146,7 +150,7 @@ public class NonConformityAdd extends HttpServlet {
         nonconformitiestoadd.setIdqualitynonconformities(id);
         
         String str2 = nonconformitiesImpactService.addNonconformityImpact(id, application,
-                startDate, startTime, endDate, endTime, impactOrCost);
+                startDate==null?startD:startDate, startTime==null?startT:startTime, endDate, endTime, impactOrCost);
         
         boolean isFile = false;
          while (iterator2.hasNext()) {

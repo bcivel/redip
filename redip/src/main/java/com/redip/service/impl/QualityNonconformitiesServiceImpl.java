@@ -63,6 +63,7 @@ public class QualityNonconformitiesServiceImpl implements IQualityNonconformitie
     public String addNonconformity(QualityNonconformities nonconformitiestoadd) {
         String result = "";
         String date = DateUtil.getTodayFormat("yyyy/MM/dd HH:mm:ss");
+        
                 
         result = qualityNonconformitiesDao.addNonconformity(nonconformitiestoadd);
         Integer id = qualityNonconformitiesDao.getMaxId().getIdqualitynonconformities();

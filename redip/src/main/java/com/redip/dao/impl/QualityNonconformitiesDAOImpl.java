@@ -10,6 +10,7 @@ import com.redip.database.DatabaseSpring;
 import com.redip.entity.QualityNonconformities;
 import com.redip.factory.IFactoryQualityNonconformities;
 import com.redip.log.Logger;
+import com.redip.util.DateUtil;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -434,6 +435,9 @@ public class QualityNonconformitiesDAOImpl implements IQualityNonconformitiesDAO
     @Override
     public String addNonconformity(QualityNonconformities qualitync) {
         String statusmessage = "";
+        String startD = DateUtil.getTodayFormat("yyyy-MM-dd");
+        String startT = DateUtil.getTodayFormat("hh:mm");
+        
         final String sql = "INSERT INTO qualitynonconformities ( ProblemTitle, "
                 + "ProblemDescription, Severity, reproductibility, linkToDoc, behaviorExpected, status, detection"
                 + ",startdate, starttime, screenshot  ) values (?,?,?,?,?,?,?,?,?,?,?)";
@@ -445,8 +449,8 @@ public class QualityNonconformitiesDAOImpl implements IQualityNonconformitiesDAO
         String behaviorExpected = qualitync.getBehaviorExpected()== null ? "" : qualitync.getBehaviorExpected();
         String status = "NEW";
         String detection = qualitync.getDetection()== null ? "" : qualitync.getDetection();
-        String startDate = qualitync.getStartDate()== null ? "" : qualitync.getStartDate();
-        String startTime = qualitync.getStartTime()== null ? "" : qualitync.getStartTime();
+        String startDate = qualitync.getStartDate().isEmpty() ? startD : qualitync.getStartDate();
+        String startTime = qualitync.getStartTime().isEmpty() ? startT : qualitync.getStartTime();
         String screenshot = qualitync.getScreenshot()== null ? "" : qualitync.getScreenshot();
         
         Logger.log(QualityNonconformitiesDAOImpl.class.getName(), Level.INFO, "Connecting to jdbc/qualityfollowup from addNonconformity");
