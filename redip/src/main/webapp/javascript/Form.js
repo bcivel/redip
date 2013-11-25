@@ -218,7 +218,7 @@ function addNCAction(ncid) {
         /* Action */
         var form1 = document.createElement('input');
 	form1.setAttribute('name', 'Action_Action');
-	form1.setAttribute('style', 'width:123px');
+	form1.setAttribute('style', 'width:680px');
         form1.setAttribute('class', 'wob'); 
         var TD1 = document.createElement('td');
         TD1.setAttribute('class', 'simpleline');
@@ -229,7 +229,7 @@ function addNCAction(ncid) {
         /* Date */
         var form2 = document.createElement('input');
 	form2.setAttribute('name', 'Action_Date');
-	form2.setAttribute('style', 'width:123px');
+	form2.setAttribute('style', 'width:100px');
         form2.setAttribute('class', 'wob'); 
         var TD2 = document.createElement('td');
         TD2.setAttribute('class', 'simpleline');
@@ -240,7 +240,7 @@ function addNCAction(ncid) {
         /* Deadline */
         var form3 = document.createElement('input');
 	form3.setAttribute('name', 'Action_Deadline');
-	form3.setAttribute('style', 'width:123px');
+	form3.setAttribute('style', 'width:100px');
         form3.setAttribute('class', 'wob'); 
         var TD3 = document.createElement('td');
         TD3.setAttribute('class', 'simpleline');
@@ -251,7 +251,7 @@ function addNCAction(ncid) {
         /* Follower */
         var form4 = document.createElement('input');
 	form4.setAttribute('name', 'Action_Follower');
-	form4.setAttribute('style', 'width:123px');
+	form4.setAttribute('style', 'width:100px');
         form4.setAttribute('class', 'wob'); 
         var TD4 = document.createElement('td');
         TD4.setAttribute('class', 'simpleline');
@@ -262,7 +262,7 @@ function addNCAction(ncid) {
         /* Percentage */
         var form5 = document.createElement('input');
 	form5.setAttribute('name', 'Action_Percentage');
-	form5.setAttribute('style', 'width:123px');
+	form5.setAttribute('style', 'width:100px');
         form5.setAttribute('class', 'wob'); 
         var TD5 = document.createElement('td');
         TD5.setAttribute('class', 'simpleline');
@@ -273,7 +273,7 @@ function addNCAction(ncid) {
         /* Status */
         var form6 = document.createElement('input');
 	form6.setAttribute('name', 'Action_Status');
-	form6.setAttribute('style', 'width:123px');
+	form6.setAttribute('style', 'width:100px');
         form6.setAttribute('class', 'wob'); 
         var TD6 = document.createElement('td');
         TD6.setAttribute('class', 'simpleline');
@@ -294,3 +294,55 @@ function addNCAction(ncid) {
         document.getElementById('saveActionButton').style.display = "inline";
 }
 
+function addNCExchange(ncid) {
+	TR = document.createElement('tr');
+        
+        /* Date */
+        var form1 = document.createElement('input');
+	form1.setAttribute('name', 'Exchange_Date');
+	form1.setAttribute('style', 'width:100px');
+        form1.setAttribute('class', 'wob'); 
+        var TD1 = document.createElement('td');
+        TD1.setAttribute('class', 'simpleline');
+        TD1.setAttribute('style', 'background-color:white');
+	TD1.appendChild(form1);
+	TR.appendChild(TD1);
+        
+        /* Title */
+        var form2 = document.createElement('input');
+	form2.setAttribute('name', 'Exchange_Title');
+	form2.setAttribute('style', 'width:100px');
+        form2.setAttribute('class', 'wob'); 
+        var TD2 = document.createElement('td');
+        TD2.setAttribute('class', 'simpleline');
+        TD2.setAttribute('style', 'background-color:white');
+	TD2.appendChild(form2);
+	TR.appendChild(TD2);
+        
+        /* Deadline */
+        var form3 = document.createElement('input');
+	form3.setAttribute('name', 'Exchange_User');
+	form3.setAttribute('style', 'width:100px');
+        form3.setAttribute('class', 'wob'); 
+        var TD3 = document.createElement('td');
+        TD3.setAttribute('class', 'simpleline');
+        TD3.setAttribute('style', 'background-color:white');
+	TD3.appendChild(form3);
+	TR.appendChild(TD3);
+        
+        /* Follower */
+        var form4 = document.createElement('input');
+	form4.setAttribute('name', 'Exchange_Exchange');
+	form4.setAttribute('style', 'width:880px');
+        form4.setAttribute('class', 'wob'); 
+        var TD4 = document.createElement('td');
+        TD4.setAttribute('class', 'simpleline');
+        TD4.setAttribute('style', 'background-color:white');
+	TD4.appendChild(form4);
+	TR.appendChild(TD4);
+        
+        
+        
+        document.getElementById('nonconfexchange').appendChild(TR);
+        document.getElementById('saveExchangeButton').style.display = "inline";
+}

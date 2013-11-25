@@ -499,7 +499,7 @@
                     %>
                 <tr>
                     <td>
-                        <input id="Action<%=numActInc%>" name="Action<%=numActInc%>" style="width:500px; font-size: medium" 
+                        <input id="Action<%=numActInc%>" name="Action<%=numActInc%>" style="width:680px; font-size: medium" 
                                class="ncdetailstext" 
                                onChange="javascript:updateNonconformityAction(this, 'Action', '<%=numActInc%>')"
                                value="<%=qncaInd.getAction()%>">
@@ -547,9 +547,9 @@
             </div>
         <br>
         <div class="nctablecontour" style="clear:both">
-            <div class="ncdescriptionheader"  colspan="3" style="height:30px">Exchange Follow up</div>   
+<!--            <div class="ncdescriptionheader"  colspan="3" style="height:30px">Exchange Follow up</div>   
             <form action="AddNonConformityExchange" method="post" name="AddNonConformityExchange">
-                <table id="nonconfimpact" style="text-align: left; border-collapse: collapse" border="0px" cellpadding="0px" cellspacing="0px">
+                <table id="nonconfexchange" style="text-align: left; border-collapse: collapse" border="0px" cellpadding="0px" cellspacing="0px">
                     <tr>
                         <td class="ncheader">Date</td>
                         <td class="ncheader">Title</td>
@@ -595,9 +595,9 @@
                 <%
                     }
                 %>
-            </table><table><tr><td class="wob"><input type="button" value="+" onclick="addNCAction(<%=ncid%>)"></td>
-                <td class="wob"><input type="submit" id="saveButton" style="display:none" value="Save"></td>
-            </tr></table></form>
+            </table><table><tr><td class="wob"><input type="button" value="+" onclick="addNCExchange(<%=ncid%>)"></td>
+                <td class="wob"><input type="submit" id="saveExchangeButton" style="display:none" value="Save"></td>
+            </tr></table></form>-->
         <div class="nctablefooter" style="height:6px"></div>
         
         </div>

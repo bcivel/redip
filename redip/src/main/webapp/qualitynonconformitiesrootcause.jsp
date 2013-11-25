@@ -69,7 +69,7 @@
                     "bSearchable": true, "aTargets": [ 0 ],
                     "aoColumns": [
                         {"sName": "Idqualitynonconformities", "sWidth": "5%"},
-                        {"sName": "ProblemTitle", "sWidth": "30%"},
+                        {"sName": "RootCauseCategory", "sWidth": "30%"},
                         {"sName": "ProblemDescription", "sWidth": "30%"},
                         {"sName": "Status", "sWidth": "10%"},
                         {"sName": "Severity", "sWidth": "10%"},
@@ -102,11 +102,10 @@
                                 width: "1000px"
                             },
                     "aoColumns": [
-                        {   onchange: 'submit',
-                            placeholder:''  },
-                        {onchange: 'submit',
+                        { },
+                        {onblur: 'submit',
                             placeholder:''},
-                        {onchange: 'submit',
+                        {onblur: 'submit',
                             placeholder:''},
                         {loadtext: 'loading...',
                             type: 'select',

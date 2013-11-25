@@ -69,6 +69,6 @@ public class NonConformityUpdateRootCause extends HttpServlet {
         
         //emailService.sendEmailEvent("update"+columnName, nonconformities, columnName, value);
         
-        out.print(str);
+        out.print(value);
     }
 }
