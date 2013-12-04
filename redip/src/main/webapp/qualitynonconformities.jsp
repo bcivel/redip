@@ -220,6 +220,12 @@ function getValue()
                         for (int a = 0; a < rootcausecategory.length ; a++){
                     uri += "&rootcausecategory="+rootcausecategory[a];}
                     };
+                    
+                    if (request.getParameterValues("partnerId") != null && !request.getParameter("partnerId").equals("All")){
+                        String[] partnerId = request.getParameterValues("partnerId");
+                        for (int a = 0; a < partnerId.length ; a++){
+                    uri += "&partnerId="+partnerId[a];}
+                    };
                     %>
         <br>
         <input id="testtest" value="<%=uri%>" style="display:none">
@@ -260,7 +266,13 @@ function getValue()
             <select style="width: 200px;float:left" multiple="multiple" id="rootcausecategory" name="rootcausecategory">
                </select>
         </div>
-            <div><input style="float:left" type="button" value="Apply Filter" onClick="document.ExecFilters.submit()"></div>
+            
+       
+<div style="width: 230px;float:left">
+            <!--<p style="float:left">status</p>-->
+            <select style="width: 200px;float:left" multiple="multiple" id="partnerId" name="partnerId">
+               </select>
+        </div>            <div><input style="float:left" type="button" value="Apply Filter" onClick="document.ExecFilters.submit()"></div>
         </form>
         </div>
         <br>
@@ -465,6 +477,22 @@ function getValue()
    header: "RootCause",
    noneSelectedText:"Select RootCause",
    selectedText: "# of # RootCause selected"
+});
+      
+    }
+        ));
+    </script>
+    <script type="text/javascript">
+        (document).ready($.get('GetDistinctValueFromNonconformities?parameter=partnerId', function(data) {
+            for (var i = 0; i < data.length; i++) {
+                $("#partnerId").append($("<option></option>")
+                        .attr("value", data[i])
+                        .text(data[i]))
+            }
+            $("#partnerId").multiselect({
+   header: "PartnerId",
+   noneSelectedText:"Select PartnerId",
+   selectedText: "# of # PartnerId selected"
 });
       
     }

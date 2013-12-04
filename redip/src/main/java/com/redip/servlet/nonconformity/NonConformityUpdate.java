@@ -74,13 +74,14 @@ public class NonConformityUpdate extends HttpServlet {
         ApplicationContext appContext = WebApplicationContextUtils.getWebApplicationContext(this.getServletContext());
         IQualityNonconformitiesService nonconformitiesService = appContext.getBean(IQualityNonconformitiesService.class);
         IEmailService emailService = appContext.getBean(IEmailService.class);
-        IFactoryQualityNonconformities factoryQNC = appContext.getBean(IFactoryQualityNonconformities.class);
+        //IFactoryQualityNonconformities factoryQNC = appContext.getBean(IFactoryQualityNonconformities.class);
         
-        QualityNonconformities nonconformities = factoryQNC.create(login, null, null);
+        //QualityNonconformities nonconformities = factoryQNC.create(login, null, null);
+        QualityNonconformities nc = nonconformitiesService.getOneNonconformities(login);
         
         String str = nonconformitiesService.updateNonconformity(login, columnName, value);
         
-        emailService.sendEmailEvent("update"+columnName, nonconformities, columnName, value);
+        emailService.sendEmailEvent("update"+columnName, nc, columnName, value);
         
         out.print(value);
     }

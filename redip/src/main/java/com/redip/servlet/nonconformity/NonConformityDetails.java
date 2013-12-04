@@ -48,6 +48,7 @@ public class NonConformityDetails extends HttpServlet {
         String[] statusList = null;
         String[] rootcausecategory = null;
         String[] responsabilities = null;
+        String[] partnerId = null;
 
         if (request.getParameterValues("creator") != null) {
             creator = request.getParameterValues("creator");
@@ -69,6 +70,9 @@ public class NonConformityDetails extends HttpServlet {
         }
         if (request.getParameterValues("rootcausecategory") != null) {
             rootcausecategory = request.getParameterValues("rootcausecategory");
+        }
+        if (request.getParameterValues("partnerId") != null) {
+            partnerId = request.getParameterValues("partnerId");
         }
 
         
@@ -168,6 +172,15 @@ public class NonConformityDetails extends HttpServlet {
             }
             sRootcausecategory += " rootcausecategory like '%" + rootcausecategory[rootcausecategory.length - 1] + "%') ";
             sArray.add(sRootcausecategory);
+        }
+        
+        if (partnerId != null) {
+            String sPartnerId = " (";
+            for (int a = 0; a < partnerId.length - 1; a++) {
+                sPartnerId += " partnerId like '%" + partnerId[a] + "%' or";
+            }
+            sPartnerId += " partnerId like '%" + partnerId[partnerId.length - 1] + "%') ";
+            sArray.add(sPartnerId);
         }
             
         
