@@ -56,18 +56,19 @@ public class NonConformityUpdate extends HttpServlet {
         PrintWriter out = response.getWriter();
         
         JSONObject jObj = new JSONObject(request.getReader().readLine());
-            
-        String id = jObj.getString("id");
-        String value = jObj.getString("value");
-        String columnName = jObj.getString("columnName");
+//            
+//        String id = jObj.getString("id");
+//        String value = jObj.getString("value");
+//        String columnName = jObj.getString("columnName");
         
-        Logger.log("NonConformityUpdate", Level.INFO, id + value + columnName);
+//        Logger.log("NonConformityUpdate", Level.INFO, id + value + columnName);
+        String id = request.getParameter("id");
         int login = Integer.parseInt(id);
-        //int columnPosition = Integer.parseInt(request.getParameter("columnPosition"));
+        int columnPosition = Integer.parseInt(request.getParameter("columnPosition"));
 
 
-        //String value = request.getParameter("value");
-        //String columnName = request.getParameter("columnName");
+        String value = request.getParameter("value");
+        String columnName = request.getParameter("columnName");
 
         Logger.log("NonConformityUpdate", Level.INFO, "id:" + login + ";value:" + value + ";columnName:" + columnName);
 
