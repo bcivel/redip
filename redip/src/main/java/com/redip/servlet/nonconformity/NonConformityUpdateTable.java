@@ -54,17 +54,8 @@ public class NonConformityUpdateTable extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request,
             HttpServletResponse response) throws ServletException, IOException, JSONException {
-        //request.setCharacterEncoding("UTF-8");
-        //response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         
-//        JSONObject jObj = new JSONObject(request.getReader().readLine());
-//            
-//        String id = jObj.getString("id");
-//        String value = jObj.getString("value");
-//        String columnName = jObj.getString("columnName");
-        
-//        Logger.log("NonConformityUpdate", Level.INFO, id + value + columnName);
         String id = request.getParameter("id");
         int login = Integer.parseInt(id);
         int columnPosition = Integer.parseInt(request.getParameter("columnPosition"));
@@ -81,8 +72,7 @@ public class NonConformityUpdateTable extends HttpServlet {
         IFactoryQualityNonconformities factoryQNC = appContext.getBean(IFactoryQualityNonconformities.class);
         
         QualityNonconformities nonconformities = nonconformitiesService.getOneNonconformities(login);
-                //factoryQNC.create(login, null, null);
-        
+               
         String str = nonconformitiesService.updateNonconformity(login, columnName, value);
         
         emailService.sendEmailEvent("update"+columnName, nonconformities, columnName, value);

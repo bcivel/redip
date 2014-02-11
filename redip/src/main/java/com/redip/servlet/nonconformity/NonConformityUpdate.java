@@ -56,33 +56,26 @@ public class NonConformityUpdate extends HttpServlet {
         PrintWriter out = response.getWriter();
         
         JSONObject jObj = new JSONObject(request.getReader().readLine());
-//            
-//        String id = jObj.getString("id");
-//        String value = jObj.getString("value");
-//        String columnName = jObj.getString("columnName");
+            
+        String id = jObj.getString("id");
+        String value = jObj.getString("value");
+        String columnName = jObj.getString("columnName");
         
-//        Logger.log("NonConformityUpdate", Level.INFO, id + value + columnName);
-        String id = request.getParameter("id");
+        Logger.log("NonConformityUpdate", Level.INFO, id + value + columnName);
         int login = Integer.parseInt(id);
-        int columnPosition = Integer.parseInt(request.getParameter("columnPosition"));
-
-
-        String value = request.getParameter("value");
-        String columnName = request.getParameter("columnName");
-
+        
         Logger.log("NonConformityUpdate", Level.INFO, "id:" + login + ";value:" + value + ";columnName:" + columnName);
 
         ApplicationContext appContext = WebApplicationContextUtils.getWebApplicationContext(this.getServletContext());
         IQualityNonconformitiesService nonconformitiesService = appContext.getBean(IQualityNonconformitiesService.class);
         IEmailService emailService = appContext.getBean(IEmailService.class);
-        //IFactoryQualityNonconformities factoryQNC = appContext.getBean(IFactoryQualityNonconformities.class);
+        IFactoryQualityNonconformities factoryQNC = appContext.getBean(IFactoryQualityNonconformities.class);
         
-        //QualityNonconformities nonconformities = factoryQNC.create(login, null, null);
-        QualityNonconformities nc = nonconformitiesService.getOneNonconformities(login);
+        QualityNonconformities nonconformities = factoryQNC.create(login, null, null);
         
         String str = nonconformitiesService.updateNonconformity(login, columnName, value);
         
-        emailService.sendEmailEvent("update"+columnName, nc, columnName, value);
+        emailService.sendEmailEvent("update"+columnName, nonconformities, columnName, value);
         
         out.print(value);
     }

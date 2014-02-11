@@ -60,7 +60,7 @@ public class EmailService implements IEmailService {
         email.setCharset("utf-8");
         
         StringBuilder sb = new StringBuilder();
-        sb.append("<html><head><META HTTP-EQUIV=\"Content-Type\" CONTENT=\"text/html; charset=UTF-8\"></head><body>");
+        sb.append("<html><body>");
         sb.append(body);
         sb.append("</body></html>");
 //        byte [] stringToEncodeBytes = body.getBytes();  
@@ -86,7 +86,7 @@ public class EmailService implements IEmailService {
             email.addCc(copy[i], copy[i]);
         }
 
-        email.setTLS(true);
+        email.setTLS(false);
 
         email.send();
 
