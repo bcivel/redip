@@ -7,6 +7,7 @@ package com.redip.servlet.nonconformity;
 import com.redip.entity.QualityNonconformities;
 import com.redip.entity.QualityNonconformitiesDoc;
 import com.redip.factory.IFactoryQualityNonconformities;
+import com.redip.log.Logger;
 import com.redip.service.IEmailService;
 import com.redip.service.IQualityNonconformitiesDocService;
 import com.redip.service.IQualityNonconformitiesImpactService;
@@ -32,6 +33,7 @@ import org.apache.commons.fileupload.FileItemFactory;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.log4j.Level;
 
 /**
  * @author bcivel
@@ -77,47 +79,48 @@ public class NonConformityAdd extends HttpServlet {
                     if (item.isFormField()) {
                         String name = item.getFieldName();
                         if (name.equals("Application")) {
-                            application = item.getString();
+                            application = item.getString("UTF-8");
                             System.out.println(application);
                         }
                         if (name.equals("ProblemTitle")) {
-                            problemTitle = item.getString();
+                            problemTitle = item.getString("UTF-8");
                             System.out.println(problemTitle);
+                            Logger.log(NonConformityDetails.class.getName(), Level.INFO, "PT:" + problemTitle);
                         }
                         if (name.equals("ProblemDescription")) {
-                            problemDescription = item.getString();
+                            problemDescription = item.getString("UTF-8");
                             System.out.println(problemDescription);
                         }
                         if (name.equals("StartDate")) {
-                            startDate = item.getString();
+                            startDate = item.getString("UTF-8");
                             System.out.println(startDate);
                         }
                         if (name.equals("StartTime")) {
-                            startDate = item.getString();
+                            startDate = item.getString("UTF-8");
                             System.out.println(startDate);
                         }
                         if (name.equals("EndDate")) {
-                            endDate = item.getString();
+                            endDate = item.getString("UTF-8");
                             System.out.println(endDate);
                         }
                         if (name.equals("EndTime")) {
-                            endTime = item.getString();
+                            endTime = item.getString("UTF-8");
                             System.out.println(endTime);
                         }
                         if (name.equals("Severity")) {
-                            severity = item.getString();
+                            severity = item.getString("UTF-8");
                             System.out.println(severity);
                         }
                         if (name.equals("Reproductibility")) {
-                            reproductibility = item.getString();
+                            reproductibility = item.getString("UTF-8");
                             System.out.println(reproductibility);
                         }
                         if (name.equals("BehaviorExpected")) {
-                            behaviorExpected = item.getString();
+                            behaviorExpected = item.getString("UTF-8");
                             System.out.println(behaviorExpected);
                         }
                         if (name.equals("Detection")) {
-                            detection = item.getString();
+                            detection = item.getString("UTF-8");
                             System.out.println(detection);
                         }
                         if (name.equals("Screenshot")) {

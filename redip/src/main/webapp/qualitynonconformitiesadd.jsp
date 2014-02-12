@@ -52,7 +52,7 @@
         
         <%@ include file="static.jsp" %>
        <div id="dialog">
-            <form id="formAddNewRow" action="AddNonConformity" title="Add NonConformity" style="width:350px" method="post" enctype="multipart/form-data">
+            <form id="formAddNewRow" action="AddNonConformity" title="Add NonConformity" style="width:350px" method="post" enctype="multipart/form-data" acceptcharset="UTF-8">
                 <br>
                 <div style="width: 1110px;float:left">
                 <div style="width: 310px; float:left">
