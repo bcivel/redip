@@ -1,4 +1,4 @@
 language: java
 script: 
-  cd redip
-  mvn clean verify
+  - cd redip
+  - mvn clean verify
